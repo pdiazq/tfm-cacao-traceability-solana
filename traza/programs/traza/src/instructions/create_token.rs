@@ -1,5 +1,5 @@
 use anchor_lang::prelude::*;
-use crate::state::{TraceToken, RoleRegistry, Role, TokenStatus};
+use crate::state::{TraceToken, RoleRegistry, Role, TokenStatus, TokenBalance};
 use crate::error::TrazaError;
 
 #[derive(AnchorSerialize, AnchorDeserialize)]
@@ -18,6 +18,15 @@ pub struct CreateToken<'info> {
         bump
     )]
     pub trace_token: Account<'info, TraceToken>,
+
+    #[account(
+        init,
+        payer = creator,
+        space = 8 + TokenBalance::LEN,
+        seeds = [b"token_balance", mint.key().as_ref(), creator.key().as_ref()],
+        bump
+    )]
+    pub creator_balance: Account<'info, TokenBalance>,
 
     pub mint: Signer<'info>,
 
@@ -42,8 +51,12 @@ pub fn handler(ctx: Context<CreateToken>, params: CreateTokenParams) -> Result<(
     );
 
     let clock = Clock::get()?;
-    let (_, bump) = Pubkey::find_program_address(
+    let (_, token_bump) = Pubkey::find_program_address(
         &[b"trace_token", ctx.accounts.mint.key().as_ref()],
+        ctx.program_id,
+    );
+    let (_, balance_bump) = Pubkey::find_program_address(
+        &[b"token_balance", ctx.accounts.mint.key().as_ref(), ctx.accounts.creator.key().as_ref()],
         ctx.program_id,
     );
 
@@ -51,13 +64,19 @@ pub fn handler(ctx: Context<CreateToken>, params: CreateTokenParams) -> Result<(
     token.mint = ctx.accounts.mint.key();
     token.creator = ctx.accounts.creator.key();
     token.creator_role = ctx.accounts.role_registry.role.clone();
-    token.current_owner = ctx.accounts.creator.key();
-    token.amount = params.amount;
+    token.total_supply = params.amount;
     token.status = TokenStatus::Created;
     token.source_tokens = vec![];
     token.metadata = params.metadata;
     token.created_at = clock.unix_timestamp;
-    token.bump = bump;
+    token.bump = token_bump;
+
+    let balance = &mut ctx.accounts.creator_balance;
+    balance.token_mint = ctx.accounts.mint.key();
+    balance.owner = ctx.accounts.creator.key();
+    balance.balance = params.amount;
+    balance.bump = balance_bump;
+    balance.last_updated = clock.unix_timestamp;
 
     // Factory must provide source tokens via remaining_accounts
     if token.creator_role == Role::Factory {
@@ -85,6 +104,6 @@ pub fn handler(ctx: Context<CreateToken>, params: CreateTokenParams) -> Result<(
         }
     }
 
-    msg!("Token created: mint={:?}, amount={}, creator={:?}", token.mint, token.amount, token.creator);
+    msg!("Token created: mint={:?}, total_supply={}, creator={:?}", token.mint, token.total_supply, token.creator);
     Ok(())
 }

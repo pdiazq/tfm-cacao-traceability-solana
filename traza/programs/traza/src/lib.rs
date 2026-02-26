@@ -72,8 +72,12 @@ pub mod traza {
         );
 
         let clock = Clock::get()?;
-        let (_, bump) = Pubkey::find_program_address(
+        let (_, token_bump) = Pubkey::find_program_address(
             &[b"trace_token", ctx.accounts.mint.key().as_ref()],
+            ctx.program_id,
+        );
+        let (_, balance_bump) = Pubkey::find_program_address(
+            &[b"token_balance", ctx.accounts.mint.key().as_ref(), ctx.accounts.creator.key().as_ref()],
             ctx.program_id,
         );
 
@@ -81,13 +85,19 @@ pub mod traza {
         token.mint = ctx.accounts.mint.key();
         token.creator = ctx.accounts.creator.key();
         token.creator_role = ctx.accounts.role_registry.role.clone();
-        token.current_owner = ctx.accounts.creator.key();
-        token.amount = amount;
+        token.total_supply = amount;
         token.status = TokenStatus::Created;
         token.source_tokens = vec![];
         token.metadata = metadata;
         token.created_at = clock.unix_timestamp;
-        token.bump = bump;
+        token.bump = token_bump;
+
+        let balance = &mut ctx.accounts.creator_balance;
+        balance.token_mint = ctx.accounts.mint.key();
+        balance.owner = ctx.accounts.creator.key();
+        balance.balance = amount;
+        balance.bump = balance_bump;
+        balance.last_updated = clock.unix_timestamp;
 
         if token.creator_role == Role::Factory {
             let remaining = ctx.remaining_accounts;
@@ -113,15 +123,15 @@ pub mod traza {
             }
         }
 
-        msg!("Token created: mint={:?}, amount={}, creator={:?}", token.mint, token.amount, token.creator);
+        msg!("Token created: mint={:?}, total_supply={}, creator={:?}", token.mint, token.total_supply, token.creator);
         Ok(())
     }
 
     pub fn initiate_transfer(ctx: Context<InitiateTransfer>, amount: u64) -> Result<()> {
         require!(amount > 0, error::TrazaError::InvalidAmount);
         require!(
-            amount <= ctx.accounts.trace_token.amount,
-            error::TrazaError::TransferAmountExceedsTokenAmount
+            ctx.accounts.from.key() != ctx.accounts.to.key(),
+            error::TrazaError::TransferToSelf
         );
 
         let from_role = &ctx.accounts.from_role_registry.role;
@@ -137,7 +147,7 @@ pub mod traza {
 
         let clock = Clock::get()?;
         let (_, bump) = Pubkey::find_program_address(
-            &[b"pending_transfer", ctx.accounts.trace_token.mint.as_ref()],
+            &[b"pending_transfer", ctx.accounts.trace_token.mint.as_ref(), ctx.accounts.from.key().as_ref(), ctx.accounts.to.key().as_ref()],
             ctx.program_id,
         );
 
@@ -148,9 +158,6 @@ pub mod traza {
         pending.amount = amount;
         pending.bump = bump;
         pending.initiated_at = clock.unix_timestamp;
-
-        let token = &mut ctx.accounts.trace_token;
-        token.status = TokenStatus::InTransfer;
 
         msg!(
             "Transfer initiated: token={:?} from={:?} to={:?} amount={}",
@@ -164,23 +171,32 @@ pub mod traza {
 
     pub fn accept_transfer(ctx: Context<AcceptTransfer>) -> Result<()> {
         let pending = &ctx.accounts.pending_transfer;
-        let token = &mut ctx.accounts.trace_token;
-
-        require!(
-            pending.amount <= token.amount,
-            error::TrazaError::TransferAmountExceedsTokenAmount
+        let clock = Clock::get()?;
+        let (_, to_bump) = Pubkey::find_program_address(
+            &[b"token_balance", ctx.accounts.trace_token.mint.as_ref(), ctx.accounts.to.key().as_ref()],
+            ctx.program_id,
         );
 
-        // Update the owner to the new recipient
-        token.current_owner = ctx.accounts.to.key();
+        // Transfer from sender's balance
+        ctx.accounts.from_balance.balance = ctx.accounts.from_balance.balance
+            .checked_sub(pending.amount)
+            .ok_or(error::TrazaError::InsufficientBalance)?;
+        ctx.accounts.from_balance.last_updated = clock.unix_timestamp;
 
-        // Subtract the transferred amount from the original token
-        token.amount -= pending.amount;
+        // Add to receiver's balance
+        let to_balance = &mut ctx.accounts.to_balance;
+        if to_balance.owner == Pubkey::default() {
+            // Initialize new balance account
+            to_balance.token_mint = ctx.accounts.trace_token.mint;
+            to_balance.owner = ctx.accounts.to.key();
+            to_balance.bump = to_bump;
+        }
+        to_balance.balance = to_balance.balance
+            .checked_add(pending.amount)
+            .ok_or(error::TrazaError::TransferAmountExceedsTokenAmount)?;
+        to_balance.last_updated = clock.unix_timestamp;
 
-        // Mark as accepted after transfer is completed
-        token.status = TokenStatus::Accepted;
-
-        msg!("Transfer accepted: token={:?} new_owner={:?} amount={} remaining={}", token.mint, token.current_owner, pending.amount, token.amount);
+        msg!("Transfer accepted: token={:?} from={:?} to={:?} amount={}", ctx.accounts.trace_token.mint, pending.from, pending.to, pending.amount);
         Ok(())
     }
 }
@@ -259,6 +275,15 @@ pub struct CreateToken<'info> {
     )]
     pub trace_token: Account<'info, TraceToken>,
 
+    #[account(
+        init,
+        payer = creator,
+        space = 8 + TokenBalance::LEN,
+        seeds = [b"token_balance", mint.key().as_ref(), creator.key().as_ref()],
+        bump
+    )]
+    pub creator_balance: Account<'info, TokenBalance>,
+
     pub mint: Signer<'info>,
 
     #[account(
@@ -279,17 +304,22 @@ pub struct InitiateTransfer<'info> {
     #[account(
         mut,
         seeds = [b"trace_token", trace_token.mint.as_ref()],
-        bump = trace_token.bump,
-        constraint = trace_token.current_owner == from.key() @ error::TrazaError::InvalidTransferPath,
-        constraint = trace_token.status != TokenStatus::InTransfer @ error::TrazaError::TokenAlreadyInTransfer
+        bump = trace_token.bump
     )]
     pub trace_token: Account<'info, TraceToken>,
+
+    #[account(
+        mut,
+        seeds = [b"token_balance", trace_token.mint.as_ref(), from.key().as_ref()],
+        bump = from_balance.bump
+    )]
+    pub from_balance: Account<'info, TokenBalance>,
 
     #[account(
         init,
         payer = from,
         space = 8 + PendingTransfer::LEN,
-        seeds = [b"pending_transfer", trace_token.mint.as_ref()],
+        seeds = [b"pending_transfer", trace_token.mint.as_ref(), from.key().as_ref(), to.key().as_ref()],
         bump
     )]
     pub pending_transfer: Account<'info, PendingTransfer>,
@@ -314,23 +344,41 @@ pub struct AcceptTransfer<'info> {
     #[account(
         mut,
         seeds = [b"trace_token", trace_token.mint.as_ref()],
-        bump = trace_token.bump,
-        constraint = trace_token.status == TokenStatus::InTransfer @ error::TrazaError::TokenNotInTransfer
+        bump = trace_token.bump
     )]
     pub trace_token: Account<'info, TraceToken>,
 
     #[account(
         mut,
         close = to,
-        seeds = [b"pending_transfer", trace_token.mint.as_ref()],
+        seeds = [b"pending_transfer", trace_token.mint.as_ref(), pending_transfer.from.as_ref(), to.key().as_ref()],
         bump = pending_transfer.bump,
         constraint = pending_transfer.to == to.key() @ error::TrazaError::InvalidTransferPath
     )]
     pub pending_transfer: Account<'info, PendingTransfer>,
+
+    #[account(
+        mut,
+        seeds = [b"token_balance", trace_token.mint.as_ref(), pending_transfer.from.as_ref()],
+        bump = from_balance.bump
+    )]
+    pub from_balance: Account<'info, TokenBalance>,
+
+    #[account(
+        init_if_needed,
+        payer = to,
+        space = 8 + TokenBalance::LEN,
+        seeds = [b"token_balance", trace_token.mint.as_ref(), to.key().as_ref()],
+        bump,
+        constraint = to_balance.token_mint == trace_token.mint || to_balance.owner == Pubkey::default()
+    )]
+    pub to_balance: Account<'info, TokenBalance>,
 
     #[account(seeds = [b"role_registry", to.key().as_ref()], bump = role_registry.bump)]
     pub role_registry: Account<'info, RoleRegistry>,
 
     #[account(mut)]
     pub to: Signer<'info>,
+
+    pub system_program: Program<'info, System>,
 }

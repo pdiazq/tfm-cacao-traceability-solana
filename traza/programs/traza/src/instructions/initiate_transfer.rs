@@ -1,5 +1,5 @@
 use anchor_lang::prelude::*;
-use crate::state::{TraceToken, RoleRegistry, PendingTransfer, Role};
+use crate::state::{TraceToken, RoleRegistry, PendingTransfer, Role, TokenBalance};
 use crate::error::TrazaError;
 
 #[derive(AnchorSerialize, AnchorDeserialize)]
@@ -12,17 +12,23 @@ pub struct InitiateTransfer<'info> {
     #[account(
         mut,
         seeds = [b"trace_token", trace_token.mint.as_ref()],
-        bump = trace_token.bump,
-        constraint = trace_token.current_owner == from.key() @ TrazaError::InvalidTransferPath,
-        constraint = trace_token.status != crate::state::TokenStatus::InTransfer @ TrazaError::TokenAlreadyInTransfer
+        bump = trace_token.bump
     )]
     pub trace_token: Account<'info, TraceToken>,
+
+    #[account(
+        mut,
+        seeds = [b"token_balance", trace_token.mint.as_ref(), from.key().as_ref()],
+        bump = from_balance.bump,
+        constraint = from_balance.balance >= params.amount @ TrazaError::InsufficientBalance
+    )]
+    pub from_balance: Account<'info, TokenBalance>,
 
     #[account(
         init,
         payer = from,
         space = 8 + PendingTransfer::LEN,
-        seeds = [b"pending_transfer", trace_token.mint.as_ref()],
+        seeds = [b"pending_transfer", trace_token.mint.as_ref(), from.key().as_ref(), ctx.accounts.to.key().as_ref()],
         bump
     )]
     pub pending_transfer: Account<'info, PendingTransfer>,
@@ -51,14 +57,8 @@ pub struct InitiateTransfer<'info> {
 pub fn handler(ctx: Context<InitiateTransfer>, params: InitiateTransferParams) -> Result<()> {
     require!(params.amount > 0, TrazaError::InvalidAmount);
     require!(
-        params.amount <= ctx.accounts.trace_token.amount,
-        TrazaError::TransferAmountExceedsTokenAmount
-    );
-
-    // V1: Only full transfer supported
-    require!(
-        params.amount == ctx.accounts.trace_token.amount,
-        TrazaError::PartialTransferNotSupported
+        ctx.accounts.from.key() != ctx.accounts.to.key(),
+        TrazaError::TransferToSelf
     );
 
     // Validate transfer path: Producer->Factory, Factory->Retailer, Retailer->Consumer
@@ -75,7 +75,7 @@ pub fn handler(ctx: Context<InitiateTransfer>, params: InitiateTransferParams) -
 
     let clock = Clock::get()?;
     let (_, bump) = Pubkey::find_program_address(
-        &[b"pending_transfer", ctx.accounts.trace_token.mint.as_ref()],
+        &[b"pending_transfer", ctx.accounts.trace_token.mint.as_ref(), ctx.accounts.from.key().as_ref(), ctx.accounts.to.key().as_ref()],
         ctx.program_id,
     );
 
@@ -86,9 +86,6 @@ pub fn handler(ctx: Context<InitiateTransfer>, params: InitiateTransferParams) -
     pending.amount = params.amount;
     pending.bump = bump;
     pending.initiated_at = clock.unix_timestamp;
-
-    let token = &mut ctx.accounts.trace_token;
-    token.status = crate::state::TokenStatus::InTransfer;
 
     msg!(
         "Transfer initiated: token={:?} from={:?} to={:?} amount={}",

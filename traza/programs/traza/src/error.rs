@@ -38,8 +38,11 @@ pub enum TrazaError {
     #[msg("Token is not in transfer status")]
     TokenNotInTransfer,
 
-    #[msg("Only full amount transfer supported in v1")]
-    PartialTransferNotSupported,
+    #[msg("Insufficient balance for transfer")]
+    InsufficientBalance,
+
+    #[msg("Cannot transfer to the same account")]
+    TransferToSelf,
 
     #[msg("Metadata exceeds maximum length")]
     MetadataTooLong,
