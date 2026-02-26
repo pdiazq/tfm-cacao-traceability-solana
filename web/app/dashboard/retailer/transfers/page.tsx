@@ -13,8 +13,8 @@ import { formatDistance } from "date-fns";
 export default function RetailerTransfersPage() {
   const { publicKey } = useWallet();
   const { program } = useProgram();
-  const { ownedTokens } = useTokens(publicKey!);
-  const { sentTransfers, receivedTransfers, refetch } = useTransfers(publicKey!);
+  const { ownedTokens, refetch: refetchTokens } = useTokens(publicKey!);
+  const { sentTransfers, receivedTransfers, refetch: refetchTransfers } = useTransfers(publicKey!);
 
   const [activeTab, setActiveTab] = useState<"sent" | "received">("sent");
   const [acceptingTransfer, setAcceptingTransfer] = useState<string | null>(null);
@@ -30,7 +30,8 @@ export default function RetailerTransfersPage() {
       const { PublicKey } = require("@solana/web3.js");
       const mint = new PublicKey(tokenMint);
       await acceptTransfer(program, publicKey, mint);
-      await refetch();
+      await refetchTransfers();
+      await refetchTokens();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to accept transfer");
     } finally {
@@ -54,7 +55,7 @@ export default function RetailerTransfersPage() {
               from={publicKey}
               tokens={ownedTokens}
               onSuccess={() => {
-                refetch();
+                refetchTransfers();
               }}
             />
           ) : (

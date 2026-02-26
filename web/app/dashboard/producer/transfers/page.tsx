@@ -7,14 +7,14 @@ import { useTokens } from "@/lib/hooks/useTokens";
 import { useTransfers } from "@/lib/hooks/useTransfers";
 import { acceptTransfer } from "@/lib/solana/instructions";
 import { TransferForm } from "@/components/transfer/TransferForm";
-import { formatAddress, formatRole, formatAmount } from "@/lib/utils/format";
+import { formatAddress, formatAmount } from "@/lib/utils/format";
 import { formatDistance } from "date-fns";
 
 export default function TransfersPage() {
   const { publicKey } = useWallet();
   const { program } = useProgram();
-  const { tokens } = useTokens(publicKey!);
-  const { sentTransfers, receivedTransfers, refetch } = useTransfers(publicKey!);
+  const { tokens, refetch: refetchTokens } = useTokens(publicKey!);
+  const { sentTransfers, receivedTransfers, refetch: refetchTransfers } = useTransfers(publicKey!);
 
   const [activeTab, setActiveTab] = useState<"sent" | "received">("sent");
   const [acceptingTransfer, setAcceptingTransfer] = useState<string | null>(null);
@@ -29,7 +29,8 @@ export default function TransfersPage() {
     try {
       const mint = new (require("@solana/web3.js")).PublicKey(tokenMint);
       await acceptTransfer(program, publicKey, mint);
-      await refetch();
+      await refetchTransfers();
+      await refetchTokens();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to accept transfer");
     } finally {
@@ -53,7 +54,7 @@ export default function TransfersPage() {
               from={publicKey}
               tokens={tokens}
               onSuccess={() => {
-                refetch();
+                refetchTransfers();
               }}
             />
           ) : (
