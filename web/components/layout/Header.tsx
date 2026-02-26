@@ -24,7 +24,7 @@ export function Header() {
       case "producer":
         return "bg-green-100 text-green-800";
       case "factory":
-        return "bg-blue-100 text-blue-800";
+        return "bg-gray-200 text-gray-800";
       case "retailer":
         return "bg-purple-100 text-purple-800";
       case "consumer":

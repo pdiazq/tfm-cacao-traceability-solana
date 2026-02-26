@@ -64,7 +64,7 @@ export default function CreateTokenPage() {
             onChange={(e) => setMetadata(e.target.value)}
             placeholder="e.g., Lote 001 - Organic Coffee"
             maxLength={256}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
             required
           />
           <p className="text-xs text-gray-500 mt-1">
@@ -83,7 +83,7 @@ export default function CreateTokenPage() {
             onChange={(e) => setAmount(e.target.value)}
             placeholder="e.g., 1000"
             min="1"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
             required
           />
           <p className="text-xs text-gray-500 mt-1">
@@ -101,7 +101,7 @@ export default function CreateTokenPage() {
           <button
             type="submit"
             disabled={isSubmitting || !metadata || !amount}
-            className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-2 rounded-lg transition"
+            className="flex-1 bg-black hover:bg-gray-800 disabled:bg-gray-400 text-white font-semibold py-2 rounded-lg transition"
           >
             {isSubmitting ? "Creating..." : "Create Token"}
           </button>

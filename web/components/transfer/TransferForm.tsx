@@ -91,7 +91,7 @@ export function TransferForm({ program, from, tokens, onSuccess }: TransferFormP
             setSelectedToken(token || null);
             setTransferAmount("");
           }}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
           required
         >
           <option value="">Select a token...</option>
@@ -116,7 +116,7 @@ export function TransferForm({ program, from, tokens, onSuccess }: TransferFormP
             placeholder="e.g., 100"
             min="1"
             max={selectedToken.amount.toString()}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
             required
           />
           <p className="text-xs text-gray-500 mt-1">
@@ -135,7 +135,7 @@ export function TransferForm({ program, from, tokens, onSuccess }: TransferFormP
           value={recipientAddress}
           onChange={(e) => setRecipientAddress(e.target.value)}
           placeholder="e.g., 9B5X..."
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
           required
         />
         {recipientAddress && (
@@ -146,17 +146,17 @@ export function TransferForm({ program, from, tokens, onSuccess }: TransferFormP
       </div>
 
       {selectedToken && transferAmount && (
-        <div className="p-3 bg-blue-50 border border-blue-200 rounded">
-          <p className="text-sm text-blue-900">
+        <div className="p-3 bg-gray-100 border border-gray-300 rounded">
+          <p className="text-sm text-gray-900">
             <strong>Transfer Details:</strong>
           </p>
-          <p className="text-sm text-blue-800 mt-1">
+          <p className="text-sm text-gray-700 mt-1">
             Token: {selectedToken.metadata}
           </p>
-          <p className="text-sm text-blue-800">
+          <p className="text-sm text-gray-700">
             Amount to Transfer: {transferAmount} units (of {selectedToken.amount.toString()} available)
           </p>
-          <p className="text-sm text-blue-800">
+          <p className="text-sm text-gray-700">
             To: {formatAddress(recipientAddress)}
           </p>
         </div>
@@ -171,7 +171,7 @@ export function TransferForm({ program, from, tokens, onSuccess }: TransferFormP
       <button
         type="submit"
         disabled={isSubmitting || !selectedToken || !transferAmount || !recipientAddress}
-        className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-2 rounded-lg transition"
+        className="w-full bg-black hover:bg-gray-800 disabled:bg-gray-400 text-white font-semibold py-2 rounded-lg transition"
       >
         {isSubmitting ? "Initiating Transfer..." : "Initiate Transfer"}
       </button>

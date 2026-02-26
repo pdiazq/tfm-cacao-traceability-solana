@@ -90,7 +90,7 @@ export default function FactoryMyTokensPage() {
         <h1 className="text-3xl font-bold text-gray-900">My Tokens</h1>
         <button
           onClick={() => router.push("/dashboard/factory/create-token")}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition"
+          className="bg-black hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg transition"
         >
           + Create Token
         </button>
@@ -109,7 +109,7 @@ export default function FactoryMyTokensPage() {
           <p className="text-gray-600">No tokens yet</p>
           <button
             onClick={() => router.push("/dashboard/factory/create-token")}
-            className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition"
+            className="mt-4 bg-black hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg transition"
           >
             Create your first token
           </button>

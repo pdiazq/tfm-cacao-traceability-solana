@@ -71,7 +71,7 @@ export default function RetailerTransfersPage() {
               onClick={() => setActiveTab("sent")}
               className={`px-4 py-2 font-medium ${
                 activeTab === "sent"
-                  ? "border-b-2 border-blue-600 text-blue-600"
+                  ? "border-b-2 border-gray-800 text-gray-800"
                   : "text-gray-600"
               }`}
             >
@@ -81,7 +81,7 @@ export default function RetailerTransfersPage() {
               onClick={() => setActiveTab("received")}
               className={`px-4 py-2 font-medium ${
                 activeTab === "received"
-                  ? "border-b-2 border-blue-600 text-blue-600"
+                  ? "border-b-2 border-gray-800 text-gray-800"
                   : "text-gray-600"
               }`}
             >

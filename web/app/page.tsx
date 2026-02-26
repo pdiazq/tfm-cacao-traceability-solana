@@ -17,7 +17,7 @@ export default function Home() {
   const { role } = useRole();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
@@ -41,7 +41,7 @@ export default function Home() {
           {publicKey ? (
             <Link
               href="/dashboard"
-              className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition"
+              className="inline-block bg-black hover:bg-gray-800 text-white font-semibold py-3 px-8 rounded-lg transition"
             >
               Go to Dashboard {role && `(${formatRole(role)})`}
             </Link>
@@ -92,7 +92,7 @@ export default function Home() {
           <h3 className="text-2xl font-bold text-gray-900 mb-6">How It Works</h3>
           <ol className="space-y-4">
             <li className="flex items-start">
-              <span className="flex items-center justify-center h-8 w-8 rounded-full bg-blue-600 text-white font-semibold mr-4 flex-shrink-0">
+              <span className="flex items-center justify-center h-8 w-8 rounded-full bg-black text-white font-semibold mr-4 flex-shrink-0">
                 1
               </span>
               <span className="text-gray-700">
@@ -100,7 +100,7 @@ export default function Home() {
               </span>
             </li>
             <li className="flex items-start">
-              <span className="flex items-center justify-center h-8 w-8 rounded-full bg-blue-600 text-white font-semibold mr-4 flex-shrink-0">
+              <span className="flex items-center justify-center h-8 w-8 rounded-full bg-black text-white font-semibold mr-4 flex-shrink-0">
                 2
               </span>
               <span className="text-gray-700">
@@ -108,7 +108,7 @@ export default function Home() {
               </span>
             </li>
             <li className="flex items-start">
-              <span className="flex items-center justify-center h-8 w-8 rounded-full bg-blue-600 text-white font-semibold mr-4 flex-shrink-0">
+              <span className="flex items-center justify-center h-8 w-8 rounded-full bg-black text-white font-semibold mr-4 flex-shrink-0">
                 3
               </span>
               <span className="text-gray-700">
@@ -116,7 +116,7 @@ export default function Home() {
               </span>
             </li>
             <li className="flex items-start">
-              <span className="flex items-center justify-center h-8 w-8 rounded-full bg-blue-600 text-white font-semibold mr-4 flex-shrink-0">
+              <span className="flex items-center justify-center h-8 w-8 rounded-full bg-black text-white font-semibold mr-4 flex-shrink-0">
                 4
               </span>
               <span className="text-gray-700">

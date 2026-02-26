@@ -58,7 +58,7 @@ export default function ValidateRolesPage() {
         <button
           onClick={handleRefresh}
           disabled={loading}
-          className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-2 px-4 rounded-lg transition"
+          className="bg-black hover:bg-gray-800 disabled:bg-gray-400 text-white font-semibold py-2 px-4 rounded-lg transition"
         >
           {loading ? "Loading..." : "Refresh"}
         </button>
@@ -82,7 +82,7 @@ export default function ValidateRolesPage() {
           onClick={() => setTab("pending")}
           className={`px-4 py-3 font-semibold transition ${
             tab === "pending"
-              ? "border-b-2 border-blue-600 text-blue-600"
+              ? "border-b-2 border-gray-800 text-gray-800"
               : "text-gray-600 hover:text-gray-900"
           }`}
         >
@@ -92,7 +92,7 @@ export default function ValidateRolesPage() {
           onClick={() => setTab("validated")}
           className={`px-4 py-3 font-semibold transition ${
             tab === "validated"
-              ? "border-b-2 border-blue-600 text-blue-600"
+              ? "border-b-2 border-gray-800 text-gray-800"
               : "text-gray-600 hover:text-gray-900"
           }`}
         >

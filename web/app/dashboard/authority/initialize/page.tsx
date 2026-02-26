@@ -39,9 +39,9 @@ export default function InitializeAuthorityPage() {
         Initialize the Solana Trazabilidad program. This can only be done once.
       </p>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
-        <h2 className="text-lg font-semibold text-blue-900 mb-2">Authority Only</h2>
-        <p className="text-blue-800">
+      <div className="bg-gray-100 border border-gray-300 rounded-lg p-6 mb-6">
+        <h2 className="text-lg font-semibold text-gray-900 mb-2">Authority Only</h2>
+        <p className="text-gray-700">
           Only the program authority can initialize the program. Your wallet will be
           set as the authority.
         </p>
@@ -57,7 +57,7 @@ export default function InitializeAuthorityPage() {
         <button
           onClick={handleInitialize}
           disabled={isInitializing || success}
-          className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 px-6 rounded-lg transition"
+          className="bg-black hover:bg-gray-800 disabled:bg-gray-400 text-white font-semibold py-3 px-6 rounded-lg transition"
         >
           {isInitializing ? "Initializing..." : "Initialize Program"}
         </button>

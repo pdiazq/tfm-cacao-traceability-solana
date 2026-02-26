@@ -78,7 +78,7 @@ export default function RegisterRolePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Request Role</h1>
         <p className="text-gray-600 mb-8">
@@ -93,7 +93,7 @@ export default function RegisterRolePage() {
             <select
               value={selectedRole || ""}
               onChange={(e) => setSelectedRole(e.target.value as Role)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
             >
               <option value="">Select a role...</option>
               {ROLES.map((role) => (
@@ -113,7 +113,7 @@ export default function RegisterRolePage() {
           <button
             type="submit"
             disabled={!selectedRole || isSubmitting}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-2 rounded-lg transition"
+            className="w-full bg-black hover:bg-gray-800 disabled:bg-gray-400 text-white font-semibold py-2 rounded-lg transition"
           >
             {isSubmitting ? "Submitting..." : "Request Role"}
           </button>

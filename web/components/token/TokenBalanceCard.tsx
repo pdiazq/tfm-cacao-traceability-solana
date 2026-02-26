@@ -30,7 +30,7 @@ export function TokenBalanceCard({
             Mint: {formatAddress(balance.tokenMint.toString())}
           </p>
         </div>
-        <span className="px-3 py-1 rounded-full text-sm font-semibold bg-blue-100 text-blue-800">
+        <span className="px-3 py-1 rounded-full text-sm font-semibold bg-gray-200 text-gray-800">
           Owner
         </span>
       </div>
@@ -60,7 +60,7 @@ export function TokenBalanceCard({
         </div>
         <div className="w-full bg-gray-200 rounded-full h-2">
           <div
-            className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+            className="bg-black h-2 rounded-full transition-all duration-300"
             style={{ width: `${Math.min(percentage, 100)}%` }}
           />
         </div>
@@ -80,7 +80,7 @@ export function TokenBalanceCard({
       {onTransfer && balance.balance > BigInt(0) && (
         <button
           onClick={() => onTransfer(balance)}
-          className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition"
+          className="mt-4 w-full bg-black hover:bg-gray-800 text-white font-semibold py-2 rounded-lg transition"
         >
           Transfer
         </button>

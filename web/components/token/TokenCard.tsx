@@ -25,7 +25,7 @@ export function TokenCard({ token, onTransfer }: TokenCardProps) {
       case "inTransfer":
         return "bg-yellow-100 text-yellow-800";
       case "accepted":
-        return "bg-blue-100 text-blue-800";
+        return "bg-gray-200 text-gray-800";
       default:
         return "bg-gray-100 text-gray-800";
     }
@@ -96,7 +96,7 @@ export function TokenCard({ token, onTransfer }: TokenCardProps) {
         <button
           onClick={() => onTransfer(token)}
           disabled={normalizeStatus(token.status) !== "created"}
-          className="mt-4 w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-2 rounded-lg transition"
+          className="mt-4 w-full bg-black hover:bg-gray-800 disabled:bg-gray-400 text-white font-semibold py-2 rounded-lg transition"
         >
           Transfer
         </button>
