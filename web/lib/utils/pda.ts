@@ -39,11 +39,28 @@ export function getTraceTokenPDA(mint: PublicKey): [PublicKey, number] {
 }
 
 /**
- * Get the PendingTransfer PDA for a token mint
+ * Get the PendingTransfer PDA for a token mint, from, and to
  */
-export function getPendingTransferPDA(tokenMint: PublicKey): [PublicKey, number] {
+export function getPendingTransferPDA(tokenMint: PublicKey, from?: PublicKey, to?: PublicKey): [PublicKey, number] {
+  if (from && to) {
+    return PublicKey.findProgramAddressSync(
+      [Buffer.from("pending_transfer"), tokenMint.toBuffer(), from.toBuffer(), to.toBuffer()],
+      PROGRAM_ID
+    );
+  }
+  // Fallback for backwards compatibility (shouldn't be used)
   return PublicKey.findProgramAddressSync(
     [Buffer.from("pending_transfer"), tokenMint.toBuffer()],
+    PROGRAM_ID
+  );
+}
+
+/**
+ * Get the TokenBalance PDA for a token and owner
+ */
+export function getTokenBalancePDA(tokenMint: PublicKey, owner: PublicKey): [PublicKey, number] {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("token_balance"), tokenMint.toBuffer(), owner.toBuffer()],
     PROGRAM_ID
   );
 }

@@ -16,7 +16,7 @@ export default function ConsumerTransfersPage() {
   const [acceptingTransfer, setAcceptingTransfer] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const handleAcceptTransfer = async (tokenMint: string) => {
+  const handleAcceptTransfer = async (tokenMint: string, sender: string) => {
     if (!program || !publicKey) return;
 
     setAcceptingTransfer(tokenMint);
@@ -25,7 +25,8 @@ export default function ConsumerTransfersPage() {
     try {
       const { PublicKey } = require("@solana/web3.js");
       const mint = new PublicKey(tokenMint);
-      await acceptTransfer(program, publicKey, mint);
+      const senderPK = new PublicKey(sender);
+      await acceptTransfer(program, publicKey, mint, senderPK);
       await refetch();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to accept transfer");
@@ -79,7 +80,7 @@ export default function ConsumerTransfersPage() {
               </div>
 
               <button
-                onClick={() => handleAcceptTransfer(transfer.tokenMint.toString())}
+                onClick={() => handleAcceptTransfer(transfer.tokenMint.toString(), transfer.from.toString())}
                 disabled={acceptingTransfer !== null}
                 className="mt-3 w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-semibold py-2 rounded-lg transition text-sm"
               >
