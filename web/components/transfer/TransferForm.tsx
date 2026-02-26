@@ -91,7 +91,7 @@ export function TransferForm({ program, from, tokens, onSuccess }: TransferFormP
             setSelectedToken(token || null);
             setTransferAmount("");
           }}
-          className="w-full px-4 py-2 border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white"
+          className="w-full px-4 py-2 border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black text-white placeholder-white"
           required
         >
           <option value="">Select a token...</option>
@@ -116,7 +116,7 @@ export function TransferForm({ program, from, tokens, onSuccess }: TransferFormP
             placeholder="e.g., 100"
             min="1"
             max={selectedToken.amount.toString()}
-            className="w-full px-4 py-2 border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white"
+            className="w-full px-4 py-2 border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black text-white placeholder-white"
             required
           />
           <p className="text-xs text-gray-600 mt-1">
@@ -135,7 +135,7 @@ export function TransferForm({ program, from, tokens, onSuccess }: TransferFormP
           value={recipientAddress}
           onChange={(e) => setRecipientAddress(e.target.value)}
           placeholder="e.g., 9B5X..."
-          className="w-full px-4 py-2 border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white"
+          className="w-full px-4 py-2 border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black text-white placeholder-white"
           required
         />
         {recipientAddress && (
