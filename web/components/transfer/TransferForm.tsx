@@ -76,7 +76,7 @@ export function TransferForm({ program, from, tokens, onSuccess }: TransferFormP
   const availableTokens = tokens;
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white border-2 border-black rounded-lg p-6 space-y-6">
+    <form onSubmit={handleSubmit} className="bg-white border-4 border-black rounded-lg p-6 space-y-6">
       <div>
         <label htmlFor="token" className="block text-sm font-medium text-black mb-2">
           Select Token
@@ -91,7 +91,7 @@ export function TransferForm({ program, from, tokens, onSuccess }: TransferFormP
             setSelectedToken(token || null);
             setTransferAmount("");
           }}
-          className="w-full px-4 py-2 border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-white text-black placeholder-gray-500"
+          className="w-full px-4 py-3 text-base border-4 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-2 focus:ring-black bg-white text-black placeholder-gray-700"
           required
         >
           <option value="">Select a token...</option>
@@ -116,7 +116,7 @@ export function TransferForm({ program, from, tokens, onSuccess }: TransferFormP
             placeholder="e.g., 100"
             min="1"
             max={selectedToken.amount.toString()}
-            className="w-full px-4 py-2 border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-white text-black placeholder-gray-500"
+            className="w-full px-4 py-3 text-base border-4 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-2 focus:ring-black bg-white text-black placeholder-gray-700"
             required
           />
           <p className="text-xs text-gray-600 mt-1">
@@ -135,7 +135,7 @@ export function TransferForm({ program, from, tokens, onSuccess }: TransferFormP
           value={recipientAddress}
           onChange={(e) => setRecipientAddress(e.target.value)}
           placeholder="e.g., 9B5X..."
-          className="w-full px-4 py-2 border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-white text-black placeholder-gray-500"
+          className="w-full px-4 py-3 text-base border-4 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-2 focus:ring-black bg-white text-black placeholder-gray-700"
           required
         />
         {recipientAddress && (
@@ -146,7 +146,7 @@ export function TransferForm({ program, from, tokens, onSuccess }: TransferFormP
       </div>
 
       {selectedToken && transferAmount && (
-        <div className="p-3 bg-gray-100 border-2 border-black rounded">
+        <div className="p-3 bg-gray-100 border-4 border-black rounded">
           <p className="text-sm text-gray-900">
             <strong>Transfer Details:</strong>
           </p>

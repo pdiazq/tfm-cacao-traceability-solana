@@ -46,7 +46,7 @@ export default function ConsumerTransfersPage() {
       )}
 
       {receivedTransfers.length === 0 ? (
-        <div className="bg-gray-50 border-2 border-black rounded-lg p-8 text-center">
+        <div className="bg-gray-50 border-4 border-black rounded-lg p-8 text-center">
           <p className="text-gray-600">No incoming transfers</p>
         </div>
       ) : (
@@ -54,7 +54,7 @@ export default function ConsumerTransfersPage() {
           {receivedTransfers.map((transfer) => (
             <div
               key={transfer.pda.toString()}
-              className="bg-white border-2 border-black rounded-lg p-4"
+              className="bg-white border-4 border-black rounded-lg p-4"
             >
               <div className="flex justify-between items-start mb-2">
                 <div>

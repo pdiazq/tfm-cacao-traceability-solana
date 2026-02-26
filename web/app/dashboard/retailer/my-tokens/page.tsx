@@ -97,7 +97,7 @@ export default function RetailerMyTokensPage() {
       {isLoading ? (
         <div className="text-gray-600">Loading tokens...</div>
       ) : tokensInfo.length === 0 ? (
-        <div className="bg-gray-50 border-2 border-black rounded-lg p-8 text-center">
+        <div className="bg-gray-50 border-4 border-black rounded-lg p-8 text-center">
           <p className="text-gray-600">No tokens received yet</p>
         </div>
       ) : (

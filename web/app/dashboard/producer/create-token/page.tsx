@@ -52,7 +52,7 @@ export default function CreateTokenPage() {
         Create a new trace token for your products
       </p>
 
-      <form onSubmit={handleSubmit} className="bg-white border-2 border-black rounded-lg p-6 space-y-6">
+      <form onSubmit={handleSubmit} className="bg-white border-4 border-black rounded-lg p-6 space-y-6">
         <div>
           <label htmlFor="metadata" className="block text-sm font-medium text-black mb-2">
             Token Metadata
@@ -64,7 +64,7 @@ export default function CreateTokenPage() {
             onChange={(e) => setMetadata(e.target.value)}
             placeholder="e.g., Lote 001 - Organic Coffee"
             maxLength={256}
-            className="w-full px-4 py-2 border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+            className="w-full px-4 py-3 text-base border-4 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
             required
           />
           <p className="text-xs text-gray-500 mt-1">
@@ -83,7 +83,7 @@ export default function CreateTokenPage() {
             onChange={(e) => setAmount(e.target.value)}
             placeholder="e.g., 1000"
             min="1"
-            className="w-full px-4 py-2 border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+            className="w-full px-4 py-3 text-base border-4 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
             required
           />
           <p className="text-xs text-gray-500 mt-1">

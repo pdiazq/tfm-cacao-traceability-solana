@@ -93,7 +93,7 @@ export default function RegisterRolePage() {
             <select
               value={selectedRole || ""}
               onChange={(e) => setSelectedRole(e.target.value as Role)}
-              className="w-full px-4 py-2 border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+              className="w-full px-4 py-3 text-base border-4 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
             >
               <option value="">Select a role...</option>
               {ROLES.map((role) => (

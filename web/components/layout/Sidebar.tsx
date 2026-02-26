@@ -19,7 +19,7 @@ export function Sidebar() {
 
   if (loading) {
     return (
-      <aside className="w-64 bg-gray-50 border-r border-2 border-black min-h-screen">
+      <aside className="w-64 bg-gray-50 border-r border-4 border-black min-h-screen">
         <nav className="p-4">
           <div className="text-sm text-gray-500">Loading...</div>
         </nav>
@@ -64,16 +64,16 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="w-64 bg-gray-50 border-r border-2 border-black min-h-screen">
+    <aside className="w-64 bg-gray-50 border-r border-4 border-black min-h-screen">
       <nav className="p-4 space-y-2">
         {navItems.map((item) => (
           <Link
             key={item.href}
             href={item.href}
             className={clsx(
-              "block px-4 py-2 rounded-lg text-sm font-medium transition",
+              "block px-4 py-3 text-base rounded-lg text-sm font-medium transition",
               pathname === item.href
-                ? "bg-white text-black placeholder-gray-500"
+                ? "bg-white text-black placeholder-gray-700"
                 : "text-black hover:bg-gray-200"
             )}
           >

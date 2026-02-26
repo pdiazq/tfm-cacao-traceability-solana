@@ -20,7 +20,7 @@ export function TokenBalanceCard({
     totalSupply > BigInt(0) ? (Number(balance.balance) / Number(totalSupply)) * 100 : 0;
 
   return (
-    <div className="bg-white border-2 border-black rounded-lg p-6">
+    <div className="bg-white border-4 border-black rounded-lg p-6">
       <div className="flex justify-between items-start mb-4">
         <div>
           <h3 className="text-lg font-semibold text-gray-900">

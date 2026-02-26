@@ -91,7 +91,7 @@ export default function CreateTokenFactoryPage() {
         Create a new token by combining producer tokens
       </p>
 
-      <form onSubmit={handleSubmit} className="bg-white border-2 border-black rounded-lg p-6 space-y-6">
+      <form onSubmit={handleSubmit} className="bg-white border-4 border-black rounded-lg p-6 space-y-6">
         <div>
           <label htmlFor="metadata" className="block text-sm font-medium text-black mb-2">
             Token Metadata
@@ -103,7 +103,7 @@ export default function CreateTokenFactoryPage() {
             onChange={(e) => setMetadata(e.target.value)}
             placeholder="e.g., Processed Coffee Beans"
             maxLength={256}
-            className="w-full px-4 py-2 border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+            className="w-full px-4 py-3 text-base border-4 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
             required
           />
           <p className="text-xs text-gray-500 mt-1">
@@ -122,7 +122,7 @@ export default function CreateTokenFactoryPage() {
             onChange={(e) => setAmount(e.target.value)}
             placeholder="e.g., 500"
             min="1"
-            className="w-full px-4 py-2 border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+            className="w-full px-4 py-3 text-base border-4 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
             required
           />
         </div>
@@ -132,7 +132,7 @@ export default function CreateTokenFactoryPage() {
             Source Tokens
             <span className="text-red-600">*</span> (minimum 1, maximum 10)
           </label>
-          <div className="space-y-2 max-h-48 overflow-y-auto border-2 border-black rounded-lg p-3">
+          <div className="space-y-2 max-h-48 overflow-y-auto border-4 border-black rounded-lg p-3">
             {availableSourceTokens.length === 0 ? (
               <p className="text-sm text-gray-500">
                 No available source tokens from producers

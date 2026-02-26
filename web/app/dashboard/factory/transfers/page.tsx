@@ -66,10 +66,10 @@ export default function FactoryTransfersPage() {
 
         {/* Transfers List */}
         <div>
-          <div className="flex gap-2 mb-4 border-b border-2 border-black">
+          <div className="flex gap-2 mb-4 border-b border-4 border-black">
             <button
               onClick={() => setActiveTab("sent")}
-              className={`px-4 py-2 font-medium ${
+              className={`px-4 py-3 text-base font-medium ${
                 activeTab === "sent"
                   ? "border-b-2 border-gray-800 text-gray-800"
                   : "text-gray-600"
@@ -79,7 +79,7 @@ export default function FactoryTransfersPage() {
             </button>
             <button
               onClick={() => setActiveTab("received")}
-              className={`px-4 py-2 font-medium ${
+              className={`px-4 py-3 text-base font-medium ${
                 activeTab === "received"
                   ? "border-b-2 border-gray-800 text-gray-800"
                   : "text-gray-600"
@@ -97,7 +97,7 @@ export default function FactoryTransfersPage() {
 
           <div className="space-y-4">
             {(activeTab === "sent" ? sentTransfers : receivedTransfers).length === 0 ? (
-              <div className="bg-gray-50 border-2 border-black rounded-lg p-8 text-center">
+              <div className="bg-gray-50 border-4 border-black rounded-lg p-8 text-center">
                 <p className="text-gray-600">No {activeTab} transfers</p>
               </div>
             ) : (
@@ -105,7 +105,7 @@ export default function FactoryTransfersPage() {
                 (transfer) => (
                   <div
                     key={transfer.pda.toString()}
-                    className="bg-white border-2 border-black rounded-lg p-4"
+                    className="bg-white border-4 border-black rounded-lg p-4"
                   >
                     <div className="flex justify-between items-start mb-2">
                       <div>

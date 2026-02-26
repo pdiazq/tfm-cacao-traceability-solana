@@ -39,7 +39,7 @@ export default function InitializeAuthorityPage() {
         Initialize the Solana Trazabilidad program. This can only be done once.
       </p>
 
-      <div className="bg-gray-100 border-2 border-black rounded-lg p-6 mb-6">
+      <div className="bg-gray-100 border-4 border-black rounded-lg p-6 mb-6">
         <h2 className="text-lg font-semibold text-gray-900 mb-2">Authority Only</h2>
         <p className="text-black">
           Only the program authority can initialize the program. Your wallet will be
