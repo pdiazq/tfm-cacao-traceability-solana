@@ -56,7 +56,7 @@ export function useTokensByRole(role: Role): UseTokensByRoleReturn {
       setError(null);
 
       // Fetch all tokens from the program
-      const allTokenAccounts = await program.account.traceToken.all();
+      const allTokenAccounts = await (program.account as any).traceToken.all();
 
       // Filter tokens by creator role
       const filteredTokens = allTokenAccounts
@@ -64,8 +64,8 @@ export function useTokensByRole(role: Role): UseTokensByRoleReturn {
           mint: account.account.mint,
           creator: account.account.creator,
           creatorRole: normalizeEnumValue(account.account.creatorRole),
-          currentOwner: account.account.currentOwner,
-          amount: BigInt(account.account.amount.toString()),
+          currentOwner: account.account.creator, // Use creator as currentOwner since it's not stored separately
+          amount: BigInt(account.account.totalSupply.toString()),
           status: normalizeEnumValue(account.account.status),
           sourceTokens: account.account.sourceTokens,
           metadata: account.account.metadata,
