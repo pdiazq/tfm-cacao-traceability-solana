@@ -22,7 +22,7 @@ export default function ConsumerMyTokensPage() {
   // Enrich balances with TraceToken metadata and total_supply
   useEffect(() => {
     const enrichBalances = async () => {
-      if (!program || balances.length === 0) {
+      if (!program || !program.account || balances.length === 0) {
         setTokensInfo([]);
         return;
       }
