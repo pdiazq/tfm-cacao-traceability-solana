@@ -79,6 +79,86 @@
                 "kind": "account",
                 "path": "trace_token.mint",
                 "account": "TraceToken"
+              },
+              {
+                "kind": "account",
+                "path": "pending_transfer.from",
+                "account": "PendingTransfer"
+              },
+              {
+                "kind": "account",
+                "path": "to"
+              }
+            ]
+          }
+        },
+        {
+          "name": "from_balance",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  98,
+                  97,
+                  108,
+                  97,
+                  110,
+                  99,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "trace_token.mint",
+                "account": "TraceToken"
+              },
+              {
+                "kind": "account",
+                "path": "pending_transfer.from",
+                "account": "PendingTransfer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "to_balance",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  98,
+                  97,
+                  108,
+                  97,
+                  110,
+                  99,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "trace_token.mint",
+                "account": "TraceToken"
+              },
+              {
+                "kind": "account",
+                "path": "to"
               }
             ]
           }
@@ -116,6 +196,10 @@
           "name": "to",
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": []
@@ -157,6 +241,40 @@
               {
                 "kind": "account",
                 "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "creator_balance",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  98,
+                  97,
+                  108,
+                  97,
+                  110,
+                  99,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              },
+              {
+                "kind": "account",
+                "path": "creator"
               }
             ]
           }
@@ -302,6 +420,41 @@
           }
         },
         {
+          "name": "from_balance",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  98,
+                  97,
+                  108,
+                  97,
+                  110,
+                  99,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "trace_token.mint",
+                "account": "TraceToken"
+              },
+              {
+                "kind": "account",
+                "path": "from"
+              }
+            ]
+          }
+        },
+        {
           "name": "pending_transfer",
           "writable": true,
           "pda": {
@@ -331,6 +484,14 @@
                 "kind": "account",
                 "path": "trace_token.mint",
                 "account": "TraceToken"
+              },
+              {
+                "kind": "account",
+                "path": "from"
+              },
+              {
+                "kind": "account",
+                "path": "to"
               }
             ]
           }
@@ -638,6 +799,19 @@
       ]
     },
     {
+      "name": "TokenBalance",
+      "discriminator": [
+        93,
+        240,
+        34,
+        89,
+        188,
+        248,
+        120,
+        201
+      ]
+    },
+    {
       "name": "TraceToken",
       "discriminator": [
         251,
@@ -714,11 +888,16 @@
     },
     {
       "code": 6012,
-      "name": "PartialTransferNotSupported",
-      "msg": "Only full amount transfer supported in v1"
+      "name": "InsufficientBalance",
+      "msg": "Insufficient balance for transfer"
     },
     {
       "code": 6013,
+      "name": "TransferToSelf",
+      "msg": "Cannot transfer to the same account"
+    },
+    {
+      "code": 6014,
       "name": "MetadataTooLong",
       "msg": "Metadata exceeds maximum length"
     }
@@ -853,6 +1032,34 @@
       }
     },
     {
+      "name": "TokenBalance",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "balance",
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "last_updated",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
       "name": "TokenStatus",
       "type": {
         "kind": "enum",
@@ -891,11 +1098,7 @@
             }
           },
           {
-            "name": "current_owner",
-            "type": "pubkey"
-          },
-          {
-            "name": "amount",
+            "name": "total_supply",
             "type": "u64"
           },
           {
