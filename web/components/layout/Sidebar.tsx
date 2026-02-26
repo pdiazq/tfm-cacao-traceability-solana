@@ -59,7 +59,7 @@ export function Sidebar() {
       { label: "Solicitud Pendiente", href: "/register-role", badge: "pending", emoji: "⏱️" },
     ];
   } else if (!role) {
-    navItems = [{ label: "Solicitar Rol", href: "/register-role", emoji: "📝" }];
+    navItems = [];
   } else if (isAuthority) {
     navItems = [
       { label: "Inicializar", href: "/dashboard/authority/initialize", emoji: "🚀" },
