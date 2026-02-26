@@ -76,9 +76,9 @@ export function TransferForm({ program, from, tokens, onSuccess }: TransferFormP
   const availableTokens = tokens;
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white border border-gray-200 rounded-lg p-6 space-y-6">
+    <form onSubmit={handleSubmit} className="bg-white border-2 border-black rounded-lg p-6 space-y-6">
       <div>
-        <label htmlFor="token" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="token" className="block text-sm font-medium text-black mb-2">
           Select Token
         </label>
         <select
@@ -91,7 +91,7 @@ export function TransferForm({ program, from, tokens, onSuccess }: TransferFormP
             setSelectedToken(token || null);
             setTransferAmount("");
           }}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+          className="w-full px-4 py-2 border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white"
           required
         >
           <option value="">Select a token...</option>
@@ -105,7 +105,7 @@ export function TransferForm({ program, from, tokens, onSuccess }: TransferFormP
 
       {selectedToken && (
         <div>
-          <label htmlFor="amount" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="amount" className="block text-sm font-medium text-black mb-2">
             Amount to Transfer
           </label>
           <input
@@ -116,17 +116,17 @@ export function TransferForm({ program, from, tokens, onSuccess }: TransferFormP
             placeholder="e.g., 100"
             min="1"
             max={selectedToken.amount.toString()}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+            className="w-full px-4 py-2 border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white"
             required
           />
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-gray-600 mt-1">
             Available: {selectedToken.amount.toString()} units
           </p>
         </div>
       )}
 
       <div>
-        <label htmlFor="recipient" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="recipient" className="block text-sm font-medium text-black mb-2">
           Recipient Address
         </label>
         <input
@@ -135,28 +135,28 @@ export function TransferForm({ program, from, tokens, onSuccess }: TransferFormP
           value={recipientAddress}
           onChange={(e) => setRecipientAddress(e.target.value)}
           placeholder="e.g., 9B5X..."
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+          className="w-full px-4 py-2 border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white"
           required
         />
         {recipientAddress && (
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-gray-600 mt-1">
             Full: {recipientAddress}
           </p>
         )}
       </div>
 
       {selectedToken && transferAmount && (
-        <div className="p-3 bg-gray-100 border border-gray-300 rounded">
+        <div className="p-3 bg-gray-100 border-2 border-black rounded">
           <p className="text-sm text-gray-900">
             <strong>Transfer Details:</strong>
           </p>
-          <p className="text-sm text-gray-700 mt-1">
+          <p className="text-sm text-black mt-1">
             Token: {selectedToken.metadata}
           </p>
-          <p className="text-sm text-gray-700">
+          <p className="text-sm text-black">
             Amount to Transfer: {transferAmount} units (of {selectedToken.amount.toString()} available)
           </p>
-          <p className="text-sm text-gray-700">
+          <p className="text-sm text-black">
             To: {formatAddress(recipientAddress)}
           </p>
         </div>

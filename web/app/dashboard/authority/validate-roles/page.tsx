@@ -77,7 +77,7 @@ export default function ValidateRolesPage() {
       )}
 
       {/* Tab Navigation */}
-      <div className="flex gap-2 mb-6 border-b border-gray-200">
+      <div className="flex gap-2 mb-6 border-b border-2 border-black">
         <button
           onClick={() => setTab("pending")}
           className={`px-4 py-3 font-semibold transition ${
@@ -104,7 +104,7 @@ export default function ValidateRolesPage() {
       {tab === "pending" && (
         <div>
           {pendingRoles.length === 0 ? (
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-8 text-center">
+            <div className="bg-gray-50 border-2 border-black rounded-lg p-8 text-center">
               <p className="text-gray-600">No pending role requests</p>
             </div>
           ) : (
@@ -112,7 +112,7 @@ export default function ValidateRolesPage() {
               {pendingRoles.map((request) => (
                 <div
                   key={request.pda}
-                  className="bg-white border border-gray-200 rounded-lg p-6 flex justify-between items-center"
+                  className="bg-white border-2 border-black rounded-lg p-6 flex justify-between items-center"
                 >
                   <div>
                     <div className="font-semibold text-gray-900">
@@ -146,7 +146,7 @@ export default function ValidateRolesPage() {
       {tab === "validated" && (
         <div>
           {validatedRoles.length === 0 ? (
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-8 text-center">
+            <div className="bg-gray-50 border-2 border-black rounded-lg p-8 text-center">
               <p className="text-gray-600">No validated roles yet</p>
             </div>
           ) : (
@@ -154,7 +154,7 @@ export default function ValidateRolesPage() {
               {validatedRoles.map((role) => (
                 <div
                   key={role.pda}
-                  className="bg-white border border-gray-200 rounded-lg p-6"
+                  className="bg-white border-2 border-black rounded-lg p-6"
                 >
                   <div className="flex justify-between items-start">
                     <div>

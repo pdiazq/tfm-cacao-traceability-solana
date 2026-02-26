@@ -65,7 +65,7 @@ export default function TransfersPage() {
 
         {/* Transfers List */}
         <div>
-          <div className="flex gap-2 mb-4 border-b border-gray-200">
+          <div className="flex gap-2 mb-4 border-b border-2 border-black">
             <button
               onClick={() => setActiveTab("sent")}
               className={`px-4 py-2 font-medium ${
@@ -96,7 +96,7 @@ export default function TransfersPage() {
 
           <div className="space-y-4">
             {(activeTab === "sent" ? sentTransfers : receivedTransfers).length === 0 ? (
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-8 text-center">
+              <div className="bg-gray-50 border-2 border-black rounded-lg p-8 text-center">
                 <p className="text-gray-600">No {activeTab} transfers</p>
               </div>
             ) : (
@@ -104,7 +104,7 @@ export default function TransfersPage() {
                 (transfer) => (
                   <div
                     key={transfer.pda.toString()}
-                    className="bg-white border border-gray-200 rounded-lg p-4"
+                    className="bg-white border-2 border-black rounded-lg p-4"
                   >
                     <div className="flex justify-between items-start mb-2">
                       <div>

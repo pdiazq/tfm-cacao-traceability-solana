@@ -95,7 +95,7 @@ export default function Home() {
               <span className="flex items-center justify-center h-8 w-8 rounded-full bg-black text-white font-semibold mr-4 flex-shrink-0">
                 1
               </span>
-              <span className="text-gray-700">
+              <span className="text-black">
                 <strong>Connect Wallet:</strong> Connect your Solana wallet to register
               </span>
             </li>
@@ -103,7 +103,7 @@ export default function Home() {
               <span className="flex items-center justify-center h-8 w-8 rounded-full bg-black text-white font-semibold mr-4 flex-shrink-0">
                 2
               </span>
-              <span className="text-gray-700">
+              <span className="text-black">
                 <strong>Request Role:</strong> Select your role in the supply chain
               </span>
             </li>
@@ -111,7 +111,7 @@ export default function Home() {
               <span className="flex items-center justify-center h-8 w-8 rounded-full bg-black text-white font-semibold mr-4 flex-shrink-0">
                 3
               </span>
-              <span className="text-gray-700">
+              <span className="text-black">
                 <strong>Get Validated:</strong> Wait for authority approval of your role
               </span>
             </li>
@@ -119,7 +119,7 @@ export default function Home() {
               <span className="flex items-center justify-center h-8 w-8 rounded-full bg-black text-white font-semibold mr-4 flex-shrink-0">
                 4
               </span>
-              <span className="text-gray-700">
+              <span className="text-black">
                 <strong>Start Trading:</strong> Create tokens or receive them from others
               </span>
             </li>

@@ -87,13 +87,13 @@ export default function RegisterRolePage() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">
+            <label className="block text-sm font-medium text-black mb-3">
               Role
             </label>
             <select
               value={selectedRole || ""}
               onChange={(e) => setSelectedRole(e.target.value as Role)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+              className="w-full px-4 py-2 border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
             >
               <option value="">Select a role...</option>
               {ROLES.map((role) => (

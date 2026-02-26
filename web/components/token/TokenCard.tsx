@@ -37,7 +37,7 @@ export function TokenCard({ token, onTransfer }: TokenCardProps) {
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-6">
+    <div className="bg-white border-2 border-black rounded-lg p-6">
       <div className="flex justify-between items-start mb-4">
         <div>
           <h3 className="text-lg font-semibold text-gray-900">{token.metadata}</h3>
@@ -80,7 +80,7 @@ export function TokenCard({ token, onTransfer }: TokenCardProps) {
       {token.sourceTokens.length > 0 && (
         <div className="mb-4 p-3 bg-gray-50 rounded">
           <p className="text-xs text-gray-500 mb-1">Source Tokens ({token.sourceTokens.length})</p>
-          <div className="text-xs text-gray-700">
+          <div className="text-xs text-black">
             {token.sourceTokens.map((src) => (
               <div key={src.toString()}>{formatAddress(src.toString())}</div>
             ))}
