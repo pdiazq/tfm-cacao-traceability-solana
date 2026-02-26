@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useProgram } from "@/lib/context/ProgramProvider";
 import { useTokenBalances } from "@/lib/hooks/useTokenBalances";
@@ -19,6 +19,8 @@ export default function TransfersPage() {
   const [activeTab, setActiveTab] = useState<"sent" | "received">("sent");
   const [acceptingTransfer, setAcceptingTransfer] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [tokens, setTokens] = useState<any[]>([]);
+  const [enriching, setEnriching] = useState(false);
 
   const handleAcceptTransfer = async (tokenMint: string, sender: string) => {
     if (!program || !publicKey) return;
@@ -39,19 +41,82 @@ export default function TransfersPage() {
     }
   };
 
-  // Convert balances to tokens format for TransferForm
-  const tokens = balances.map((balance) => ({
-    mint: balance.tokenMint,
-    amount: balance.balance,
-    metadata: balance.tokenMint.toString(),
-    creator: publicKey!,
-    creatorRole: "producer",
-    currentOwner: publicKey!,
-    status: "created",
-    sourceTokens: [],
-    createdAt: balance.lastUpdated,
-    pda: balance.pda,
-  }));
+  // Enrich balances with metadata from TraceToken
+  useEffect(() => {
+    const enrichTokens = async () => {
+      if (!program || !program.account || balances.length === 0) {
+        setTokens([]);
+        return;
+      }
+
+      setEnriching(true);
+      try {
+        const enriched = await Promise.all(
+          balances.map(async (balance) => {
+            try {
+              const tokenAccounts = await (program.account as any).traceToken.all([
+                {
+                  memcmp: {
+                    offset: 8,
+                    bytes: balance.tokenMint.toBase58(),
+                  },
+                },
+              ]);
+
+              if (tokenAccounts.length === 0) {
+                return {
+                  mint: balance.tokenMint,
+                  amount: balance.balance,
+                  metadata: balance.tokenMint.toString(),
+                  creator: publicKey!,
+                  creatorRole: "producer",
+                  currentOwner: publicKey!,
+                  status: "created",
+                  sourceTokens: [],
+                  createdAt: balance.lastUpdated,
+                  pda: balance.pda,
+                };
+              }
+
+              const traceToken = await (program.account as any).traceToken.fetch(
+                tokenAccounts[0].publicKey
+              );
+              return {
+                mint: balance.tokenMint,
+                amount: balance.balance,
+                metadata: traceToken.metadata || balance.tokenMint.toString(),
+                creator: publicKey!,
+                creatorRole: "producer",
+                currentOwner: publicKey!,
+                status: "created",
+                sourceTokens: [],
+                createdAt: balance.lastUpdated,
+                pda: balance.pda,
+              };
+            } catch {
+              return {
+                mint: balance.tokenMint,
+                amount: balance.balance,
+                metadata: balance.tokenMint.toString(),
+                creator: publicKey!,
+                creatorRole: "producer",
+                currentOwner: publicKey!,
+                status: "created",
+                sourceTokens: [],
+                createdAt: balance.lastUpdated,
+                pda: balance.pda,
+              };
+            }
+          })
+        );
+        setTokens(enriched);
+      } finally {
+        setEnriching(false);
+      }
+    };
+
+    enrichTokens();
+  }, [program, balances, publicKey]);
 
   return (
     <div>
