@@ -2,9 +2,6 @@ import { useEffect, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useProgram } from "@/lib/context/ProgramProvider";
 import { getRoleRegistryPDA, getPendingRolePDA, getConfigPDA } from "@/lib/utils/pda";
-import { Traza } from "@/types/traza";
-
-type Role = Traza["types"][3]["type"]["variants"][number]["name"];
 
 /**
  * Normalize role enum object to string
@@ -51,6 +48,9 @@ export function useRole(): UseRoleReturn {
 
     try {
       setError(null);
+      let roleValue: string | null = null;
+      let hasPendingRequestValue = false;
+      let pendingRoleValue: string | null = null;
 
       // Fetch RoleRegistry to check if user has an approved role
       const [roleRegistryPDA] = getRoleRegistryPDA(publicKey);
@@ -58,10 +58,11 @@ export function useRole(): UseRoleReturn {
         const roleRegistry = await program.account.roleRegistry.fetch(
           roleRegistryPDA
         );
-        setRole(normalizeRole(roleRegistry.role));
+        roleValue = normalizeRole(roleRegistry.role);
       } catch {
-        setRole(null);
+        roleValue = null;
       }
+      setRole(roleValue);
 
       // Fetch PendingRoleRegistration to check if user has a pending request
       const [pendingRolePDA] = getPendingRolePDA(publicKey);
@@ -69,12 +70,14 @@ export function useRole(): UseRoleReturn {
         const pendingRoleReg = await program.account.pendingRoleRegistration.fetch(
           pendingRolePDA
         );
-        setHasPendingRequest(true);
-        setPendingRole(normalizeRole(pendingRoleReg.requestedRole));
+        hasPendingRequestValue = true;
+        pendingRoleValue = normalizeRole(pendingRoleReg.requestedRole);
       } catch {
-        setHasPendingRequest(false);
-        setPendingRole(null);
+        hasPendingRequestValue = false;
+        pendingRoleValue = null;
       }
+      setHasPendingRequest(hasPendingRequestValue);
+      setPendingRole(pendingRoleValue);
 
       // Check if user is authority
       const [configPDA] = getConfigPDA();
@@ -84,7 +87,7 @@ export function useRole(): UseRoleReturn {
       } catch {
         // If config doesn't exist, check if user has a validated role
         // If user has NO validated role and NO pending request, they could be the authority
-        if (!role && !hasPendingRequest) {
+        if (!roleValue && !hasPendingRequestValue) {
           setIsAuthority(true); // Allow user to initialize program
         } else {
           setIsAuthority(false);
