@@ -73,7 +73,7 @@ export function Sidebar() {
             className={clsx(
               "block px-4 py-2 rounded-lg text-sm font-medium transition",
               pathname === item.href
-                ? "bg-black text-white placeholder-white"
+                ? "bg-white text-black placeholder-gray-500"
                 : "text-black hover:bg-gray-200"
             )}
           >
