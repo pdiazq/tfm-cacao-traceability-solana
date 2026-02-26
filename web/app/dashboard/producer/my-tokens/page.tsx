@@ -14,7 +14,11 @@ export default function MyTokensPage() {
     router.push(`/dashboard/producer/transfers?tokenMint=${token.mint.toString()}`);
   };
 
-  const allTokens = [...tokens, ...ownedTokens];
+  // Deduplicate tokens by mint (avoid showing same token twice)
+  const tokenMap = new Map<string, Token>();
+  tokens.forEach((token) => tokenMap.set(token.mint.toString(), token));
+  ownedTokens.forEach((token) => tokenMap.set(token.mint.toString(), token));
+  const allTokens = Array.from(tokenMap.values());
 
   return (
     <div>

@@ -171,18 +171,14 @@ pub mod traza {
             error::TrazaError::TransferAmountExceedsTokenAmount
         );
 
-        // If partial transfer, update the owner to the new recipient
-        // If full transfer, also update the owner
+        // Update the owner to the new recipient
         token.current_owner = ctx.accounts.to.key();
 
         // Subtract the transferred amount from the original token
         token.amount -= pending.amount;
 
-        // If all tokens were transferred, mark as accepted
-        // Otherwise keep the status as is for the remaining amount
-        if token.amount == 0 {
-            token.status = TokenStatus::Accepted;
-        }
+        // Mark as accepted after transfer is completed
+        token.status = TokenStatus::Accepted;
 
         msg!("Transfer accepted: token={:?} new_owner={:?} amount={} remaining={}", token.mint, token.current_owner, pending.amount, token.amount);
         Ok(())

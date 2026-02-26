@@ -429,7 +429,9 @@ Día 5: Proyecto
 - **PDAs:** traza/README.md - Sección "PDAs"
 - **Instrucciones:** traza/README.md - Sección "Instrucciones"
 - **Consultas:** traza/README.md - Sección "Consultas"
-- **Código Anchor detallado:** FOOD_TRACEABILITY_ANCHOR_GUIDE.md
+- **Validación de Autoridad y Roles:** [VALIDACION_AUTORIDAD_Y_ROLES.md](./VALIDACION_AUTORIDAD_Y_ROLES.md)
+- **Matriz de Permisos:** VALIDACION_AUTORIDAD_Y_ROLES.md - Sección "Matriz de Permisos"
+- **Mejoras de Seguridad:** VALIDACION_AUTORIDAD_Y_ROLES.md - Sección "Mejoras Recomendadas"
 
 ### Comparativas y Análisis
 - **Solana vs EVM:** TFM_SOLANA_FOOD_TRACEABILITY.md - Sección 8
@@ -446,6 +448,7 @@ Día 5: Proyecto
 | QUICK_START.md | 5 KB | Getting started | Setup en 15 minutos |
 | NGROK_SETUP.md | 7.2 KB | Técnico (networking) | Túneles remotos para Solana |
 | INSTRUCCIONES DE ENTREGA.md | 8.1 KB | Educacional | Guía de entrega de proyectos |
+| VALIDACION_AUTORIDAD_Y_ROLES.md | 16 KB | Técnico (seguridad) | Validación de propietario y roles |
 | DOCUMENTATION_INDEX.md | Este archivo | Índice | Navegación de toda la documentación |
 | **TFM 1: TRAZABILIDAD ALIMENTARIA** | | | |
 | TFM_SOLANA_FOOD_TRACEABILITY.md | 28 KB | Educacional (TFM) | Teoría y análisis |
@@ -460,7 +463,7 @@ Día 5: Proyecto
 | **EJEMPLO DE IMPLEMENTACIÓN** | | | |
 | traza/README.md | 11.8 KB | Técnico (smart contract) | Referencia para implementar TFMs 1 y 2 |
 
-**Total: ~188 KB de documentación educativa y técnica + ejemplos de código en traza/**
+**Total: ~204 KB de documentación educativa y técnica + ejemplos de código en traza/**
 
 ---
 

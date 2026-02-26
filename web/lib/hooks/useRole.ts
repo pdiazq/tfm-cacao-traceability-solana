@@ -82,7 +82,13 @@ export function useRole(): UseRoleReturn {
         const config = await program.account.programConfig.fetch(configPDA);
         setIsAuthority(config.authority.equals(publicKey));
       } catch {
-        setIsAuthority(false);
+        // If config doesn't exist, check if user has a validated role
+        // If user has NO validated role and NO pending request, they could be the authority
+        if (!role && !hasPendingRequest) {
+          setIsAuthority(true); // Allow user to initialize program
+        } else {
+          setIsAuthority(false);
+        }
       }
 
       setLoading(false);

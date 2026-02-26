@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useProgram } from "@/lib/context/ProgramProvider";
 import { initializeProgram } from "@/lib/solana/instructions";
@@ -52,19 +53,30 @@ export default function InitializeAuthorityPage() {
         </div>
       )}
 
+      <div className="flex gap-4">
+        <button
+          onClick={handleInitialize}
+          disabled={isInitializing || success}
+          className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 px-6 rounded-lg transition"
+        >
+          {isInitializing ? "Initializing..." : "Initialize Program"}
+        </button>
+
+        <Link
+          href="/dashboard/authority/validate-roles"
+          className="inline-flex items-center bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition"
+        >
+          Go to Validate Roles →
+        </Link>
+      </div>
+
       {success && (
-        <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded mb-6">
-          Program initialized successfully!
+        <div className="bg-green-50 border border-green-200 rounded-lg p-6 mt-6">
+          <div className="text-green-800 font-semibold">
+            ✅ Program initialized successfully!
+          </div>
         </div>
       )}
-
-      <button
-        onClick={handleInitialize}
-        disabled={isInitializing || success}
-        className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 px-6 rounded-lg transition"
-      >
-        {isInitializing ? "Initializing..." : "Initialize Program"}
-      </button>
     </div>
   );
 }

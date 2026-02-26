@@ -24,7 +24,7 @@ export default function CreateTokenFactoryPage() {
   const availableSourceTokens = useMemo(
     () =>
       producerTokens.filter(
-        (t) => t.creatorRole === "producer" && t.status === "accepted"
+        (t) => t.creatorRole === "producer" && t.status !== "inTransfer"
       ),
     [producerTokens]
   );
