@@ -19,113 +19,254 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">Solana Trazabilidad</h1>
+      <header className="bg-white border-b-4 border-black">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex justify-between items-center">
+          <div>
+            <h1 className="text-4xl font-black text-black">◆ Solana Trazabilidad</h1>
+            <p className="text-sm text-gray-600 mt-1">Decentralized Supply Chain Traceability</p>
+          </div>
           <WalletMultiButton />
         </div>
       </header>
 
       {/* Hero Section */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center mb-20">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Track Products Through the Supply Chain
-          </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-            Solana Trazabilidad is a decentralized supply chain traceability system
-            built on Solana blockchain. Track products from producer to consumer with
-            complete transparency.
-          </p>
+      <main>
+        {/* Hero */}
+        <section className="bg-black text-white py-24">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div className="mb-8 text-6xl">⛓️</div>
+            <h2 className="text-5xl md:text-6xl font-black mb-6 leading-tight">
+              Track Products<br />Through the Supply Chain
+            </h2>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-12 leading-relaxed">
+              Solana Trazabilidad is a decentralized supply chain traceability system built on Solana blockchain. Track products from producer to consumer with complete transparency and blockchain security.
+            </p>
 
-          {publicKey ? (
-            <Link
-              href="/dashboard"
-              className="inline-block bg-black hover:bg-gray-800 text-white font-semibold py-3 px-8 rounded-lg transition"
-            >
-              Go to Dashboard {role && `(${formatRole(role)})`}
-            </Link>
-          ) : (
-            <div className="text-gray-600">
-              <p className="mb-4">Connect your wallet to get started</p>
+            {publicKey ? (
+              <Link
+                href="/dashboard"
+                className="inline-block bg-white text-black font-black py-4 px-12 rounded-lg border-4 border-white hover:bg-gray-100 transition transform hover:scale-105 text-lg"
+              >
+                📊 Go to Dashboard {role && `(${formatRole(role)})`}
+              </Link>
+            ) : (
+              <div className="space-y-4">
+                <p className="text-gray-300 text-lg">🔗 Connect your wallet to get started</p>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Supply Chain Flow */}
+        <section className="bg-white py-20 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <h3 className="text-4xl font-black text-black mb-16 text-center">Supply Chain Journey</h3>
+            <div className="grid md:grid-cols-4 gap-6">
+              {/* Producer */}
+              <div className="bg-white border-4 border-black rounded-lg p-8 hover:shadow-2xl transition transform hover:-translate-y-2">
+                <div className="text-6xl mb-4 text-center">🌱</div>
+                <h4 className="text-2xl font-black text-black mb-3 text-center">Producer</h4>
+                <p className="text-gray-700 text-center font-medium">
+                  Create tokens for your products and transfer them to factories
+                </p>
+                <div className="mt-6 pt-6 border-t-4 border-black">
+                  <p className="text-sm text-gray-600 font-semibold">✓ Create Tokens</p>
+                  <p className="text-sm text-gray-600 font-semibold">✓ Set Metadata</p>
+                  <p className="text-sm text-gray-600 font-semibold">✓ Initiate Transfers</p>
+                </div>
+              </div>
+
+              {/* Arrow */}
+              <div className="flex items-center justify-center">
+                <div className="text-4xl font-black text-black">→</div>
+              </div>
+
+              {/* Factory */}
+              <div className="bg-white border-4 border-black rounded-lg p-8 hover:shadow-2xl transition transform hover:-translate-y-2">
+                <div className="text-6xl mb-4 text-center">🏭</div>
+                <h4 className="text-2xl font-black text-black mb-3 text-center">Factory</h4>
+                <p className="text-gray-700 text-center font-medium">
+                  Process products from producers and create new tokens for retailers
+                </p>
+                <div className="mt-6 pt-6 border-t-4 border-black">
+                  <p className="text-sm text-gray-600 font-semibold">✓ Receive Tokens</p>
+                  <p className="text-sm text-gray-600 font-semibold">✓ Combine Inputs</p>
+                  <p className="text-sm text-gray-600 font-semibold">✓ Create New Tokens</p>
+                </div>
+              </div>
+
+              {/* Arrow */}
+              <div className="flex items-center justify-center">
+                <div className="text-4xl font-black text-black">→</div>
+              </div>
+
+              {/* Retailer & Consumer - in second row on mobile */}
             </div>
-          )}
-        </div>
 
-        {/* Features */}
-        <div className="grid md:grid-cols-4 gap-8 mb-20">
-          <div className="bg-white rounded-lg p-6 shadow">
-            <div className="text-3xl mb-2">🌱</div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Producer</h3>
-            <p className="text-gray-600 text-sm">
-              Create tokens for your products and transfer them to factories
-            </p>
+            <div className="grid md:grid-cols-2 gap-6 mt-6 md:col-start-2 md:max-w-2xl md:mx-auto">
+              {/* Retailer */}
+              <div className="bg-white border-4 border-black rounded-lg p-8 hover:shadow-2xl transition transform hover:-translate-y-2">
+                <div className="text-6xl mb-4 text-center">🏪</div>
+                <h4 className="text-2xl font-black text-black mb-3 text-center">Retailer</h4>
+                <p className="text-gray-700 text-center font-medium">
+                  Receive products and transfer them to consumers
+                </p>
+                <div className="mt-6 pt-6 border-t-4 border-black">
+                  <p className="text-sm text-gray-600 font-semibold">✓ Accept Transfers</p>
+                  <p className="text-sm text-gray-600 font-semibold">✓ View History</p>
+                  <p className="text-sm text-gray-600 font-semibold">✓ Ship to Consumer</p>
+                </div>
+              </div>
+
+              {/* Consumer */}
+              <div className="bg-white border-4 border-black rounded-lg p-8 hover:shadow-2xl transition transform hover:-translate-y-2">
+                <div className="text-6xl mb-4 text-center">👥</div>
+                <h4 className="text-2xl font-black text-black mb-3 text-center">Consumer</h4>
+                <p className="text-gray-700 text-center font-medium">
+                  View the complete history of products you receive
+                </p>
+                <div className="mt-6 pt-6 border-t-4 border-black">
+                  <p className="text-sm text-gray-600 font-semibold">✓ Track Products</p>
+                  <p className="text-sm text-gray-600 font-semibold">✓ View Authenticity</p>
+                  <p className="text-sm text-gray-600 font-semibold">✓ Full Transparency</p>
+                </div>
+              </div>
+            </div>
           </div>
+        </section>
 
-          <div className="bg-white rounded-lg p-6 shadow">
-            <div className="text-3xl mb-2">🏭</div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Factory</h3>
-            <p className="text-gray-600 text-sm">
-              Process products from producers and create new tokens for retailers
-            </p>
+        {/* Key Features */}
+        <section className="bg-black text-white py-20 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <h3 className="text-4xl font-black mb-16 text-center">Why Solana Trazabilidad?</h3>
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="bg-white text-black border-4 border-white rounded-lg p-8">
+                <div className="text-5xl mb-4">🔐</div>
+                <h4 className="text-2xl font-black mb-3">100% Transparent</h4>
+                <p className="text-gray-700 font-medium">
+                  Every product movement is recorded on the blockchain, creating an immutable record of the entire supply chain.
+                </p>
+              </div>
+
+              <div className="bg-white text-black border-4 border-white rounded-lg p-8">
+                <div className="text-5xl mb-4">⚡</div>
+                <h4 className="text-2xl font-black mb-3">Lightning Fast</h4>
+                <p className="text-gray-700 font-medium">
+                  Built on Solana, transactions are processed in milliseconds with minimal fees and maximum efficiency.
+                </p>
+              </div>
+
+              <div className="bg-white text-black border-4 border-white rounded-lg p-8">
+                <div className="text-5xl mb-4">🛡️</div>
+                <h4 className="text-2xl font-black mb-3">Fully Secure</h4>
+                <p className="text-gray-700 font-medium">
+                  Cryptographic security ensures that only authorized participants can create or transfer tokens.
+                </p>
+              </div>
+            </div>
           </div>
+        </section>
 
-          <div className="bg-white rounded-lg p-6 shadow">
-            <div className="text-3xl mb-2">🏪</div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Retailer</h3>
-            <p className="text-gray-600 text-sm">
-              Receive products and transfer them to consumers
-            </p>
+        {/* How it Works - Steps */}
+        <section className="bg-white py-20 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-5xl mx-auto">
+            <h3 className="text-4xl font-black text-black mb-16 text-center">Getting Started in 4 Steps</h3>
+
+            <div className="space-y-8">
+              {/* Step 1 */}
+              <div className="flex gap-6 items-start">
+                <div className="flex-shrink-0">
+                  <div className="flex items-center justify-center h-16 w-16 rounded-full bg-black text-white border-4 border-black text-2xl font-black">
+                    1
+                  </div>
+                </div>
+                <div className="flex-grow bg-white border-4 border-black rounded-lg p-6">
+                  <h4 className="text-2xl font-black text-black mb-2">Connect Your Wallet</h4>
+                  <p className="text-gray-700 font-medium">
+                    Click the wallet button in the top right corner and connect your Solana wallet. This is required to participate in the network.
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 2 */}
+              <div className="flex gap-6 items-start">
+                <div className="flex-shrink-0">
+                  <div className="flex items-center justify-center h-16 w-16 rounded-full bg-black text-white border-4 border-black text-2xl font-black">
+                    2
+                  </div>
+                </div>
+                <div className="flex-grow bg-white border-4 border-black rounded-lg p-6">
+                  <h4 className="text-2xl font-black text-black mb-2">Register Your Role</h4>
+                  <p className="text-gray-700 font-medium">
+                    Go to "Register Role" and select your position in the supply chain: Producer, Factory, Retailer, or Consumer. Each role has different capabilities.
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 3 */}
+              <div className="flex gap-6 items-start">
+                <div className="flex-shrink-0">
+                  <div className="flex items-center justify-center h-16 w-16 rounded-full bg-black text-white border-4 border-black text-2xl font-black">
+                    3
+                  </div>
+                </div>
+                <div className="flex-grow bg-white border-4 border-black rounded-lg p-6">
+                  <h4 className="text-2xl font-black text-black mb-2">Get Authority Approval</h4>
+                  <p className="text-gray-700 font-medium">
+                    Your role request will be reviewed by the system authority. Once approved, you'll have access to all the features for your role.
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 4 */}
+              <div className="flex gap-6 items-start">
+                <div className="flex-shrink-0">
+                  <div className="flex items-center justify-center h-16 w-16 rounded-full bg-black text-white border-4 border-black text-2xl font-black">
+                    4
+                  </div>
+                </div>
+                <div className="flex-grow bg-white border-4 border-black rounded-lg p-6">
+                  <h4 className="text-2xl font-black text-black mb-2">Start the Supply Chain</h4>
+                  <p className="text-gray-700 font-medium">
+                    Create tokens if you're a producer, or accept transfers from suppliers. Your products are now tracked on the blockchain forever.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
+        </section>
 
-          <div className="bg-white rounded-lg p-6 shadow">
-            <div className="text-3xl mb-2">👥</div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Consumer</h3>
-            <p className="text-gray-600 text-sm">
-              View the complete history of products you receive
+        {/* CTA Section */}
+        <section className="bg-black text-white py-20 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center border-4 border-white rounded-lg p-12">
+            <h3 className="text-4xl font-black mb-6">Ready to Transform Your Supply Chain?</h3>
+            <p className="text-xl text-gray-300 mb-8">
+              Join thousands of producers, factories, retailers, and consumers already using Solana Trazabilidad to ensure product authenticity and transparency.
             </p>
+            {!publicKey ? (
+              <div className="flex justify-center">
+                <WalletMultiButton />
+              </div>
+            ) : (
+              <Link
+                href="/dashboard"
+                className="inline-block bg-white text-black font-black py-4 px-12 rounded-lg border-4 border-white hover:bg-gray-100 transition transform hover:scale-105 text-lg"
+              >
+                🚀 Access Dashboard
+              </Link>
+            )}
           </div>
-        </div>
-
-        {/* How it Works */}
-        <div className="bg-white rounded-lg p-8 shadow-lg">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6">How It Works</h3>
-          <ol className="space-y-4">
-            <li className="flex items-start">
-              <span className="flex items-center justify-center h-8 w-8 rounded-full bg-black text-white font-semibold mr-4 flex-shrink-0">
-                1
-              </span>
-              <span className="text-black">
-                <strong>Connect Wallet:</strong> Connect your Solana wallet to register
-              </span>
-            </li>
-            <li className="flex items-start">
-              <span className="flex items-center justify-center h-8 w-8 rounded-full bg-black text-white font-semibold mr-4 flex-shrink-0">
-                2
-              </span>
-              <span className="text-black">
-                <strong>Request Role:</strong> Select your role in the supply chain
-              </span>
-            </li>
-            <li className="flex items-start">
-              <span className="flex items-center justify-center h-8 w-8 rounded-full bg-black text-white font-semibold mr-4 flex-shrink-0">
-                3
-              </span>
-              <span className="text-black">
-                <strong>Get Validated:</strong> Wait for authority approval of your role
-              </span>
-            </li>
-            <li className="flex items-start">
-              <span className="flex items-center justify-center h-8 w-8 rounded-full bg-black text-white font-semibold mr-4 flex-shrink-0">
-                4
-              </span>
-              <span className="text-black">
-                <strong>Start Trading:</strong> Create tokens or receive them from others
-              </span>
-            </li>
-          </ol>
-        </div>
+        </section>
       </main>
+
+      {/* Footer */}
+      <footer className="bg-white border-t-4 border-black py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-gray-600 font-semibold">
+            © 2025 Solana Trazabilidad. Building transparency on the blockchain.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
