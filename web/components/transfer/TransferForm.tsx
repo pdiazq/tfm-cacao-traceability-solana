@@ -23,11 +23,15 @@ const VALID_PATHS: Record<string, string[]> = {
 };
 
 export function TransferForm({ program, from, tokens, onSuccess }: TransferFormProps) {
-  const [selectedToken, setSelectedToken] = useState<Token | null>(null);
+  const [selectedTokenMint, setSelectedTokenMint] = useState<string>("");
   const [transferAmount, setTransferAmount] = useState<string>("");
   const [recipientAddress, setRecipientAddress] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const selectedToken = selectedTokenMint
+    ? tokens.find(t => t.mint.toString() === selectedTokenMint)
+    : null;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -62,7 +66,7 @@ export function TransferForm({ program, from, tokens, onSuccess }: TransferFormP
         amount
       );
 
-      setSelectedToken(null);
+      setSelectedTokenMint("");
       setTransferAmount("");
       setRecipientAddress("");
       onSuccess?.();
@@ -73,40 +77,41 @@ export function TransferForm({ program, from, tokens, onSuccess }: TransferFormP
     }
   };
 
-  const availableTokens = tokens;
-
   return (
-    <form onSubmit={handleSubmit} className="bg-white border-4 border-black rounded-lg p-6 space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <label htmlFor="token" className="block text-sm font-medium text-black mb-2">
-          Select Token
+        <label htmlFor="token" className="block text-sm font-black text-black mb-3">
+          📦 Select Token
         </label>
-        <select
-          id="token"
-          value={selectedToken?.mint.toString() || ""}
-          onChange={(e) => {
-            const token = availableTokens.find(
-              (t) => t.mint.toString() === e.target.value
-            );
-            setSelectedToken(token || null);
-            setTransferAmount("");
-          }}
-          className="w-full px-4 py-3 text-base border-4 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-2 focus:ring-black bg-white text-black placeholder-gray-700"
-          required
-        >
-          <option value="">Select a token...</option>
-          {availableTokens.map((token) => (
-            <option key={token.mint.toString()} value={token.mint.toString()}>
-              {token.metadata} ({token.amount.toString()} units)
-            </option>
-          ))}
-        </select>
+        {tokens.length === 0 ? (
+          <div className="w-full px-4 py-3 text-base text-gray-600 bg-gray-100 border-4 border-gray-300 rounded-lg">
+            No tokens available to transfer
+          </div>
+        ) : (
+          <select
+            id="token"
+            value={selectedTokenMint}
+            onChange={(e) => {
+              setSelectedTokenMint(e.target.value);
+              setTransferAmount("");
+            }}
+            className="w-full px-4 py-3 text-base text-black bg-gray-50 border-4 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400 focus:bg-white cursor-pointer"
+            required
+          >
+            <option value="">Select a token...</option>
+            {tokens.map((token) => (
+              <option key={token.mint.toString()} value={token.mint.toString()}>
+                {token.metadata} ({token.amount.toString()} units)
+              </option>
+            ))}
+          </select>
+        )}
       </div>
 
       {selectedToken && (
         <div>
-          <label htmlFor="amount" className="block text-sm font-medium text-black mb-2">
-            Amount to Transfer
+          <label htmlFor="amount" className="block text-sm font-black text-black mb-3">
+            🔢 Amount to Transfer
           </label>
           <input
             id="amount"
@@ -116,18 +121,18 @@ export function TransferForm({ program, from, tokens, onSuccess }: TransferFormP
             placeholder="e.g., 100"
             min="1"
             max={selectedToken.amount.toString()}
-            className="w-full px-4 py-3 text-base border-4 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-2 focus:ring-black bg-white text-black placeholder-gray-700"
+            className="w-full px-4 py-3 text-base text-black bg-gray-50 border-4 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400 focus:bg-white"
             required
           />
-          <p className="text-xs text-gray-600 mt-1">
+          <p className="text-xs text-gray-600 font-semibold mt-2">
             Available: {selectedToken.amount.toString()} units
           </p>
         </div>
       )}
 
       <div>
-        <label htmlFor="recipient" className="block text-sm font-medium text-black mb-2">
-          Recipient Address
+        <label htmlFor="recipient" className="block text-sm font-black text-black mb-3">
+          👤 Recipient Address
         </label>
         <input
           id="recipient"
@@ -135,45 +140,41 @@ export function TransferForm({ program, from, tokens, onSuccess }: TransferFormP
           value={recipientAddress}
           onChange={(e) => setRecipientAddress(e.target.value)}
           placeholder="e.g., 9B5X..."
-          className="w-full px-4 py-3 text-base border-4 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-2 focus:ring-black bg-white text-black placeholder-gray-700"
+          className="w-full px-4 py-3 text-base text-black bg-gray-50 border-4 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400 focus:bg-white"
           required
         />
         {recipientAddress && (
-          <p className="text-xs text-gray-600 mt-1">
+          <p className="text-xs text-gray-600 font-semibold mt-2">
             Full: {recipientAddress}
           </p>
         )}
       </div>
 
       {selectedToken && transferAmount && (
-        <div className="p-3 bg-gray-100 border-4 border-black rounded">
-          <p className="text-sm text-gray-900">
-            <strong>Transfer Details:</strong>
+        <div className="p-4 bg-gray-50 border-4 border-black rounded-lg">
+          <p className="text-sm font-black text-black mb-3">
+            ✓ Transfer Summary
           </p>
-          <p className="text-sm text-black mt-1">
-            Token: {selectedToken.metadata}
-          </p>
-          <p className="text-sm text-black">
-            Amount to Transfer: {transferAmount} units (of {selectedToken.amount.toString()} available)
-          </p>
-          <p className="text-sm text-black">
-            To: {formatAddress(recipientAddress)}
-          </p>
+          <div className="space-y-2 text-sm text-gray-700 font-semibold">
+            <p>📦 Token: {selectedToken.metadata}</p>
+            <p>🔢 Amount: {transferAmount} units (of {selectedToken.amount.toString()} available)</p>
+            <p>📍 To: {formatAddress(recipientAddress)}</p>
+          </div>
         </div>
       )}
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded">
-          {error}
+        <div className="bg-red-50 border-4 border-red-200 text-red-800 px-6 py-4 rounded-lg font-semibold">
+          ⚠️ {error}
         </div>
       )}
 
       <button
         type="submit"
         disabled={isSubmitting || !selectedToken || !transferAmount || !recipientAddress}
-        className="w-full bg-black hover:bg-gray-800 disabled:bg-gray-400 text-white font-semibold py-2 rounded-lg transition"
+        className="w-full bg-black hover:bg-gray-800 disabled:bg-gray-400 text-white font-black py-3 rounded-lg transition transform hover:-translate-y-2"
       >
-        {isSubmitting ? "Initiating Transfer..." : "Initiate Transfer"}
+        {isSubmitting ? "⏳ Initiating Transfer..." : "✓ Initiate Transfer"}
       </button>
     </form>
   );

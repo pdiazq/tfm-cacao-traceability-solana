@@ -96,47 +96,74 @@ export default function FactoryMyTokensPage() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">My Tokens</h1>
-        <button
-          onClick={() => router.push("/dashboard/factory/create-token")}
-          className="bg-black hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg transition"
-        >
-          + Create Token
-        </button>
+      {/* Hero Section */}
+      <div className="bg-black text-white py-12 px-4 border-b-4 border-black mb-12">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-5xl mb-3">⚙️</div>
+              <h1 className="text-4xl font-black mb-2">Processed Products</h1>
+              <p className="text-gray-300 font-medium">
+                Manage all your created and processed product tokens
+              </p>
+            </div>
+            <button
+              onClick={() => router.push("/dashboard/factory/create-token")}
+              className="bg-white text-black font-black py-3 px-6 rounded-lg hover:shadow-2xl transition transform hover:-translate-y-2 flex items-center gap-2 whitespace-nowrap"
+            >
+              <span className="text-2xl">+</span> Create Product
+            </button>
+          </div>
+        </div>
       </div>
 
-      {error && (
-        <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded mb-6">
-          {error}
-        </div>
-      )}
+      <div className="max-w-7xl mx-auto px-4 pb-12">
+        {error && (
+          <div className="bg-red-50 border-4 border-red-200 text-red-800 px-6 py-4 rounded-lg mb-8 font-semibold">
+            Error: {error}
+          </div>
+        )}
 
-      {isLoading ? (
-        <div className="text-gray-600">Loading tokens...</div>
-      ) : tokensInfo.length === 0 ? (
-        <div className="bg-gray-50 border-4 border-black rounded-lg p-8 text-center">
-          <p className="text-gray-600">No tokens yet</p>
-          <button
-            onClick={() => router.push("/dashboard/factory/create-token")}
-            className="mt-4 bg-black hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg transition"
-          >
-            Create your first token
-          </button>
-        </div>
-      ) : (
-        <div className="grid gap-6 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
-          {tokensInfo.map((info) => (
-            <TokenBalanceCard
-              key={info.balance.tokenMint.toString()}
-              balance={info.balance}
-              totalSupply={info.totalSupply}
-              metadata={info.metadata}
-              onTransfer={handleTransfer}
-            />
-          ))}
-        </div>
-      )}
+        {isLoading ? (
+          <div className="text-center py-20">
+            <div className="text-6xl mb-4">⏳</div>
+            <p className="text-lg text-gray-600">Loading your products...</p>
+          </div>
+        ) : tokensInfo.length === 0 ? (
+          <div className="bg-white border-4 border-black rounded-lg p-16 text-center">
+            <div className="text-6xl mb-6">🏭</div>
+            <h3 className="text-3xl font-black text-black mb-3">No Products Created</h3>
+            <p className="text-gray-700 font-medium mb-8 max-w-md mx-auto">
+              You haven't created any processed products yet. Receive raw materials first, then create your processed products.
+            </p>
+            <button
+              onClick={() => router.push("/dashboard/factory/create-token")}
+              className="bg-black hover:bg-gray-800 text-white font-black py-4 px-8 rounded-lg transition transform hover:-translate-y-2 inline-block"
+            >
+              🚀 Create Your First Product
+            </button>
+          </div>
+        ) : (
+          <div>
+            <div className="mb-8">
+              <p className="text-lg font-semibold text-gray-600">
+                You have <span className="font-black text-black text-2xl">{tokensInfo.length}</span> product{tokensInfo.length !== 1 ? 's' : ''} created
+              </p>
+            </div>
+            <div className="grid gap-6 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+              {tokensInfo.map((info) => (
+                <TokenBalanceCard
+                  key={info.balance.tokenMint.toString()}
+                  balance={info.balance}
+                  totalSupply={info.totalSupply}
+                  metadata={info.metadata}
+                  onTransfer={handleTransfer}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

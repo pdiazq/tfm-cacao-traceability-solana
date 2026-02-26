@@ -120,111 +120,124 @@ export default function TransfersPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">Transfers</h1>
-
-      <div className="grid gap-8 lg:grid-cols-2">
-        {/* Initiate Transfer */}
-        <div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">
-            Initiate Transfer
-          </h2>
-          {program && publicKey ? (
-            <TransferForm
-              program={program}
-              from={publicKey}
-              tokens={tokens}
-              onSuccess={() => {
-                refetchTransfers();
-              }}
-            />
-          ) : (
-            <div className="text-gray-600">Connect wallet to transfer tokens</div>
-          )}
+      {/* Hero Section */}
+      <div className="bg-black text-white py-12 px-4 border-b-4 border-black mb-12">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-5xl mb-4">🔄</div>
+          <h1 className="text-4xl font-black mb-2">Manage Transfers</h1>
+          <p className="text-gray-300 font-medium">
+            Initiate and track product token transfers
+          </p>
         </div>
+      </div>
 
-        {/* Transfers List */}
-        <div>
-          <div className="flex gap-2 mb-4 border-b border-4 border-black">
-            <button
-              onClick={() => setActiveTab("sent")}
-              className={`px-4 py-3 text-base font-medium ${
-                activeTab === "sent"
-                  ? "border-b-2 border-gray-800 text-gray-800"
-                  : "text-gray-600"
-              }`}
-            >
-              Sent ({sentTransfers.length})
-            </button>
-            <button
-              onClick={() => setActiveTab("received")}
-              className={`px-4 py-3 text-base font-medium ${
-                activeTab === "received"
-                  ? "border-b-2 border-gray-800 text-gray-800"
-                  : "text-gray-600"
-              }`}
-            >
-              Received ({receivedTransfers.length})
-            </button>
+      <div className="max-w-7xl mx-auto px-4 pb-12">
+        <div className="grid gap-8 lg:grid-cols-2">
+          {/* Initiate Transfer */}
+          <div className="bg-white border-4 border-black rounded-lg p-8">
+            <h2 className="text-2xl font-black text-black mb-6">
+              📨 Send Token
+            </h2>
+            {program && publicKey ? (
+              <TransferForm
+                program={program}
+                from={publicKey}
+                tokens={tokens}
+                onSuccess={() => {
+                  refetchTransfers();
+                }}
+              />
+            ) : (
+              <div className="text-gray-600 font-semibold">Connect wallet to transfer tokens</div>
+            )}
           </div>
 
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded mb-4">
-              {error}
+          {/* Transfers List */}
+          <div>
+            <h2 className="text-2xl font-black text-black mb-6">📋 Transfer History</h2>
+            <div className="flex gap-2 mb-6 border-b-4 border-black">
+              <button
+                onClick={() => setActiveTab("sent")}
+                className={`px-6 py-3 text-base font-black transition ${
+                  activeTab === "sent"
+                    ? "border-b-4 border-black text-black"
+                    : "text-gray-600 hover:text-gray-900"
+                }`}
+              >
+                📤 Sent ({sentTransfers.length})
+              </button>
+              <button
+                onClick={() => setActiveTab("received")}
+                className={`px-6 py-3 text-base font-black transition ${
+                  activeTab === "received"
+                    ? "border-b-4 border-black text-black"
+                    : "text-gray-600 hover:text-gray-900"
+                }`}
+              >
+                📥 Received ({receivedTransfers.length})
+              </button>
             </div>
-          )}
 
-          <div className="space-y-4">
-            {(activeTab === "sent" ? sentTransfers : receivedTransfers).length === 0 ? (
-              <div className="bg-gray-50 border-4 border-black rounded-lg p-8 text-center">
-                <p className="text-gray-600">No {activeTab} transfers</p>
+            {error && (
+              <div className="bg-red-50 border-4 border-red-200 text-red-800 px-6 py-4 rounded-lg mb-4 font-semibold">
+                ⚠️ {error}
               </div>
-            ) : (
-              (activeTab === "sent" ? sentTransfers : receivedTransfers).map(
-                (transfer) => (
-                  <div
-                    key={transfer.pda.toString()}
-                    className="bg-white border-4 border-black rounded-lg p-4"
-                  >
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <p className="font-semibold text-gray-900">
-                          {formatAddress(transfer.tokenMint.toString())}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          Amount: {formatAmount(transfer.amount)}
-                        </p>
-                      </div>
-                      <span className="text-xs text-gray-500">
-                        {formatDistance(
-                          new Date(transfer.initiatedAt * 1000),
-                          new Date(),
-                          { addSuffix: true }
-                        )}
-                      </span>
-                    </div>
-
-                    <div className="text-xs text-gray-500 space-y-1">
-                      <p>From: {formatAddress(transfer.from.toString())}</p>
-                      <p>To: {formatAddress(transfer.to.toString())}</p>
-                    </div>
-
-                    {activeTab === "received" && (
-                      <button
-                        onClick={() =>
-                          handleAcceptTransfer(transfer.tokenMint.toString(), transfer.from.toString())
-                        }
-                        disabled={acceptingTransfer !== null}
-                        className="mt-3 w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-semibold py-2 rounded-lg transition text-sm"
-                      >
-                        {acceptingTransfer === transfer.tokenMint.toString()
-                          ? "Accepting..."
-                          : "Accept Transfer"}
-                      </button>
-                    )}
-                  </div>
-                )
-              )
             )}
+
+            <div className="space-y-4">
+              {(activeTab === "sent" ? sentTransfers : receivedTransfers).length === 0 ? (
+                <div className="bg-white border-4 border-black rounded-lg p-12 text-center">
+                  <div className="text-4xl mb-3">📭</div>
+                  <p className="text-gray-600 font-semibold">No {activeTab} transfers</p>
+                </div>
+              ) : (
+                (activeTab === "sent" ? sentTransfers : receivedTransfers).map(
+                  (transfer) => (
+                    <div
+                      key={transfer.pda.toString()}
+                      className="bg-white border-4 border-black rounded-lg p-6 hover:shadow-2xl transition"
+                    >
+                      <div className="flex justify-between items-start mb-3">
+                        <div>
+                          <p className="font-black text-gray-900 text-sm">
+                            Token: {formatAddress(transfer.tokenMint.toString())}
+                          </p>
+                          <p className="text-lg font-black text-black mt-1">
+                            🔢 {formatAmount(transfer.amount)} units
+                          </p>
+                        </div>
+                        <span className="text-xs text-gray-600 font-semibold bg-gray-100 px-3 py-1 rounded">
+                          {formatDistance(
+                            new Date(transfer.initiatedAt * 1000),
+                            new Date(),
+                            { addSuffix: true }
+                          )}
+                        </span>
+                      </div>
+
+                      <div className="border-t-4 border-black pt-3 space-y-1 text-xs text-gray-600 font-semibold">
+                        <p>👤 From: {formatAddress(transfer.from.toString())}</p>
+                        <p>📍 To: {formatAddress(transfer.to.toString())}</p>
+                      </div>
+
+                      {activeTab === "received" && (
+                        <button
+                          onClick={() =>
+                            handleAcceptTransfer(transfer.tokenMint.toString(), transfer.from.toString())
+                          }
+                          disabled={acceptingTransfer !== null}
+                          className="mt-4 w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-black py-3 rounded-lg transition transform hover:-translate-y-2"
+                        >
+                          {acceptingTransfer === transfer.tokenMint.toString()
+                            ? "⏳ Accepting..."
+                            : "✓ Accept Transfer"}
+                        </button>
+                      )}
+                    </div>
+                  )
+                )
+              )}
+            </div>
           </div>
         </div>
       </div>

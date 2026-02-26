@@ -22,13 +22,13 @@ export default function DashboardPage() {
     if (isAuthority) {
       router.push("/dashboard/authority/initialize");
     } else if (role === "producer") {
-      router.push("/dashboard/producer/my-tokens");
+      router.push("/dashboard/producer");
     } else if (role === "factory") {
-      router.push("/dashboard/factory/my-tokens");
+      router.push("/dashboard/factory");
     } else if (role === "retailer") {
-      router.push("/dashboard/retailer/my-tokens");
+      router.push("/dashboard/retailer");
     } else if (role === "consumer") {
-      router.push("/dashboard/consumer/my-tokens");
+      router.push("/dashboard/consumer");
     } else if (hasPendingRequest) {
       router.push("/register-role");
     } else {
