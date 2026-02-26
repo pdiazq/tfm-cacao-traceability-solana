@@ -58,77 +58,72 @@ export default function Home() {
         </section>
 
         {/* Supply Chain Flow */}
-        <section className="bg-white py-20 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto">
+        <section className="bg-white py-20 px-4 sm:px-6 lg:px-8 overflow-x-auto">
+          <div className="max-w-full mx-auto">
             <h3 className="text-4xl font-black text-black mb-16 text-center">Supply Chain Journey</h3>
-            <div className="grid md:grid-cols-4 gap-6">
+            <div className="flex gap-4 items-center justify-center min-w-max md:min-w-full px-4">
               {/* Producer */}
-              <div className="bg-white border-4 border-black rounded-lg p-8 hover:shadow-2xl transition transform hover:-translate-y-2">
-                <div className="text-6xl mb-4 text-center">🌱</div>
-                <h4 className="text-2xl font-black text-black mb-3 text-center">Producer</h4>
-                <p className="text-gray-700 text-center font-medium">
-                  Create tokens for your products and transfer them to factories
+              <div className="bg-white border-4 border-black rounded-lg p-6 hover:shadow-2xl transition transform hover:-translate-y-2 w-64 flex-shrink-0">
+                <div className="text-5xl mb-3 text-center">🌱</div>
+                <h4 className="text-xl font-black text-black mb-2 text-center">Producer</h4>
+                <p className="text-gray-700 text-center font-medium text-sm">
+                  Create tokens for your products
                 </p>
-                <div className="mt-6 pt-6 border-t-4 border-black">
-                  <p className="text-sm text-gray-600 font-semibold">✓ Create Tokens</p>
-                  <p className="text-sm text-gray-600 font-semibold">✓ Set Metadata</p>
-                  <p className="text-sm text-gray-600 font-semibold">✓ Initiate Transfers</p>
+                <div className="mt-4 pt-4 border-t-4 border-black space-y-1">
+                  <p className="text-xs text-gray-600 font-semibold">✓ Create Tokens</p>
+                  <p className="text-xs text-gray-600 font-semibold">✓ Set Metadata</p>
+                  <p className="text-xs text-gray-600 font-semibold">✓ Initiate Transfers</p>
                 </div>
               </div>
 
               {/* Arrow */}
-              <div className="flex items-center justify-center">
-                <div className="text-4xl font-black text-black">→</div>
-              </div>
+              <div className="text-3xl font-black text-black flex-shrink-0">→</div>
 
               {/* Factory */}
-              <div className="bg-white border-4 border-black rounded-lg p-8 hover:shadow-2xl transition transform hover:-translate-y-2">
-                <div className="text-6xl mb-4 text-center">🏭</div>
-                <h4 className="text-2xl font-black text-black mb-3 text-center">Factory</h4>
-                <p className="text-gray-700 text-center font-medium">
-                  Process products from producers and create new tokens for retailers
+              <div className="bg-white border-4 border-black rounded-lg p-6 hover:shadow-2xl transition transform hover:-translate-y-2 w-64 flex-shrink-0">
+                <div className="text-5xl mb-3 text-center">🏭</div>
+                <h4 className="text-xl font-black text-black mb-2 text-center">Factory</h4>
+                <p className="text-gray-700 text-center font-medium text-sm">
+                  Process and combine products
                 </p>
-                <div className="mt-6 pt-6 border-t-4 border-black">
-                  <p className="text-sm text-gray-600 font-semibold">✓ Receive Tokens</p>
-                  <p className="text-sm text-gray-600 font-semibold">✓ Combine Inputs</p>
-                  <p className="text-sm text-gray-600 font-semibold">✓ Create New Tokens</p>
+                <div className="mt-4 pt-4 border-t-4 border-black space-y-1">
+                  <p className="text-xs text-gray-600 font-semibold">✓ Receive Tokens</p>
+                  <p className="text-xs text-gray-600 font-semibold">✓ Combine Inputs</p>
+                  <p className="text-xs text-gray-600 font-semibold">✓ Create New Tokens</p>
                 </div>
               </div>
 
               {/* Arrow */}
-              <div className="flex items-center justify-center">
-                <div className="text-4xl font-black text-black">→</div>
-              </div>
+              <div className="text-3xl font-black text-black flex-shrink-0">→</div>
 
-              {/* Retailer & Consumer - in second row on mobile */}
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-6 mt-6 md:col-start-2 md:max-w-2xl md:mx-auto">
               {/* Retailer */}
-              <div className="bg-white border-4 border-black rounded-lg p-8 hover:shadow-2xl transition transform hover:-translate-y-2">
-                <div className="text-6xl mb-4 text-center">🏪</div>
-                <h4 className="text-2xl font-black text-black mb-3 text-center">Retailer</h4>
-                <p className="text-gray-700 text-center font-medium">
-                  Receive products and transfer them to consumers
+              <div className="bg-white border-4 border-black rounded-lg p-6 hover:shadow-2xl transition transform hover:-translate-y-2 w-64 flex-shrink-0">
+                <div className="text-5xl mb-3 text-center">🏪</div>
+                <h4 className="text-xl font-black text-black mb-2 text-center">Retailer</h4>
+                <p className="text-gray-700 text-center font-medium text-sm">
+                  Distribute to consumers
                 </p>
-                <div className="mt-6 pt-6 border-t-4 border-black">
-                  <p className="text-sm text-gray-600 font-semibold">✓ Accept Transfers</p>
-                  <p className="text-sm text-gray-600 font-semibold">✓ View History</p>
-                  <p className="text-sm text-gray-600 font-semibold">✓ Ship to Consumer</p>
+                <div className="mt-4 pt-4 border-t-4 border-black space-y-1">
+                  <p className="text-xs text-gray-600 font-semibold">✓ Accept Transfers</p>
+                  <p className="text-xs text-gray-600 font-semibold">✓ View History</p>
+                  <p className="text-xs text-gray-600 font-semibold">✓ Ship Products</p>
                 </div>
               </div>
 
+              {/* Arrow */}
+              <div className="text-3xl font-black text-black flex-shrink-0">→</div>
+
               {/* Consumer */}
-              <div className="bg-white border-4 border-black rounded-lg p-8 hover:shadow-2xl transition transform hover:-translate-y-2">
-                <div className="text-6xl mb-4 text-center">👥</div>
-                <h4 className="text-2xl font-black text-black mb-3 text-center">Consumer</h4>
-                <p className="text-gray-700 text-center font-medium">
-                  View the complete history of products you receive
+              <div className="bg-white border-4 border-black rounded-lg p-6 hover:shadow-2xl transition transform hover:-translate-y-2 w-64 flex-shrink-0">
+                <div className="text-5xl mb-3 text-center">👥</div>
+                <h4 className="text-xl font-black text-black mb-2 text-center">Consumer</h4>
+                <p className="text-gray-700 text-center font-medium text-sm">
+                  Verify authenticity
                 </p>
-                <div className="mt-6 pt-6 border-t-4 border-black">
-                  <p className="text-sm text-gray-600 font-semibold">✓ Track Products</p>
-                  <p className="text-sm text-gray-600 font-semibold">✓ View Authenticity</p>
-                  <p className="text-sm text-gray-600 font-semibold">✓ Full Transparency</p>
+                <div className="mt-4 pt-4 border-t-4 border-black space-y-1">
+                  <p className="text-xs text-gray-600 font-semibold">✓ Track Products</p>
+                  <p className="text-xs text-gray-600 font-semibold">✓ Verify Origin</p>
+                  <p className="text-xs text-gray-600 font-semibold">✓ Full History</p>
                 </div>
               </div>
             </div>
