@@ -34,15 +34,25 @@ export default function MyTokensPage() {
         const enriched = await Promise.all(
           balances.map(async (balance) => {
             try {
-              const traceToken = await program.account.traceToken.fetch(
-                (await program.account.traceToken.all([
-                  {
-                    memcmp: {
-                      offset: 8, // discriminator
-                      bytes: balance.tokenMint.toBase58(),
-                    },
+              const tokenAccounts = await (program.account as any).traceToken.all([
+                {
+                  memcmp: {
+                    offset: 8, // discriminator
+                    bytes: balance.tokenMint.toBase58(),
                   },
-                ]))[0]?.publicKey
+                },
+              ]);
+
+              if (tokenAccounts.length === 0) {
+                return {
+                  balance,
+                  metadata: balance.tokenMint.toString(),
+                  totalSupply: balance.balance,
+                };
+              }
+
+              const traceToken = await (program.account as any).traceToken.fetch(
+                tokenAccounts[0].publicKey
               );
               return {
                 balance,
