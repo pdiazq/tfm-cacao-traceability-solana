@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useProgram } from "@/lib/context/ProgramProvider";
-import { useTokens } from "@/lib/hooks/useTokens";
+import { useTokenBalances } from "@/lib/hooks/useTokenBalances";
 import { useTransfers } from "@/lib/hooks/useTransfers";
 import { acceptTransfer } from "@/lib/solana/instructions";
 import { TransferForm } from "@/components/transfer/TransferForm";
@@ -13,7 +13,7 @@ import { formatDistance } from "date-fns";
 export default function RetailerTransfersPage() {
   const { publicKey } = useWallet();
   const { program } = useProgram();
-  const { ownedTokens, refetch: refetchTokens } = useTokens(publicKey!);
+  const { balances, refetch: refetchBalances } = useTokenBalances(publicKey!);
   const { sentTransfers, receivedTransfers, refetch: refetchTransfers } = useTransfers(publicKey!);
 
   const [activeTab, setActiveTab] = useState<"sent" | "received">("sent");
@@ -32,13 +32,27 @@ export default function RetailerTransfersPage() {
       const senderPK = new PublicKey(sender);
       await acceptTransfer(program, publicKey, mint, senderPK);
       await refetchTransfers();
-      await refetchTokens();
+      await refetchBalances();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to accept transfer");
     } finally {
       setAcceptingTransfer(null);
     }
   };
+
+  // Convert balances to tokens format for TransferForm
+  const tokens = balances.map((balance) => ({
+    mint: balance.tokenMint,
+    amount: balance.balance,
+    metadata: balance.tokenMint.toString(),
+    creator: publicKey!,
+    creatorRole: "retailer",
+    currentOwner: publicKey!,
+    status: "created",
+    sourceTokens: [],
+    createdAt: balance.lastUpdated,
+    pda: balance.pda,
+  }));
 
   return (
     <div>
@@ -54,7 +68,7 @@ export default function RetailerTransfersPage() {
             <TransferForm
               program={program}
               from={publicKey}
-              tokens={ownedTokens}
+              tokens={tokens}
               onSuccess={() => {
                 refetchTransfers();
               }}
