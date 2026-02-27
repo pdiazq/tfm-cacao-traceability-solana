@@ -2,6 +2,51 @@
 
 Programa Anchor para trazabilidad de productos en la cadena de suministro, con roles validados y transferencias en escrow.
 
+---
+
+## Arquitectura del programa
+
+El programa está escrito en **Rust** con el framework **Anchor** (v0.32.1). El código se organiza así:
+
+```
+programs/traza/src/
+├── lib.rs          # Punto de entrada: módulo #[program], instrucciones y structs #[derive(Accounts)]
+├── error.rs        # Errores personalizados (TrazaError)
+└── state/          # Estructuras de datos de las cuentas
+    ├── mod.rs
+    ├── program_config.rs
+    ├── role_registry.rs
+    ├── pending_role.rs
+    ├── trace_token.rs
+    ├── pending_transfer.rs
+    └── token_balance.rs
+```
+
+### Estructura de lib.rs
+
+- **`#[program] pub mod traza`**: Define las 6 instrucciones (`initialize`, `register_role`, `validate_role`, `create_token`, `initiate_transfer`, `accept_transfer`) y su lógica de negocio.
+- **`#[derive(Accounts)]`**: Una struct por instrucción (Initialize, RegisterRole, ValidateRole, CreateToken, InitiateTransfer, AcceptTransfer) que valida cuentas y seeds.
+- Todo el flujo de instrucciones y validación está concentrado en `lib.rs`; el módulo `state` exporta los tipos de datos de las cuentas.
+
+### Dependencias
+
+- `anchor-lang` 0.32.1 (feature `init-if-needed` para `init_if_needed` en cuentas).
+- Rust 1.89.0 (definido en `rust-toolchain.toml`).
+
+### Program ID
+
+```
+27w7DWngggMpAEERYrin3rKKkcyaLFvV5VmvP2nEKFys
+```
+
+### Compilación
+
+```bash
+anchor build   # Genera el .so y el IDL en target/deploy/
+```
+
+---
+
 ## Roles
 
 | Rol      | Descripción                              | Puede crear tokens | Puede transferir a |
