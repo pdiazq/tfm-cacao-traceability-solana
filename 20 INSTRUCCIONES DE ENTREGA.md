@@ -44,10 +44,15 @@ El repositorio de GitHub debe ser **público** y contener:
 ```
 nombre-proyecto-tfm/
 ├── README.md                    # Documentación principal
-├── contracts/                   # Smart contracts
-│   ├── TrazabilidadAlimentaria.sol
-│   ├── migrations/
-│   └── test/
+├── programs/                    # Programa Solana (Anchor)
+│   └── traza/                   # Nombre del programa
+│       ├── Cargo.toml
+│       └── src/
+│           ├── lib.rs
+│           ├── error.rs
+│           └── state/
+├── Anchor.toml                  # Configuración Anchor
+├── rust-toolchain.toml          # Versión Rust (opcional)
 ├── backend/                     # Código del servidor
 │   ├── src/
 │   ├── package.json
@@ -75,39 +80,56 @@ El archivo README.md debe incluir:
 
 ```markdown
 # Nombre del Proyecto TFM
-## DescripciónBreve descripción del proyecto (2-3 párrafos)
-## Problema que ResuelveExplicar el problema del sector que se aborda
-## Tecnologías Utilizadas- Blockchain: Polygon / Ethereum / BSV
-- Smart Contracts: Solidity
+## Descripción
+Breve descripción del proyecto (2-3 párrafos)
+
+## Problema que Resuelve
+Explicar el problema del sector que se aborda
+## Tecnologías Utilizadas
+- Blockchain: Solana
+- Programa on-chain: Rust + Anchor
 - Backend: Node.js
 - Frontend: React / HTML+JavaScript
 - Base de datos: MongoDB / SQLite
 - IA/Herramientas: Claude, MCP, ChatGPT, etc. (si aplica)
 ## Arquitectura del Sistema
 [Incluir diagrama de arquitectura]
-## Instalación y Configuración### Requisitos Previos- Node.js v18+
+## Instalación y Configuración### Requisitos Previos
+- Node.js v18+
 - npm o yarn
-- MetaMask instalado
-- Cuenta en Infura/Alchemy (para testnet)
+- Rust + Anchor CLI instalados
+- Phantom (u otra wallet Solana) instalada
+- SOL en Devnet (faucet) para transacciones de prueba
+
 ### Instalación de Dependencias
-# Instalar dependencias del backendcd backend
+# Instalar dependencias del backend
+cd backend
 npm install
-# Instalar dependencias del frontendcd frontend
+
+# Instalar dependencias del frontend
+cd frontend
 npm install
-# Compilar smart contractscd contracts
-truffle compile
+
+# Compilar programa Solana (Anchor)
+anchor build
+
 ### Configuración
 1. Copiar `.env.example` a `.env`
-2. Configurar variables de entorno
-3. Desplegar smart contracts en testnet
-### Ejecución# Backendcd backend
-npm start
-# Frontendcd frontend
-npm start
-## Smart Contracts Desplegados- Red: Polygon Mumbai Testnet
-- Contrato Principal: 0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb0
-- Explorador: [PolygonScan](https://mumbai.polygonscan.com/address/0x742d...)
-## Casos de Uso1. Registro de lote alimentario
+2. Configurar variables de entorno (RPC de Solana, Program ID)
+3. Desplegar el programa en Solana Devnet: `anchor deploy --provider.cluster devnet`
+### Ejecución
+# Backend
+cd backend && npm start
+
+# Frontend
+cd frontend && npm start
+
+## Programa Solana Desplegado
+- Red: Solana Devnet (o Mainnet-Beta)
+- Program ID: `[tu-program-id]` (ej: `27w7DWngggMpAEERYrin3rKKkcyaLFvV5VmvP2nEKFys`)
+- Explorador: [Solscan](https://solscan.io/) o [Solana Explorer](https://explorer.solana.com/)
+## Casos de Uso
+1. Registro de lote alimentario
 2. Transferencia entre actores
 3. Verificación de certificados
 4. Consulta de trazabilidad
@@ -127,7 +149,8 @@ npm start
 - **Nombre:** [Tu nombre]
 - **Email:** [tu-email@example.com]
 - **LinkedIn:** [tu-perfil]
-## LicenciaMIT License
+## Licencia
+MIT License
 ```
 
 ### 2.3. Buenas Prácticas de Código
@@ -136,7 +159,7 @@ npm start
 - Comentar funciones importantes
 - Usar nombres descriptivos de variables
 - Incluir tests unitarios (mínimo 5)
-- Documentar funciones de smart contracts con NatSpec
+- Documentar instrucciones del programa con comentarios doc (Rust)
 - Usar .gitignore para archivos sensibles
 
 ❌ **No hacer:**
@@ -221,7 +244,7 @@ npm start
 **Minuto 0:30-1:30 - Explicación Técnica**
 - Arquitectura del sistema (mostrar diagrama)
 - Tecnologías utilizadas
-- Smart contracts principales
+- Programa Solana: instrucciones principales
 - **DESTACAR:** Funcionalidades únicas que implementaste
 
 **Minuto 1:30-4:00 - Demostración Práctica**
@@ -266,10 +289,10 @@ npm start
 Antes de presionar “Record” en Loom, verifica:
 
 - [ ]  Dashboard funcionando correctamente
-- [ ]  Metamask conectada a testnet correcta
+- [ ]  Phantom (o wallet Solana) conectada a Devnet
 - [ ]  Datos de prueba preparados
 - [ ]  Transacción de ejemplo lista para ejecutar
-- [ ]  Blockchain explorer abierto en otra pestaña
+- [ ]  Solscan / Solana Explorer abierto en otra pestaña
 - [ ]  Diagrama de arquitectura visible
 - [ ]  Micrófono probado y funcionando
 - [ ]  Lugar tranquilo sin ruido
@@ -309,7 +332,7 @@ Incluir **mínimo 5 capturas** del sistema funcionando:
 1. **Dashboard principal** - vista general del sistema
 2. **Formulario de registro** - creando lote/envío/certificado
 3. **Visualización de datos** - timeline, gráficas, mapas
-4. **Transacción confirmada** - en blockchain explorer
+4. **Transacción confirmada** - en Solscan / Solana Explorer
 5. **Verificación exitosa** - de certificado/trazabilidad
 
 **Formato:**
@@ -334,7 +357,7 @@ Incluir **mínimo 5 capturas** del sistema funcionando:
 
 **Diagrama de Flujo de Datos:**
 - Proceso completo de un caso de uso principal
-- Interacción con smart contracts
+- Interacción con el programa Solana (instrucciones)
 - Estados del sistema
 
 ### 🎯 **Mermaid: Herramienta Recomendada para Diagramas**
@@ -364,7 +387,7 @@ Incluir **mínimo 5 capturas** del sistema funcionando:
 graph TB
     subgraph "Frontend"
         UI[Dashboard React]
-        W[Web3 Provider]
+        W[Wallet Adapter / Solana Provider]
     end
 
     subgraph "Backend"
@@ -373,20 +396,20 @@ graph TB
     end
 
     subgraph "Blockchain"
-        SC[Smart Contract]
-        POLY[Polygon Mumbai]
+        PROG[Programa Solana]
+        SOL[Solana Devnet]
     end
 
     UI --> W
     UI --> API
-    W --> SC
+    W --> PROG
     API --> DB
-    SC --> POLY
-    API --> SC
+    PROG --> SOL
+    API --> PROG
 
     style UI fill:#61dafb
     style API fill:#68a063
-    style SC fill:#627eea
+    style PROG fill:#9945FF
     style DB fill:#4db33d
 ```
 
@@ -397,52 +420,51 @@ sequenceDiagram
     actor Usuario
     participant Frontend
     participant Backend
-    participant Smart Contract
-    participant Blockchain
+    participant Programa
+    participant Solana
 
     Usuario->>Frontend: Registra nuevo lote
     Frontend->>Backend: POST /api/lotes
     Backend->>Backend: Valida datos
-    Backend->>Smart Contract: registrarLote()
-    Smart Contract->>Blockchain: Transacción
-    Blockchain-->>Smart Contract: Confirmación
-    Smart Contract-->>Backend: Evento LoteRegistrado
+    Backend->>Programa: createToken() / instrucción
+    Programa->>Solana: Transacción
+    Solana-->>Programa: Confirmación
+    Programa-->>Backend: Logs / datos on-chain
     Backend->>Backend: Guarda en DB
     Backend-->>Frontend: Respuesta exitosa
     Frontend-->>Usuario: Muestra confirmación
 ```
 
-**Ejemplo 3: Diagrama de Clases de Smart Contract**
+**Ejemplo 3: Diagrama de Clases del Programa Solana**
 
 ```mermaid
 classDiagram
-    class TrazabilidadAlimentaria {
-        +mapping lotes
-        +mapping certificaciones
-        +address owner
-        +registrarLote()
-        +transferirLote()
-        +certificarLote()
-        +consultarHistorial()
+    class ProgramaTraza {
+        +initialize()
+        +registerRole()
+        +validateRole()
+        +createToken()
+        +initiateTransfer()
+        +acceptTransfer()
     }
 
-    class Lote {
-        +string id
-        +address productor
-        +uint256 timestamp
-        +string datos
-        +EstadoLote estado
+    class TraceToken {
+        +Pubkey mint
+        +Pubkey creator
+        +Role creator_role
+        +u64 total_supply
+        +TokenStatus status
+        +Vec~Pubkey~ source_tokens
     }
 
-    class Certificacion {
-        +string idLote
-        +address certificador
-        +uint256 fecha
-        +bool valida
+    class RoleRegistry {
+        +Pubkey wallet
+        +Role role
+        +i64 validated_at
     }
 
-    TrazabilidadAlimentaria --> Lote
-    TrazabilidadAlimentaria --> Certificacion
+    ProgramaTraza --> TraceToken
+    ProgramaTraza --> RoleRegistry
 ```
 
 **Cómo incluir Mermaid en tu README.md:**
@@ -457,7 +479,7 @@ classDiagram
 sequenceDiagram
     User->>Frontend: Acción
     Frontend->>Backend: Request
-    Backend->>Blockchain: Transaction
+    Backend->>Solana: Transaction (instrucción)
 ```
 
 **Cómo crear diagramas Mermaid:**
@@ -535,10 +557,10 @@ Uso de la aplicación: [App Proyectos](https://proyectos.codecrypto.jvh.kfs.es/)
 - [ ] Audio es audible
 - [ ] Se mencionan innovaciones vs esqueleto base
 
-✅ **Smart Contracts:**
-- [ ] Desplegado en testnet
-- [ ] Address visible en blockchain explorer
-- [ ] Transacciones se pueden ver públicamente
+✅ **Programa Solana:**
+- [ ] Desplegado en Devnet (o Mainnet)
+- [ ] Program ID documentado y visible en Solscan/Explorer
+- [ ] Transacciones (signatures) verificables en el explorador
 
 ---
 
@@ -548,7 +570,7 @@ Uso de la aplicación: [App Proyectos](https://proyectos.codecrypto.jvh.kfs.es/)
 
 | **Hito** | **Fecha** | **Entregable** |
 | --- | --- | --- |
-| **Avance 1** | Semana 1 | Diseño de arquitectura + smart contracts iniciales |
+| **Avance 1** | Semana 1 | Diseño de arquitectura + programa Solana inicial |
 | **Avance 2** | Semana 3 | MVP funcional básico + código en GitHub |
 | **Entrega final** | Semana 1 | Todos los entregables completos |
 
@@ -569,7 +591,7 @@ Uso de la aplicación: [App Proyectos](https://proyectos.codecrypto.jvh.kfs.es/)
 | **Criterio** | **Peso** | **Descripción** |
 | --- | --- | --- |
 | **Código fuente** | 30% | Funcionalidad, calidad, documentación |
-| **Smart contracts** | 25% | Diseño, seguridad, eventos |
+| **Programa Solana (Anchor)** | 25% | Diseño, seguridad, instrucciones |
 | **Video demostración** | 15% | Claridad, demostración práctica |
 | **Documentación** | 10% | README, diagramas, comentarios |
 | **Innovación y originalidad** | 15% | Diferenciación del esqueleto, creatividad |
@@ -583,11 +605,11 @@ Uso de la aplicación: [App Proyectos](https://proyectos.codecrypto.jvh.kfs.es/)
 - Tests implementados (5%)
 - README completo y profesional (5%)
 
-**Smart contracts (25%):**
-- Funciones implementadas correctamente (10%)
-- Eventos bien diseñados (6%)
+**Programa Solana (25%):**
+- Instrucciones implementadas correctamente (10%)
+- Cuentas PDAs y validaciones (6%)
 - Consideraciones de seguridad (5%)
-- Documentación NatSpec (4%)
+- Documentación y comentarios (4%)
 
 **Video demostración (15%):**
 - Demostración práctica efectiva (7%)
@@ -651,7 +673,7 @@ Se proporcionará un **esqueleto base de proyecto** que servirá como punto de p
     - Personaliza para tu sector específico
 3. **Diferenciarte del esqueleto:**
     - Usa una arquitectura diferente si tiene sentido
-    - Implementa smart contracts con lógica propia
+    - Implementa el programa Solana con lógica propia
     - Crea un dashboard único y personalizado
     - Agrega integraciones con otras APIs o servicios
 
@@ -672,12 +694,12 @@ Se proporcionará un **esqueleto base de proyecto** que servirá como punto de p
 - Sistema de alertas automatizado
 - Integración con servicios externos (IPFS, Oracles, etc.)
 
-**Smart Contracts:**
+**Programa Solana (Anchor):**
 - Lógica de negocio específica de tu sector
-- Optimizaciones de gas
-- Upgradability patterns
-- Multi-signature para mayor seguridad
-- Eventos personalizados y ricos en datos
+- Optimización de compute units
+- PDAs bien diseñadas y seeds correctas
+- Validaciones robustas de cuentas
+- Logs y metadatos útiles en instrucciones
 
 **Uso de IA/MCP:**
 - Generación automática de reportes con IA
@@ -722,7 +744,7 @@ MCP es un protocolo abierto desarrollado por Anthropic que permite a Claude (y o
 
 1. **Automatización con IA:**
     - Usar Claude Code o Claude Desktop con MCP para automatizar tareas de desarrollo
-    - Generar smart contracts con asistencia de IA
+    - Generar programa Solana (Anchor) con asistencia de IA
     - Análisis automático de código
 2. **Integraciones:**
     - Crear MCP servers personalizados para tu blockchain
@@ -735,11 +757,20 @@ MCP es un protocolo abierto desarrollado por Anthropic que permite a Claude (y o
 
 **Ejemplos de implementación:**
 
-```jsx
-// Ejemplo: MCP Server personalizado para consultar blockchainimport { Server } from "@modelcontextprotocol/sdk/server/index.js";import { Web3 } from "web3";const server = new Server({
-  name: "blockchain-query-server",  version: "1.0.0"});// Herramienta para consultar balanceserver.setRequestHandler("tools/call", async (request) => {
+```typescript
+// Ejemplo: MCP Server para consultar Solana
+import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import { Connection, PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
+
+const server = new Server({ name: "solana-query-server", version: "1.0.0" });
+const connection = new Connection("https://api.devnet.solana.com");
+
+server.setRequestHandler("tools/call", async (request) => {
   if (request.params.name === "get_balance") {
-    const web3 = new Web3("https://polygon-rpc.com");    const balance = await web3.eth.getBalance(request.params.arguments.address);    return { balance: balance.toString() };  }
+    const pubkey = new PublicKey(request.params.arguments.address);
+    const balance = await connection.getBalance(pubkey);
+    return { balance: (balance / LAMPORTS_PER_SOL).toString(), lamports: balance };
+  }
 });
 ```
 
@@ -778,13 +809,13 @@ MCP es un protocolo abierto desarrollado por Anthropic que permite a Claude (y o
 
 ### Ejemplo: Claude MCP
 
-- **MCP Server:** Desarrollé un servidor MCP personalizado para consultar datos on-chain
-- **Ubicación:** `/mcp-server/blockchain-query.ts`
-- **Funcionalidad:** Permite consultas en lenguaje natural a la blockchain
+- **MCP Server:** Desarrollé un servidor MCP personalizado para consultar datos on-chain de Solana
+- **Ubicación:** `/mcp-server/solana-query.ts`
+- **Funcionalidad:** Permite consultas en lenguaje natural a Solana
 
 ### ChatGPT/Claude
 
-- Asistencia en generación de smart contracts base
+- Asistencia en generación del programa Solana base
 - Debugging de errores complejos
 - Optimización de queries a la base de datos
 
@@ -811,7 +842,7 @@ a las necesidades específicas del proyecto.
 
 ### ¿Debo desplegar en mainnet o testnet?
 
-**Testnet es suficiente** (recomendado: Polygon Mumbai, Sepolia, BSV testnet). Mainnet es opcional pero NO necesario.
+**Devnet es suficiente** (Solana Devnet). Mainnet-Beta es opcional pero NO necesario.
 
 ### ¿Qué pasa si mi código no funciona perfectamente?
 
@@ -838,7 +869,7 @@ Obtendrás una **nota más baja** en la sección de “Innovación” (15% del t
 
 ### ¿Qué blockchain debo usar?
 
-**Recomendado:** Cualquier red EVM (Ethereum, Polygon, BSV, Avalanche, etc.). Lo importante es que justifiques tu elección en el README.
+**En este proyecto:** Solana. El programa se desarrolla con Anchor (Rust). Justifica tu arquitectura en el README.
 
 ### ¿Es obligatorio el video?
 
@@ -866,9 +897,9 @@ Alternativas válidas: Draw.io, Excalidraw, o imágenes PNG/PDF.
 
 **Recomendado** para indexar datos de blockchain y mejorar rendimiento del dashboard, pero no es estrictamente obligatorio si tu MVP es simple.
 
-### ¿Cuántos smart contracts debo tener?
+### ¿Cuántas instrucciones debe tener el programa?
 
-**Mínimo 1 contrato principal** con al menos 5 eventos relevantes y 5 funciones. Puedes tener más si tu arquitectura lo requiere.
+**Mínimo 5 instrucciones** en el programa principal. Puedes tener más si tu arquitectura lo requiere (initialize, registro de roles, creación de tokens, transferencias, etc.).
 
 ### ¿Qué hago si Loom me limita los 5 minutos?
 
@@ -911,7 +942,7 @@ Antes de enviar tu TFM, verifica que cumples con **TODOS** estos puntos:
 - [ ]  Repositorio público y accesible
 - [ ]  README.md completo y bien formateado
 - [ ]  Código fuente organizado en carpetas
-- [ ]  Smart contracts documentados
+- [ ]  Programa Solana documentado
 - [ ]  .gitignore configurado (sin claves privadas)
 - [ ]  LICENSE incluido (MIT recomendada)
 - [ ]  Screenshots en carpeta `/screenshots` (mínimo 5)
@@ -919,15 +950,15 @@ Antes de enviar tu TFM, verifica que cumples con **TODOS** estos puntos:
 - [ ]  Sección de innovaciones en README
 - [ ]  Documentación de uso de IA si aplica
 
-### Smart Contracts
+### Programa Solana (Anchor)
 
-- [ ]  Compilado sin errores
-- [ ]  Desplegado en testnet
-- [ ]  Address del contrato documentado en README
-- [ ]  Visible en blockchain explorer
-- [ ]  Eventos implementados (mínimo 5)
-- [ ]  Funciones principales implementadas
-- [ ]  Comentarios NatSpec en funciones públicas
+- [ ]  Compila sin errores (`anchor build`)
+- [ ]  Desplegado en Devnet
+- [ ]  Program ID documentado en README
+- [ ]  Visible en Solscan / Solana Explorer
+- [ ]  Instrucciones principales implementadas (mínimo 5)
+- [ ]  Cuentas y PDAs correctamente definidas
+- [ ]  Comentarios en instrucciones y structs
 
 ### Video
 
@@ -944,7 +975,7 @@ Antes de enviar tu TFM, verifica que cumples con **TODOS** estos puntos:
 - [ ]  Mínimo 5 capturas de pantalla de calidad
 - [ ]  Diagrama de arquitectura (Mermaid preferido)
 - [ ]  Diagrama de flujo de datos
-- [ ]  Transacción visible en blockchain explorer
+- [ ]  Transacción visible en Solscan / Solana Explorer
 
 ### Innovación
 
@@ -993,10 +1024,10 @@ Antes de enviar tu TFM, verifica que cumples con **TODOS** estos puntos:
 - Mac: Cmd+Shift+4
 - Extensión: [Awesome Screenshot](https://www.awesomescreenshot.com/)
 
-**Para testnet:**
-- 🟣 [Polygon Mumbai Faucet](https://faucet.polygon.technology/)
-- 🔵 [Sepolia Faucet](https://sepoliafaucet.com/)
-- 🌐 [PolygonScan Mumbai](https://mumbai.polygonscan.com/)
+**Para Solana Devnet:**
+- 💧 [Solana Faucet](https://faucet.solana.com/)
+- 🌐 [Solscan](https://solscan.io/) – Explorador con soporte Devnet
+- 🔍 [Solana Explorer](https://explorer.solana.com/) – Explorador oficial
 
 **Para Model Context Protocol:**
 - 🤖 [MCP Official Website](https://modelcontextprotocol.io/)
