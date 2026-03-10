@@ -251,7 +251,32 @@ pub mod traza {
         pub authority: Signer<'info>,
 
         pub system_program: Program<'info, System>,
-    }    
+    }
+    
+    #[derive(Accounts)]
+    #[instruction(batch_id: u64, certificate_id: u64)]
+    pub struct RevokeCertificate<'info> {
+        #[account(
+            seeds = [b"config"],
+            bump = program_config.bump
+        )]
+        pub program_config: Account<'info, ProgramConfig>,
+
+        #[account(
+            mut,
+            seeds = [
+                b"certificate",
+                batch_id.to_le_bytes().as_ref(),
+                certificate_id.to_le_bytes().as_ref()
+            ],
+            bump = certificate.bump,
+            constraint = certificate.batch_id == batch_id @ TrazaError::InvalidBatchAccount,
+            constraint = certificate.id == certificate_id @ TrazaError::InvalidBatchAccount
+        )]
+        pub certificate: Account<'info, Certificate>,
+
+        pub authority: Signer<'info>,
+    }
 
     pub fn update_batch_status(
         ctx: Context<UpdateBatchStatus>,
@@ -350,6 +375,41 @@ pub mod traza {
         msg!("Certificate issued");
         msg!("Certificate ID: {}", certificate.id);
         msg!("Batch ID: {}", batch_id);
+
+        Ok(())
+    }
+
+        pub fn revoke_certificate(
+        ctx: Context<RevokeCertificate>,
+        batch_id: u64,
+        certificate_id: u64,
+    ) -> Result<()> {
+        let config = &ctx.accounts.program_config;
+        require!(
+            config.authority == ctx.accounts.authority.key(),
+            TrazaError::OnlyAuthorityCanRevokeCertificates
+        );
+
+        let certificate = &mut ctx.accounts.certificate;
+        require!(
+            certificate.batch_id == batch_id,
+            TrazaError::InvalidBatchAccount
+        );
+        require!(
+            certificate.id == certificate_id,
+            TrazaError::InvalidBatchAccount
+        );
+
+        require!(
+            certificate.status != CertificateStatus::Revoked,
+            TrazaError::CertificateAlreadyRevoked
+        );
+
+        certificate.status = CertificateStatus::Revoked;
+
+        msg!("Certificate revoked");
+        msg!("Certificate ID: {}", certificate.id);
+        msg!("Batch ID: {}", certificate.batch_id);
 
         Ok(())
     }
