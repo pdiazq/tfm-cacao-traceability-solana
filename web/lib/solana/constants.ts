@@ -1,6 +1,6 @@
 import { PublicKey } from "@solana/web3.js";
 
-export const PROGRAM_ID = new PublicKey("27w7DWngggMpAEERYrin3rKKkcyaLFvV5VmvP2nEKFys");
+export const PROGRAM_ID = new PublicKey("H79yGB29eEZAf1Gi3oPDAUG2Xcv8eoMSULbfyXPR3sNX");
 export const CLUSTER = "localnet";
 export const RPC_ENDPOINT = "http://localhost:8899";
 

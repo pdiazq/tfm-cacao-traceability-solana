@@ -3,9 +3,10 @@ use anchor_lang::prelude::*;
 pub mod error;
 pub mod state;
 
+use error::TrazaError;
 use state::*;
 
-declare_id!("27w7DWngggMpAEERYrin3rKKkcyaLFvV5VmvP2nEKFys");
+declare_id!("H79yGB29eEZAf1Gi3oPDAUG2Xcv8eoMSULbfyXPR3sNX");
 
 #[program]
 pub mod traza {
@@ -13,197 +14,357 @@ pub mod traza {
 
     pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
         let config = &mut ctx.accounts.program_config;
-        let (_, bump) = Pubkey::find_program_address(&[b"config"], &ctx.program_id);
+
         config.authority = ctx.accounts.authority.key();
-        config.bump = bump;
+        config.next_batch_id = 1;
+        config.next_event_id = 1;
+        config.next_certificate_id = 1;
         config.initialized = true;
-        msg!("Program initialized by: {:?}", config.authority);
+        config.bump = ctx.bumps.program_config;
+
+        msg!("Food traceability program initialized");
+        msg!("Authority: {}", config.authority);
+
         Ok(())
     }
 
-    pub fn register_role(ctx: Context<RegisterRole>, requested_role: Role) -> Result<()> {
-        let (expected_pda, _) = Pubkey::find_program_address(
-            &[b"role_registry", ctx.accounts.wallet.key().as_ref()],
-            ctx.program_id,
+    pub fn register_actor(
+        ctx: Context<RegisterActor>,
+        name: String,
+        requested_role: ActorRole,
+        location: String,
+    ) -> Result<()> {
+        require!(
+            name.len() <= PendingActor::NAME_MAX_LEN,
+            TrazaError::FieldTooLong
         );
         require!(
-            ctx.accounts.role_registry.key() == expected_pda,
-            error::TrazaError::InvalidRoleRegistryAccount
+            location.len() <= PendingActor::LOCATION_MAX_LEN,
+            TrazaError::FieldTooLong
+        );
+
+        let pending_actor = &mut ctx.accounts.pending_actor;
+        let clock = Clock::get()?;
+
+        pending_actor.wallet = ctx.accounts.wallet.key();
+        pending_actor.name = name;
+        pending_actor.requested_role = requested_role;
+        pending_actor.location = location;
+        pending_actor.created_at = clock.unix_timestamp;
+        pending_actor.bump = ctx.bumps.pending_actor;
+
+        msg!("Pending actor registration created");
+        msg!("Wallet: {}", pending_actor.wallet);
+
+        Ok(())
+    }
+
+    pub fn validate_actor(ctx: Context<ValidateActor>) -> Result<()> {
+        let config = &ctx.accounts.program_config;
+        require!(
+            config.authority == ctx.accounts.authority.key(),
+            TrazaError::UnauthorizedAuthority
+        );
+
+        let pending = &ctx.accounts.pending_actor;
+        let actor = &mut ctx.accounts.actor;
+
+        actor.wallet = pending.wallet;
+        actor.name = pending.name.clone();
+        actor.role = pending.requested_role.clone();
+        actor.location = pending.location.clone();
+        actor.is_active = true;
+        actor.created_at = Clock::get()?.unix_timestamp;
+        actor.bump = ctx.bumps.actor;
+
+        msg!("Actor validated");
+        msg!("Actor wallet: {}", actor.wallet);
+
+        Ok(())
+    }
+
+    pub fn create_batch(
+        ctx: Context<CreateBatch>,
+        product: String,
+        origin: String,
+        quantity: u64,
+        unit: String,
+        harvest_date: i64,
+    ) -> Result<()> {
+        require!(quantity > 0, TrazaError::InvalidQuantity);
+        require!(
+            product.len() <= Batch::PRODUCT_MAX_LEN,
+            TrazaError::FieldTooLong
         );
         require!(
-            ctx.accounts.role_registry.data_is_empty(),
-            error::TrazaError::RoleAlreadyValidated
+            origin.len() <= Batch::ORIGIN_MAX_LEN,
+            TrazaError::FieldTooLong
         );
-
-        let clock = Clock::get()?;
-        let pending = &mut ctx.accounts.pending_role;
-        let (_, bump) =
-            Pubkey::find_program_address(&[b"pending_role", ctx.accounts.wallet.key().as_ref()], ctx.program_id);
-
-        pending.wallet = ctx.accounts.wallet.key();
-        pending.requested_role = requested_role.clone();
-        pending.bump = bump;
-        pending.created_at = clock.unix_timestamp;
-
-        msg!("Role registration requested: {:?} for {:?}", pending.requested_role, pending.wallet);
-        Ok(())
-    }
-
-    pub fn validate_role(ctx: Context<ValidateRole>) -> Result<()> {
-        let pending = &ctx.accounts.pending_role;
-        let clock = Clock::get()?;
-        let (_, bump) = Pubkey::find_program_address(&[b"role_registry", pending.wallet.as_ref()], ctx.program_id);
-
-        let registry = &mut ctx.accounts.role_registry;
-        registry.wallet = pending.wallet;
-        registry.role = pending.requested_role.clone();
-        registry.bump = bump;
-        registry.validated_at = clock.unix_timestamp;
-
-        msg!("Role validated: {:?} for {:?}", registry.role, registry.wallet);
-        Ok(())
-    }
-
-    pub fn create_token(ctx: Context<CreateToken>, amount: u64, metadata: String) -> Result<()> {
-        require!(amount > 0, error::TrazaError::InvalidAmount);
         require!(
-            metadata.len() <= TraceToken::METADATA_MAX_LEN,
-            error::TrazaError::MetadataTooLong
+            unit.len() <= Batch::UNIT_MAX_LEN,
+            TrazaError::FieldTooLong
         );
 
-        let clock = Clock::get()?;
-        let (_, token_bump) = Pubkey::find_program_address(
-            &[b"trace_token", ctx.accounts.mint.key().as_ref()],
-            ctx.program_id,
-        );
-        let (_, balance_bump) = Pubkey::find_program_address(
-            &[b"token_balance", ctx.accounts.mint.key().as_ref(), ctx.accounts.creator.key().as_ref()],
-            ctx.program_id,
-        );
-
-        let token = &mut ctx.accounts.trace_token;
-        token.mint = ctx.accounts.mint.key();
-        token.creator = ctx.accounts.creator.key();
-        token.creator_role = ctx.accounts.role_registry.role.clone();
-        token.total_supply = amount;
-        token.status = TokenStatus::Created;
-        token.source_tokens = vec![];
-        token.metadata = metadata;
-        token.created_at = clock.unix_timestamp;
-        token.bump = token_bump;
-
-        let balance = &mut ctx.accounts.creator_balance;
-        balance.token_mint = ctx.accounts.mint.key();
-        balance.owner = ctx.accounts.creator.key();
-        balance.balance = amount;
-        balance.bump = balance_bump;
-        balance.last_updated = clock.unix_timestamp;
-
-        if token.creator_role == Role::Factory {
-            let remaining = ctx.remaining_accounts;
-            require!(remaining.len() > 0, error::TrazaError::FactoryRequiresSourceTokens);
-            require!(
-                remaining.len() <= TraceToken::SOURCE_TOKENS_MAX,
-                error::TrazaError::FactoryRequiresSourceTokens
-            );
-
-            for acc in remaining.iter() {
-                let data = acc.try_borrow_data()?;
-                require!(
-                    data.len() >= 8 + 32 + 32 + 4,
-                    error::TrazaError::InvalidSourceTokenCreator
-                );
-                let mut offset = 8;
-                let mint = Pubkey::try_from_slice(&data[offset..offset + 32])?;
-                offset += 32;
-                offset += 32;
-                let creator_role_byte = data[offset];
-                require!(creator_role_byte == 0, error::TrazaError::InvalidSourceTokenCreator);
-                token.source_tokens.push(mint);
-            }
-        }
-
-        msg!("Token created: mint={:?}, total_supply={}, creator={:?}", token.mint, token.total_supply, token.creator);
-        Ok(())
-    }
-
-    pub fn initiate_transfer(ctx: Context<InitiateTransfer>, amount: u64) -> Result<()> {
-        require!(amount > 0, error::TrazaError::InvalidAmount);
+        let actor = &ctx.accounts.actor;
+        require!(actor.is_active, TrazaError::InactiveActor);
         require!(
-            ctx.accounts.from.key() != ctx.accounts.to.key(),
-            error::TrazaError::TransferToSelf
+            actor.role == ActorRole::Producer,
+            TrazaError::InvalidBatchCreatorRole
         );
 
-        let from_role = &ctx.accounts.from_role_registry.role;
-        let to_role = &ctx.accounts.to_role_registry.role;
-
-        let valid = matches!(
-            (from_role, to_role),
-            (Role::Producer, Role::Factory)
-                | (Role::Factory, Role::Retailer)
-                | (Role::Retailer, Role::Consumer)
-        );
-        require!(valid, error::TrazaError::InvalidTransferPath);
-
+        let config = &mut ctx.accounts.program_config;
+        let batch = &mut ctx.accounts.batch;
         let clock = Clock::get()?;
-        let (_, bump) = Pubkey::find_program_address(
-            &[b"pending_transfer", ctx.accounts.trace_token.mint.as_ref(), ctx.accounts.from.key().as_ref(), ctx.accounts.to.key().as_ref()],
-            ctx.program_id,
+
+        let batch_id = config.next_batch_id;
+        config.next_batch_id = config
+            .next_batch_id
+            .checked_add(1)
+            .unwrap();
+
+        batch.id = batch_id;
+        batch.creator = ctx.accounts.creator.key();
+        batch.product = product;
+        batch.origin = origin;
+        batch.quantity = quantity;
+        batch.unit = unit;
+        batch.harvest_date = harvest_date;
+        batch.created_at = clock.unix_timestamp;
+        batch.status = BatchStatus::Created;
+        batch.event_count = 0;
+        batch.certificate_count = 0;
+        batch.bump = ctx.bumps.batch;
+
+        msg!("Batch created");
+        msg!("Batch ID: {}", batch.id);
+        msg!("Product: {}", batch.product);
+
+        Ok(())
+    }
+    pub fn record_event(
+        ctx: Context<RecordEvent>,
+        batch_id: u64,
+        event_type: String,
+        location: String,
+        metadata: String,
+    ) -> Result<()> {
+        require!(
+            event_type.len() <= BatchEvent::EVENT_TYPE_MAX_LEN,
+            TrazaError::FieldTooLong
+        );
+        require!(
+            location.len() <= BatchEvent::LOCATION_MAX_LEN,
+            TrazaError::FieldTooLong
+        );
+        require!(
+            metadata.len() <= BatchEvent::METADATA_MAX_LEN,
+            TrazaError::FieldTooLong
         );
 
-        let pending = &mut ctx.accounts.pending_transfer;
-        pending.token_mint = ctx.accounts.trace_token.mint;
-        pending.from = ctx.accounts.from.key();
-        pending.to = ctx.accounts.to.key();
-        pending.amount = amount;
-        pending.bump = bump;
-        pending.initiated_at = clock.unix_timestamp;
+        let actor = &ctx.accounts.actor;
+        require!(actor.is_active, TrazaError::InactiveActor);
 
-        msg!(
-            "Transfer initiated: token={:?} from={:?} to={:?} amount={}",
-            pending.token_mint,
-            pending.from,
-            pending.to,
-            pending.amount
-        );
+        let batch = &mut ctx.accounts.batch;
+        let event = &mut ctx.accounts.batch_event;
+        let config = &mut ctx.accounts.program_config;
+        let clock = Clock::get()?;
+
+        let event_id = config.next_event_id;
+        config.next_event_id = config
+            .next_event_id
+            .checked_add(1)
+            .unwrap();
+
+        event.id = event_id;
+        event.batch_id = batch_id;
+        event.event_type = event_type;
+        event.actor = ctx.accounts.actor_wallet.key();
+        event.location = location;
+        event.timestamp = clock.unix_timestamp;
+        event.metadata = metadata;
+        event.bump = ctx.bumps.batch_event;
+
+        batch.event_count = batch
+            .event_count
+            .checked_add(1)
+            .unwrap();
+
+        msg!("Batch event recorded");
+        msg!("Batch ID: {}", batch_id);
+        msg!("Event ID: {}", event.id);
+
         Ok(())
     }
 
-    pub fn accept_transfer(ctx: Context<AcceptTransfer>) -> Result<()> {
-        let pending = &ctx.accounts.pending_transfer;
-        let clock = Clock::get()?;
-        let (_, to_bump) = Pubkey::find_program_address(
-            &[b"token_balance", ctx.accounts.trace_token.mint.as_ref(), ctx.accounts.to.key().as_ref()],
-            ctx.program_id,
+    #[derive(Accounts)]
+    #[instruction(batch_id: u64)]
+    pub struct UpdateBatchStatus<'info> {
+        #[account(
+            seeds = [b"actor", actor_wallet.key().as_ref()],
+            bump = actor.bump
+        )]
+        pub actor: Account<'info, Actor>,
+
+        #[account(
+            mut,
+            seeds = [b"batch", batch.creator.as_ref(), &batch_id.to_le_bytes()],
+            bump = batch.bump,
+            constraint = batch.id == batch_id @ TrazaError::InvalidBatchAccount
+        )]
+        pub batch: Account<'info, Batch>,
+
+        pub actor_wallet: Signer<'info>,
+    }  
+    
+    #[derive(Accounts)]
+    #[instruction(batch_id: u64)]
+    pub struct IssueCertificate<'info> {
+        #[account(
+            mut,
+            seeds = [b"config"],
+            bump = program_config.bump
+        )]
+        pub program_config: Account<'info, ProgramConfig>,
+
+        #[account(
+            mut,
+            seeds = [b"batch", batch.creator.as_ref(), &batch_id.to_le_bytes()],
+            bump = batch.bump,
+            constraint = batch.id == batch_id @ TrazaError::InvalidBatchAccount
+        )]
+        pub batch: Account<'info, Batch>,
+
+        #[account(
+            init,
+            payer = authority,
+            space = 8 + Certificate::LEN,
+            seeds = [
+                b"certificate",
+                batch_id.to_le_bytes().as_ref(),
+                program_config.next_certificate_id.to_le_bytes().as_ref()
+            ],
+            bump
+        )]
+        pub certificate: Account<'info, Certificate>,
+
+        #[account(mut)]
+        pub authority: Signer<'info>,
+
+        pub system_program: Program<'info, System>,
+    }    
+
+    pub fn update_batch_status(
+        ctx: Context<UpdateBatchStatus>,
+        batch_id: u64,
+        new_status: BatchStatus,
+    ) -> Result<()> {
+        let actor = &ctx.accounts.actor;
+        require!(actor.is_active, TrazaError::InactiveActor);
+
+        let batch = &mut ctx.accounts.batch;
+        require!(batch.id == batch_id, TrazaError::InvalidBatchAccount);
+
+        let current_status = batch.status.clone();
+
+        let valid_transition = matches!(
+            (&current_status, &new_status),
+            (BatchStatus::Created, BatchStatus::Harvested)
+                | (BatchStatus::Harvested, BatchStatus::Fermented)
+                | (BatchStatus::Fermented, BatchStatus::Dried)
+                | (BatchStatus::Dried, BatchStatus::InTransit)
+                | (BatchStatus::InTransit, BatchStatus::Stored)
+                | (BatchStatus::Stored, BatchStatus::Certified)
+                | (BatchStatus::Certified, BatchStatus::Exported)
+                | (BatchStatus::Exported, BatchStatus::Delivered)
         );
 
-        // Transfer from sender's balance
-        ctx.accounts.from_balance.balance = ctx.accounts.from_balance.balance
-            .checked_sub(pending.amount)
-            .ok_or(error::TrazaError::InsufficientBalance)?;
-        ctx.accounts.from_balance.last_updated = clock.unix_timestamp;
+        require!(
+            valid_transition,
+            TrazaError::InvalidBatchStatusTransition
+        );
 
-        // Add to receiver's balance
-        let to_balance = &mut ctx.accounts.to_balance;
-        if to_balance.owner == Pubkey::default() {
-            // Initialize new balance account
-            to_balance.token_mint = ctx.accounts.trace_token.mint;
-            to_balance.owner = ctx.accounts.to.key();
-            to_balance.bump = to_bump;
-        }
-        to_balance.balance = to_balance.balance
-            .checked_add(pending.amount)
-            .ok_or(error::TrazaError::TransferAmountExceedsTokenAmount)?;
-        to_balance.last_updated = clock.unix_timestamp;
+        batch.status = new_status.clone();
 
-        msg!("Transfer accepted: token={:?} from={:?} to={:?} amount={}", ctx.accounts.trace_token.mint, pending.from, pending.to, pending.amount);
+        msg!("Batch status updated");
+        msg!("Batch ID: {}", batch.id);
+        msg!("New status: {:?}", new_status);
+
         Ok(())
     }
+
+    pub fn issue_certificate(
+        ctx: Context<IssueCertificate>,
+        batch_id: u64,
+        certificate_type: String,
+        issuer: String,
+        document_hash: String,
+        expiry_date: i64,
+    ) -> Result<()> {
+        require!(
+            certificate_type.len() <= Certificate::CERTIFICATE_TYPE_MAX_LEN,
+            TrazaError::FieldTooLong
+        );
+        require!(
+            issuer.len() <= Certificate::ISSUER_MAX_LEN,
+            TrazaError::FieldTooLong
+        );
+        require!(
+            document_hash.len() <= Certificate::DOCUMENT_HASH_MAX_LEN,
+            TrazaError::FieldTooLong
+        );
+
+        let config = &ctx.accounts.program_config;
+        require!(
+            config.authority == ctx.accounts.authority.key(),
+            TrazaError::OnlyAuthorityCanIssueCertificates
+        );
+
+        let batch = &mut ctx.accounts.batch;
+        require!(batch.id == batch_id, TrazaError::InvalidBatchAccount);
+
+        let certificate = &mut ctx.accounts.certificate;
+        let clock = Clock::get()?;
+        let config = &mut ctx.accounts.program_config;
+
+        let certificate_id = config.next_certificate_id;
+        config.next_certificate_id = config
+            .next_certificate_id
+            .checked_add(1)
+            .unwrap();
+
+        certificate.id = certificate_id;
+        certificate.batch_id = batch_id;
+        certificate.certificate_type = certificate_type;
+        certificate.issuer = issuer;
+        certificate.document_hash = document_hash;
+        certificate.issued_date = clock.unix_timestamp;
+        certificate.expiry_date = expiry_date;
+        certificate.status = CertificateStatus::Valid;
+        certificate.bump = ctx.bumps.certificate;
+
+        batch.certificate_count = batch
+            .certificate_count
+            .checked_add(1)
+            .unwrap();
+
+        msg!("Certificate issued");
+        msg!("Certificate ID: {}", certificate.id);
+        msg!("Batch ID: {}", batch_id);
+
+        Ok(())
+    }
+
 }
 
 #[derive(Accounts)]
 pub struct Initialize<'info> {
-    #[account(init, payer = authority, space = 8 + ProgramConfig::LEN, seeds = [b"config"], bump)]
+    #[account(
+        init,
+        payer = authority,
+        space = 8 + ProgramConfig::LEN,
+        seeds = [b"config"],
+        bump
+    )]
     pub program_config: Account<'info, ProgramConfig>,
 
     #[account(mut)]
@@ -213,18 +374,18 @@ pub struct Initialize<'info> {
 }
 
 #[derive(Accounts)]
-pub struct RegisterRole<'info> {
+pub struct RegisterActor<'info> {
     #[account(
         init,
         payer = wallet,
-        space = 8 + PendingRoleRegistration::LEN,
-        seeds = [b"pending_role", wallet.key().as_ref()],
+        space = 8 + PendingActor::LEN,
+        seeds = [b"pending_actor", wallet.key().as_ref()],
         bump
     )]
-    pub pending_role: Account<'info, PendingRoleRegistration>,
+    pub pending_actor: Account<'info, PendingActor>,
 
-    /// CHECK: Pass RoleRegistry PDA - must be empty
-    pub role_registry: UncheckedAccount<'info>,
+    /// CHECK: This PDA is expected to be empty before validation.
+    pub actor: UncheckedAccount<'info>,
 
     #[account(mut)]
     pub wallet: Signer<'info>,
@@ -233,30 +394,29 @@ pub struct RegisterRole<'info> {
 }
 
 #[derive(Accounts)]
-pub struct ValidateRole<'info> {
+pub struct ValidateActor<'info> {
     #[account(
         seeds = [b"config"],
-        bump = program_config.bump,
-        constraint = program_config.authority == authority.key() @ error::TrazaError::UnauthorizedAuthority
+        bump = program_config.bump
     )]
     pub program_config: Account<'info, ProgramConfig>,
 
     #[account(
         mut,
         close = authority,
-        seeds = [b"pending_role", pending_role.wallet.as_ref()],
-        bump = pending_role.bump
+        seeds = [b"pending_actor", pending_actor.wallet.as_ref()],
+        bump = pending_actor.bump
     )]
-    pub pending_role: Account<'info, PendingRoleRegistration>,
+    pub pending_actor: Account<'info, PendingActor>,
 
     #[account(
         init,
         payer = authority,
-        space = 8 + RoleRegistry::LEN,
-        seeds = [b"role_registry", pending_role.wallet.as_ref()],
+        space = 8 + Actor::LEN,
+        seeds = [b"actor", pending_actor.wallet.as_ref()],
         bump
     )]
-    pub role_registry: Account<'info, RoleRegistry>,
+    pub actor: Account<'info, Actor>,
 
     #[account(mut)]
     pub authority: Signer<'info>,
@@ -265,33 +425,28 @@ pub struct ValidateRole<'info> {
 }
 
 #[derive(Accounts)]
-pub struct CreateToken<'info> {
+pub struct CreateBatch<'info> {
     #[account(
-        init,
-        payer = creator,
-        space = 8 + TraceToken::LEN,
-        seeds = [b"trace_token", mint.key().as_ref()],
-        bump
+        mut,
+        seeds = [b"config"],
+        bump = program_config.bump
     )]
-    pub trace_token: Account<'info, TraceToken>,
+    pub program_config: Account<'info, ProgramConfig>,
+
+    #[account(
+        seeds = [b"actor", creator.key().as_ref()],
+        bump = actor.bump
+    )]
+    pub actor: Account<'info, Actor>,
 
     #[account(
         init,
         payer = creator,
-        space = 8 + TokenBalance::LEN,
-        seeds = [b"token_balance", mint.key().as_ref(), creator.key().as_ref()],
+        space = 8 + Batch::LEN,
+        seeds = [b"batch", creator.key().as_ref(), &program_config.next_batch_id.to_le_bytes()],
         bump
     )]
-    pub creator_balance: Account<'info, TokenBalance>,
-
-    pub mint: Signer<'info>,
-
-    #[account(
-        seeds = [b"role_registry", creator.key().as_ref()],
-        bump = role_registry.bump,
-        constraint = role_registry.role == Role::Producer || role_registry.role == Role::Factory @ error::TrazaError::InvalidCreatorRole
-    )]
-    pub role_registry: Account<'info, RoleRegistry>,
+    pub batch: Account<'info, Batch>,
 
     #[account(mut)]
     pub creator: Signer<'info>,
@@ -300,85 +455,44 @@ pub struct CreateToken<'info> {
 }
 
 #[derive(Accounts)]
-pub struct InitiateTransfer<'info> {
+#[instruction(batch_id: u64)]
+pub struct RecordEvent<'info> {
     #[account(
         mut,
-        seeds = [b"trace_token", trace_token.mint.as_ref()],
-        bump = trace_token.bump
+        seeds = [b"config"],
+        bump = program_config.bump
     )]
-    pub trace_token: Account<'info, TraceToken>,
+    pub program_config: Account<'info, ProgramConfig>,
+
+    #[account(
+        seeds = [b"actor", actor_wallet.key().as_ref()],
+        bump = actor.bump
+    )]
+    pub actor: Account<'info, Actor>,
 
     #[account(
         mut,
-        seeds = [b"token_balance", trace_token.mint.as_ref(), from.key().as_ref()],
-        bump = from_balance.bump
+        seeds = [b"batch", batch.creator.as_ref(), &batch_id.to_le_bytes()],
+        bump = batch.bump,
+        constraint = batch.id == batch_id @ TrazaError::InvalidBatchAccount
     )]
-    pub from_balance: Account<'info, TokenBalance>,
+    pub batch: Account<'info, Batch>,
 
     #[account(
         init,
-        payer = from,
-        space = 8 + PendingTransfer::LEN,
-        seeds = [b"pending_transfer", trace_token.mint.as_ref(), from.key().as_ref(), to.key().as_ref()],
+        payer = actor_wallet,
+        space = 8 + BatchEvent::LEN,
+        seeds = [
+            b"event",
+            batch_id.to_le_bytes().as_ref(),
+            program_config.next_event_id.to_le_bytes().as_ref()
+        ],
         bump
     )]
-    pub pending_transfer: Account<'info, PendingTransfer>,
-
-    #[account(seeds = [b"role_registry", from.key().as_ref()], bump = from_role_registry.bump)]
-    pub from_role_registry: Account<'info, RoleRegistry>,
-
-    /// CHECK: Receiver
-    pub to: UncheckedAccount<'info>,
-
-    #[account(seeds = [b"role_registry", to.key().as_ref()], bump = to_role_registry.bump)]
-    pub to_role_registry: Account<'info, RoleRegistry>,
+    pub batch_event: Account<'info, BatchEvent>,
 
     #[account(mut)]
-    pub from: Signer<'info>,
-
-    pub system_program: Program<'info, System>,
-}
-
-#[derive(Accounts)]
-pub struct AcceptTransfer<'info> {
-    #[account(
-        mut,
-        seeds = [b"trace_token", trace_token.mint.as_ref()],
-        bump = trace_token.bump
-    )]
-    pub trace_token: Account<'info, TraceToken>,
-
-    #[account(
-        mut,
-        close = to,
-        seeds = [b"pending_transfer", trace_token.mint.as_ref(), pending_transfer.from.as_ref(), to.key().as_ref()],
-        bump = pending_transfer.bump,
-        constraint = pending_transfer.to == to.key() @ error::TrazaError::InvalidTransferPath
-    )]
-    pub pending_transfer: Account<'info, PendingTransfer>,
-
-    #[account(
-        mut,
-        seeds = [b"token_balance", trace_token.mint.as_ref(), pending_transfer.from.as_ref()],
-        bump = from_balance.bump
-    )]
-    pub from_balance: Account<'info, TokenBalance>,
-
-    #[account(
-        init_if_needed,
-        payer = to,
-        space = 8 + TokenBalance::LEN,
-        seeds = [b"token_balance", trace_token.mint.as_ref(), to.key().as_ref()],
-        bump,
-        constraint = to_balance.token_mint == trace_token.mint || to_balance.owner == Pubkey::default()
-    )]
-    pub to_balance: Account<'info, TokenBalance>,
-
-    #[account(seeds = [b"role_registry", to.key().as_ref()], bump = role_registry.bump)]
-    pub role_registry: Account<'info, RoleRegistry>,
-
-    #[account(mut)]
-    pub to: Signer<'info>,
+    pub actor_wallet: Signer<'info>,
 
     pub system_program: Program<'info, System>,
 }

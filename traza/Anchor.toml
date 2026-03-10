@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-traza = "27w7DWngggMpAEERYrin3rKKkcyaLFvV5VmvP2nEKFys"
+traza = "H79yGB29eEZAf1Gi3oPDAUG2Xcv8eoMSULbfyXPR3sNX"
 
 [registry]
 url = "https://api.apr.dev"

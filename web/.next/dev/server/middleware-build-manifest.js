@@ -1,0 +1,26 @@
+globalThis.__BUILD_MANIFEST = {
+  "pages": {
+    "/_app": []
+  },
+  "devFiles": [],
+  "polyfillFiles": [
+    "static/chunks/df586_next_dist_build_polyfills_polyfill-nomodule.js"
+  ],
+  "lowPriorityFiles": [],
+  "rootMainFiles": [
+    "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_0b42274e._.js",
+    "static/chunks/df586_next_dist_compiled_react-dom_3bdf1a3b._.js",
+    "static/chunks/df586_next_dist_compiled_react-server-dom-turbopack_4eead67c._.js",
+    "static/chunks/df586_next_dist_compiled_next-devtools_index_78072f53.js",
+    "static/chunks/df586_next_dist_compiled_74d9601d._.js",
+    "static/chunks/df586_next_dist_client_c72bd00c._.js",
+    "static/chunks/df586_next_dist_4356e77e._.js",
+    "static/chunks/df586_@swc_helpers_cjs_9f129ad8._.js",
+    "static/chunks/pfm-rust-solana-2026_web_a0ff3932._.js",
+    "static/chunks/turbopack-pfm-rust-solana-2026_web_be190d0e._.js"
+  ]
+};
+globalThis.__BUILD_MANIFEST.lowPriorityFiles = [
+"/static/" + process.env.__NEXT_BUILD_ID + "/_buildManifest.js",
+"/static/" + process.env.__NEXT_BUILD_ID + "/_ssgManifest.js"
+];

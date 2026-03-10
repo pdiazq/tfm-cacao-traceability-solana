@@ -2,48 +2,54 @@ use anchor_lang::prelude::*;
 
 #[error_code]
 pub enum TrazaError {
-    #[msg("Only the program authority can validate roles")]
+    #[msg("Only the program authority can perform this action")]
     UnauthorizedAuthority,
 
-    #[msg("User already has a validated role")]
-    RoleAlreadyValidated,
+    #[msg("Actor already has a validated role")]
+    ActorAlreadyValidated,
 
-    #[msg("Invalid role registry account")]
-    InvalidRoleRegistryAccount,
+    #[msg("Actor already has a pending registration")]
+    PendingActorAlreadyExists,
 
-    #[msg("User already has a pending role registration")]
-    PendingRoleAlreadyExists,
+    #[msg("Invalid actor account")]
+    InvalidActorAccount,
 
-    #[msg("Invalid role: only Producer or Factory can create tokens")]
-    InvalidCreatorRole,
+    #[msg("Only producers can create cacao batches")]
+    InvalidBatchCreatorRole,
 
-    #[msg("Factory must provide at least one source token from a Producer")]
-    FactoryRequiresSourceTokens,
+    #[msg("Only validated and active actors can perform this action")]
+    ActorNotAuthorized,
 
-    #[msg("Source token must be created by a Producer")]
-    InvalidSourceTokenCreator,
+    #[msg("Batch quantity must be greater than zero")]
+    InvalidQuantity,
 
-    #[msg("Amount must be greater than zero")]
-    InvalidAmount,
+    #[msg("String field exceeds maximum allowed length")]
+    FieldTooLong,
 
-    #[msg("Transfer amount exceeds token amount")]
-    TransferAmountExceedsTokenAmount,
+    #[msg("Invalid batch status transition")]
+    InvalidBatchStatusTransition,
 
-    #[msg("Invalid transfer: only Producer->Factory, Factory->Retailer, Retailer->Consumer allowed")]
-    InvalidTransferPath,
+    #[msg("Only the authority can issue certificates")]
+    OnlyAuthorityCanIssueCertificates,
 
-    #[msg("Token is already in transfer")]
-    TokenAlreadyInTransfer,
+    #[msg("Only the authority can revoke certificates")]
+    OnlyAuthorityCanRevokeCertificates,
 
-    #[msg("Token is not in transfer status")]
-    TokenNotInTransfer,
+    #[msg("Certificate is already revoked")]
+    CertificateAlreadyRevoked,
 
-    #[msg("Insufficient balance for transfer")]
-    InsufficientBalance,
+    #[msg("Certificate is already expired")]
+    CertificateAlreadyExpired,
 
-    #[msg("Cannot transfer to the same account")]
-    TransferToSelf,
+    #[msg("The actor role is not allowed to record this event")]
+    InvalidEventActorRole,
 
-    #[msg("Metadata exceeds maximum length")]
-    MetadataTooLong,
+    #[msg("The batch does not exist or does not belong to the expected PDA")]
+    InvalidBatchAccount,
+
+    #[msg("The actor is inactive")]
+    InactiveActor,
+
+    #[msg("The program has already been initialized")]
+    ProgramAlreadyInitialized,
 }
