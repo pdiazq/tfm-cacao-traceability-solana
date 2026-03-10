@@ -308,6 +308,23 @@ pub mod traza {
             TrazaError::InvalidBatchStatusTransition
         );
 
+        let allowed_role = match (&actor.role, &new_status) {
+            (ActorRole::Producer, BatchStatus::Harvested) => true,
+            (ActorRole::Processor, BatchStatus::Fermented) => true,
+            (ActorRole::Processor, BatchStatus::Dried) => true,
+            (ActorRole::Transporter, BatchStatus::InTransit) => true,
+            (ActorRole::Transporter, BatchStatus::Stored) => true,
+            (ActorRole::Authority, BatchStatus::Certified) => true,
+            (ActorRole::Exporter, BatchStatus::Exported) => true,
+            (ActorRole::Exporter, BatchStatus::Delivered) => true,
+            _ => false,
+        };
+
+        require!(
+            allowed_role,
+            TrazaError::InvalidEventActorRole
+        );
+
         batch.status = new_status.clone();
 
         msg!("Batch status updated");
