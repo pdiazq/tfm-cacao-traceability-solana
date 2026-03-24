@@ -100,7 +100,7 @@ El flujo principal del sistema sigue el recorrido completo de un lote de cacao:
 
 Ver archivo en:
 
-- `docs/diagrama_flujo_cacao_solana_academico.svg`
+- `docs/diagrama_flujo_cacao_solana.svg`
 
 ---
 
@@ -368,6 +368,12 @@ Diagramas Técnicos
 Ver carpeta:
 • docs/diagrama_arquitectura_cacao_solana.svg
 • docs/diagrama_flujo_cacao_solana.svg
+
+⸻
+
+Documento final
+Ver carpeta:
+• docs/Sistema de trazabilidad alimentaria de cacao sobre Solana.pdf
 
 ⸻
 
