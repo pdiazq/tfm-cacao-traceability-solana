@@ -1,1 +1,31 @@
-test-ledger
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Next
+.next/
+out/
+
+# Build
+dist/
+coverage/
+target/
+
+# Solana / Anchor
+test-ledger/
+.anchor/
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# OS / editors
+.DS_Store
+.vscode/
+.idea/
+
+# Logs
+*.log

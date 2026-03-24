@@ -17,26 +17,32 @@ export function Sidebar() {
   const { role, hasPendingRequest, isAuthority, loading } = useRole();
 
   const getRoleEmoji = (role: string | null) => {
-    if (isAuthority) return "🔐";
+    if (isAuthority || role === "authority") return "🛡️";
     if (!role) return hasPendingRequest ? "📋" : "👤";
-    const emojiMap: { [key: string]: string } = {
+
+    const emojiMap: Record<string, string> = {
       producer: "🌱",
-      factory: "🏭",
-      retailer: "🏪",
-      consumer: "👥",
+      processor: "🏭",
+      transporter: "🚚",
+      exporter: "📦",
+      authority: "🛡️",
     };
+
     return emojiMap[role] || "👤";
   };
 
   const getRoleLabel = (role: string | null) => {
-    if (isAuthority) return "Autoridad";
-    if (!role) return "Sin Rol";
-    const labelMap: { [key: string]: string } = {
-      producer: "Productor",
-      factory: "Fábrica",
-      retailer: "Minorista",
-      consumer: "Consumidor",
+    if (isAuthority || role === "authority") return "Authority";
+    if (!role) return "No Role";
+
+    const labelMap: Record<string, string> = {
+      producer: "Producer",
+      processor: "Processor",
+      transporter: "Transporter",
+      exporter: "Exporter",
+      authority: "Authority",
     };
+
     return labelMap[role] || role;
   };
 
@@ -53,52 +59,68 @@ export function Sidebar() {
     );
   }
 
-  // Role selection or pending approval
   if (!role && hasPendingRequest) {
     navItems = [
-      { label: "Solicitud Pendiente", href: "/register-role", badge: "pending", emoji: "⏱️" },
+      {
+        label: "Pending Registration",
+        href: "/register-role",
+        badge: "pending",
+        emoji: "⏱️",
+      },
     ];
-  } else if (!role) {
-    navItems = [];
-  } else if (isAuthority) {
+  } else if (!role && !isAuthority) {
     navItems = [
-      { label: "Inicializar", href: "/dashboard/authority/initialize", emoji: "🚀" },
-      { label: "Validar Roles", href: "/dashboard/authority/validate-roles", emoji: "✓" },
+      {
+        label: "Register Actor",
+        href: "/register-role",
+        emoji: "📝",
+      },
+    ];
+  } else if (isAuthority || role === "authority") {
+    navItems = [
+      { label: "Authority Dashboard", href: "/dashboard/authority", emoji: "🛡️" },
+      { label: "Register Actor", href: "/register-role", emoji: "📝" },
     ];
   } else if (role === "producer") {
     navItems = [
-      { label: "Crear Token", href: "/dashboard/producer/create-token", emoji: "📦" },
-      { label: "Mis Tokens", href: "/dashboard/producer/my-tokens", emoji: "🌱" },
-      { label: "Transferencias", href: "/dashboard/producer/transfers", emoji: "🔄" },
+      { label: "Producer Dashboard", href: "/dashboard/producer", emoji: "🌱" },
+      { label: "Create Batch", href: "/dashboard/producer/create-batch", emoji: "🍫" },
+      { label: "Record Harvest", href: "/dashboard/producer/record-harvest", emoji: "🌾" },
+      { label: "My Batches", href: "/dashboard/producer/my-batches", emoji: "📋" },
     ];
-  } else if (role === "factory") {
+  } else if (role === "processor") {
     navItems = [
-      { label: "Crear Producto", href: "/dashboard/factory/create-token", emoji: "⚙️" },
-      { label: "Mis Productos", href: "/dashboard/factory/my-tokens", emoji: "🏭" },
-      { label: "Transferencias", href: "/dashboard/factory/transfers", emoji: "🔄" },
+      { label: "Processor Dashboard", href: "/dashboard/processor", emoji: "🏭" },
+      { label: "Fermentation", href: "/dashboard/processor/record-fermentation", emoji: "🧪" },
+      { label: "Drying", href: "/dashboard/processor/record-drying", emoji: "☀️" },
+      { label: "Update Status", href: "/dashboard/processor/update-status", emoji: "🔄" },
     ];
-  } else if (role === "retailer") {
+  } else if (role === "transporter") {
     navItems = [
-      { label: "Mi Inventario", href: "/dashboard/retailer/my-tokens", emoji: "🏪" },
-      { label: "Transferencias", href: "/dashboard/retailer/transfers", emoji: "🔄" },
+      { label: "Transporter Dashboard", href: "/dashboard/transporter", emoji: "🚚" },
+      { label: "Record Transport", href: "/dashboard/transporter/record-transport", emoji: "🚚" },
+      { label: "Record Storage", href: "/dashboard/transporter/record-storage", emoji: "🏬" },
+      { label: "Update Status", href: "/dashboard/transporter/update-status", emoji: "🔄" },
     ];
-  } else if (role === "consumer") {
+  } else if (role === "exporter") {
     navItems = [
-      { label: "Mis Productos", href: "/dashboard/consumer/my-tokens", emoji: "🛒" },
-      { label: "Transferencias", href: "/dashboard/consumer/transfers", emoji: "🔄" },
+      { label: "Exporter Dashboard", href: "/dashboard/exporter", emoji: "📦" },
+      { label: "Record Export", href: "/dashboard/exporter/record-export", emoji: "🌍" },
+      { label: "Update Status", href: "/dashboard/exporter/update-status", emoji: "🔄" },
+      { label: "My Batches", href: "/dashboard/exporter/my-batches", emoji: "📋" },
     ];
   }
 
   return (
     <aside className="w-64 bg-white border-r border-4 border-black min-h-screen flex flex-col">
-      {/* Header Section */}
       <div className="p-6 border-b-4 border-black bg-black text-white">
         <div className="text-4xl mb-3">{getRoleEmoji(role)}</div>
         <h2 className="text-xl font-black mb-1">{getRoleLabel(role)}</h2>
-        <p className="text-xs text-gray-300 font-semibold">Solana Trazabilidad</p>
+        <p className="text-xs text-gray-300 font-semibold">
+          Cacao Traceability
+        </p>
       </div>
 
-      {/* Navigation Items */}
       <nav className="flex-1 p-4 space-y-2">
         {navItems.map((item) => (
           <Link
@@ -122,11 +144,10 @@ export function Sidebar() {
         ))}
       </nav>
 
-      {/* Footer */}
-      {role && (
+      {(role || isAuthority) && (
         <div className="p-4 border-t-4 border-black bg-gray-50">
           <p className="text-xs text-gray-600 font-semibold text-center">
-            v1.0 • Supply Chain
+            v2.0 • Cacao Supply Chain
           </p>
         </div>
       )}

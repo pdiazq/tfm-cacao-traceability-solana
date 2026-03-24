@@ -38,7 +38,7 @@ export function Header() {
     <header className="bg-white shadow">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
         <div className="flex items-center gap-4">
-          <h1 className="text-2xl font-bold text-gray-900">Solana Trazabilidad</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Trazabilidad Cacao con Solana</h1>
           {role && (
             <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getRoleColor(role)}`}>
               {formatRole(role)}

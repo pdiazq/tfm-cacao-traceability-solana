@@ -1,17 +1,21 @@
 import { useEffect, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useProgram } from "@/lib/context/ProgramProvider";
-import { getRoleRegistryPDA, getPendingRolePDA, getConfigPDA } from "@/lib/utils/pda";
+import {
+  getActorPDA,
+  getPendingActorPDA,
+  getProgramConfigPDA,
+} from "@/lib/utils/pda";
 
 /**
- * Normalize role enum object to string
+ * Normalize Anchor enum object to string
  */
-function normalizeRole(role: any): string | null {
-  if (!role) return null;
-  if (typeof role === "string") return role;
-  if (typeof role === "object") {
-    const roleKey = Object.keys(role)[0];
-    return roleKey || null;
+function normalizeEnum(value: any): string | null {
+  if (!value) return null;
+  if (typeof value === "string") return value;
+  if (typeof value === "object") {
+    const key = Object.keys(value)[0];
+    return key || null;
   }
   return null;
 }
@@ -29,6 +33,7 @@ interface UseRoleReturn {
 export function useRole(): UseRoleReturn {
   const { publicKey } = useWallet();
   const { program } = useProgram();
+
   const [role, setRole] = useState<string | null>(null);
   const [pendingRole, setPendingRole] = useState<string | null>(null);
   const [hasPendingRequest, setHasPendingRequest] = useState(false);
@@ -47,56 +52,50 @@ export function useRole(): UseRoleReturn {
     }
 
     try {
+      setLoading(true);
       setError(null);
-      let roleValue: string | null = null;
-      let hasPendingRequestValue = false;
+
+      let validatedRole: string | null = null;
       let pendingRoleValue: string | null = null;
+      let pending = false;
 
-      // Fetch RoleRegistry to check if user has an approved role
-      const [roleRegistryPDA] = getRoleRegistryPDA(publicKey);
+      // 1) Check validated actor
+      const [actorPda] = getActorPDA(publicKey);
       try {
-        const roleRegistry = await program.account.roleRegistry.fetch(
-          roleRegistryPDA
-        );
-        roleValue = normalizeRole(roleRegistry.role);
+        const actor = await program.account.actor.fetch(actorPda);
+        validatedRole = normalizeEnum(actor.role);
       } catch {
-        roleValue = null;
+        validatedRole = null;
       }
-      setRole(roleValue);
 
-      // Fetch PendingRoleRegistration to check if user has a pending request
-      const [pendingRolePDA] = getPendingRolePDA(publicKey);
+      // 2) Check pending actor request
+      const [pendingActorPda] = getPendingActorPDA(publicKey);
       try {
-        const pendingRoleReg = await program.account.pendingRoleRegistration.fetch(
-          pendingRolePDA
+        const pendingActor = await program.account.pendingActor.fetch(
+          pendingActorPda
         );
-        hasPendingRequestValue = true;
-        pendingRoleValue = normalizeRole(pendingRoleReg.requestedRole);
+        pending = true;
+        pendingRoleValue = normalizeEnum(pendingActor.requestedRole);
       } catch {
-        hasPendingRequestValue = false;
+        pending = false;
         pendingRoleValue = null;
       }
-      setHasPendingRequest(hasPendingRequestValue);
-      setPendingRole(pendingRoleValue);
 
-      // Check if user is authority
-      const [configPDA] = getConfigPDA();
+      // 3) Check if connected wallet is program authority
+      const [programConfigPda] = getProgramConfigPDA();
       try {
-        const config = await program.account.programConfig.fetch(configPDA);
+        const config = await program.account.programConfig.fetch(programConfigPda);
         setIsAuthority(config.authority.equals(publicKey));
       } catch {
-        // If config doesn't exist, check if user has a validated role
-        // If user has NO validated role and NO pending request, they could be the authority
-        if (!roleValue && !hasPendingRequestValue) {
-          setIsAuthority(true); // Allow user to initialize program
-        } else {
-          setIsAuthority(false);
-        }
+        setIsAuthority(false);
       }
 
-      setLoading(false);
+      setRole(validatedRole);
+      setPendingRole(pendingRoleValue);
+      setHasPendingRequest(pending);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to fetch role");
+      setError(err instanceof Error ? err.message : "Failed to fetch actor role");
+    } finally {
       setLoading(false);
     }
   };

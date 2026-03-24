@@ -1,10 +1,4 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/dashboard/page": "app/dashboard/page.js",
-  "/dashboard/producer/create-token/page": "app/dashboard/producer/create-token/page.js",
-  "/dashboard/producer/my-tokens/page": "app/dashboard/producer/my-tokens/page.js",
-  "/dashboard/producer/page": "app/dashboard/producer/page.js",
-  "/dashboard/producer/transfers/page": "app/dashboard/producer/transfers/page.js",
-  "/page": "app/page.js",
-  "/register-role/page": "app/register-role/page.js"
+  "/batches/[id]/page": "app/batches/[id]/page.js",
+  "/page": "app/page.js"
 }

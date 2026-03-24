@@ -1,66 +1,83 @@
+import BN from "bn.js";
 import { PublicKey } from "@solana/web3.js";
-import { PROGRAM_ID } from "@/lib/solana/constants";
+import { PROGRAM_ID, PDA_SEEDS } from "@/lib/solana/constants";
 
 /**
- * Get the ProgramConfig PDA
+ * Convert a u64-compatible value to 8-byte little-endian buffer
  */
-export function getConfigPDA(): [PublicKey, number] {
-  return PublicKey.findProgramAddressSync([Buffer.from("config")], PROGRAM_ID);
+function u64ToBuffer(value: string | number | bigint): Buffer {
+  return new BN(value.toString()).toArrayLike(Buffer, "le", 8);
 }
 
 /**
- * Get the RoleRegistry PDA for a wallet
+ * ProgramConfig PDA
  */
-export function getRoleRegistryPDA(wallet: PublicKey): [PublicKey, number] {
+export function getProgramConfigPDA(): [PublicKey, number] {
   return PublicKey.findProgramAddressSync(
-    [Buffer.from("role_registry"), wallet.toBuffer()],
+    [Buffer.from(PDA_SEEDS.PROGRAM_CONFIG)],
     PROGRAM_ID
   );
 }
 
 /**
- * Get the PendingRoleRegistration PDA for a wallet
+ * PendingActor PDA
  */
-export function getPendingRolePDA(wallet: PublicKey): [PublicKey, number] {
+export function getPendingActorPDA(wallet: PublicKey): [PublicKey, number] {
   return PublicKey.findProgramAddressSync(
-    [Buffer.from("pending_role"), wallet.toBuffer()],
+    [Buffer.from(PDA_SEEDS.PENDING_ACTOR), wallet.toBuffer()],
     PROGRAM_ID
   );
 }
 
 /**
- * Get the TraceToken PDA for a mint
+ * Actor PDA
  */
-export function getTraceTokenPDA(mint: PublicKey): [PublicKey, number] {
+export function getActorPDA(wallet: PublicKey): [PublicKey, number] {
   return PublicKey.findProgramAddressSync(
-    [Buffer.from("trace_token"), mint.toBuffer()],
+    [Buffer.from(PDA_SEEDS.ACTOR), wallet.toBuffer()],
     PROGRAM_ID
   );
 }
 
 /**
- * Get the PendingTransfer PDA for a token mint, from, and to
+ * Batch PDA
  */
-export function getPendingTransferPDA(tokenMint: PublicKey, from?: PublicKey, to?: PublicKey): [PublicKey, number] {
-  if (from && to) {
-    return PublicKey.findProgramAddressSync(
-      [Buffer.from("pending_transfer"), tokenMint.toBuffer(), from.toBuffer(), to.toBuffer()],
-      PROGRAM_ID
-    );
-  }
-  // Fallback for backwards compatibility (shouldn't be used)
+export function getBatchPDA(
+  creator: PublicKey,
+  batchId: string | number | bigint
+): [PublicKey, number] {
   return PublicKey.findProgramAddressSync(
-    [Buffer.from("pending_transfer"), tokenMint.toBuffer()],
+    [Buffer.from(PDA_SEEDS.BATCH), creator.toBuffer(), u64ToBuffer(batchId)],
     PROGRAM_ID
   );
 }
 
 /**
- * Get the TokenBalance PDA for a token and owner
+ * BatchEvent PDA
  */
-export function getTokenBalancePDA(tokenMint: PublicKey, owner: PublicKey): [PublicKey, number] {
+export function getEventPDA(
+  batchId: string | number | bigint,
+  eventId: string | number | bigint
+): [PublicKey, number] {
   return PublicKey.findProgramAddressSync(
-    [Buffer.from("token_balance"), tokenMint.toBuffer(), owner.toBuffer()],
+    [Buffer.from(PDA_SEEDS.EVENT), u64ToBuffer(batchId), u64ToBuffer(eventId)],
+    PROGRAM_ID
+  );
+}
+
+/**
+ * Certificate PDA
+ */
+export function getCertificatePDA(
+  batchId: string | number | bigint,
+  certificateId: string | number | bigint
+): [PublicKey, number] {
+  return PublicKey.findProgramAddressSync(
+    [
+      Buffer.from(PDA_SEEDS.CERTIFICATE),
+      u64ToBuffer(batchId),
+      u64ToBuffer(certificateId),
+    ],
     PROGRAM_ID
   );
 }

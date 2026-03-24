@@ -3,66 +3,66 @@ module.exports = [
 "use strict";
 
 __turbopack_context__.s([
-    "getConfigPDA",
-    ()=>getConfigPDA,
-    "getPendingRolePDA",
-    ()=>getPendingRolePDA,
-    "getPendingTransferPDA",
-    ()=>getPendingTransferPDA,
-    "getRoleRegistryPDA",
-    ()=>getRoleRegistryPDA,
-    "getTokenBalancePDA",
-    ()=>getTokenBalancePDA,
-    "getTraceTokenPDA",
-    ()=>getTraceTokenPDA
+    "getActorPDA",
+    ()=>getActorPDA,
+    "getBatchPDA",
+    ()=>getBatchPDA,
+    "getCertificatePDA",
+    ()=>getCertificatePDA,
+    "getEventPDA",
+    ()=>getEventPDA,
+    "getPendingActorPDA",
+    ()=>getPendingActorPDA,
+    "getProgramConfigPDA",
+    ()=>getProgramConfigPDA
 ]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$bn$2e$js$2f$lib$2f$bn$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/pfm-rust-solana-2026/web/node_modules/bn.js/lib/bn.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f40$solana$2f$web3$2e$js$2f$lib$2f$index$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/pfm-rust-solana-2026/web/node_modules/@solana/web3.js/lib/index.esm.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$solana$2f$constants$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/pfm-rust-solana-2026/web/lib/solana/constants.ts [app-ssr] (ecmascript)");
 ;
 ;
-function getConfigPDA() {
+;
+/**
+ * Convert a u64-compatible value to 8-byte little-endian buffer
+ */ function u64ToBuffer(value) {
+    return new __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$bn$2e$js$2f$lib$2f$bn$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"](value.toString()).toArrayLike(Buffer, "le", 8);
+}
+function getProgramConfigPDA() {
     return __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f40$solana$2f$web3$2e$js$2f$lib$2f$index$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PublicKey"].findProgramAddressSync([
-        Buffer.from("config")
+        Buffer.from(__TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$solana$2f$constants$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PDA_SEEDS"].PROGRAM_CONFIG)
     ], __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$solana$2f$constants$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PROGRAM_ID"]);
 }
-function getRoleRegistryPDA(wallet) {
+function getPendingActorPDA(wallet) {
     return __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f40$solana$2f$web3$2e$js$2f$lib$2f$index$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PublicKey"].findProgramAddressSync([
-        Buffer.from("role_registry"),
+        Buffer.from(__TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$solana$2f$constants$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PDA_SEEDS"].PENDING_ACTOR),
         wallet.toBuffer()
     ], __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$solana$2f$constants$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PROGRAM_ID"]);
 }
-function getPendingRolePDA(wallet) {
+function getActorPDA(wallet) {
     return __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f40$solana$2f$web3$2e$js$2f$lib$2f$index$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PublicKey"].findProgramAddressSync([
-        Buffer.from("pending_role"),
+        Buffer.from(__TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$solana$2f$constants$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PDA_SEEDS"].ACTOR),
         wallet.toBuffer()
     ], __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$solana$2f$constants$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PROGRAM_ID"]);
 }
-function getTraceTokenPDA(mint) {
+function getBatchPDA(creator, batchId) {
     return __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f40$solana$2f$web3$2e$js$2f$lib$2f$index$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PublicKey"].findProgramAddressSync([
-        Buffer.from("trace_token"),
-        mint.toBuffer()
+        Buffer.from(__TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$solana$2f$constants$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PDA_SEEDS"].BATCH),
+        creator.toBuffer(),
+        u64ToBuffer(batchId)
     ], __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$solana$2f$constants$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PROGRAM_ID"]);
 }
-function getPendingTransferPDA(tokenMint, from, to) {
-    if (from && to) {
-        return __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f40$solana$2f$web3$2e$js$2f$lib$2f$index$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PublicKey"].findProgramAddressSync([
-            Buffer.from("pending_transfer"),
-            tokenMint.toBuffer(),
-            from.toBuffer(),
-            to.toBuffer()
-        ], __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$solana$2f$constants$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PROGRAM_ID"]);
-    }
-    // Fallback for backwards compatibility (shouldn't be used)
+function getEventPDA(batchId, eventId) {
     return __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f40$solana$2f$web3$2e$js$2f$lib$2f$index$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PublicKey"].findProgramAddressSync([
-        Buffer.from("pending_transfer"),
-        tokenMint.toBuffer()
+        Buffer.from(__TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$solana$2f$constants$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PDA_SEEDS"].EVENT),
+        u64ToBuffer(batchId),
+        u64ToBuffer(eventId)
     ], __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$solana$2f$constants$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PROGRAM_ID"]);
 }
-function getTokenBalancePDA(tokenMint, owner) {
+function getCertificatePDA(batchId, certificateId) {
     return __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f40$solana$2f$web3$2e$js$2f$lib$2f$index$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PublicKey"].findProgramAddressSync([
-        Buffer.from("token_balance"),
-        tokenMint.toBuffer(),
-        owner.toBuffer()
+        Buffer.from(__TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$solana$2f$constants$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PDA_SEEDS"].CERTIFICATE),
+        u64ToBuffer(batchId),
+        u64ToBuffer(certificateId)
     ], __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$solana$2f$constants$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PROGRAM_ID"]);
 }
 }),
@@ -82,13 +82,13 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$202
 ;
 ;
 /**
- * Normalize role enum object to string
- */ function normalizeRole(role) {
-    if (!role) return null;
-    if (typeof role === "string") return role;
-    if (typeof role === "object") {
-        const roleKey = Object.keys(role)[0];
-        return roleKey || null;
+ * Normalize Anchor enum object to string
+ */ function normalizeEnum(value) {
+    if (!value) return null;
+    if (typeof value === "string") return value;
+    if (typeof value === "object") {
+        const key = Object.keys(value)[0];
+        return key || null;
     }
     return null;
 }
@@ -111,48 +111,43 @@ function useRole() {
             return;
         }
         try {
+            setLoading(true);
             setError(null);
-            let roleValue = null;
-            let hasPendingRequestValue = false;
+            let validatedRole = null;
             let pendingRoleValue = null;
-            // Fetch RoleRegistry to check if user has an approved role
-            const [roleRegistryPDA] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getRoleRegistryPDA"])(publicKey);
+            let pending = false;
+            // 1) Check validated actor
+            const [actorPda] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getActorPDA"])(publicKey);
             try {
-                const roleRegistry = await program.account.roleRegistry.fetch(roleRegistryPDA);
-                roleValue = normalizeRole(roleRegistry.role);
+                const actor = await program.account.actor.fetch(actorPda);
+                validatedRole = normalizeEnum(actor.role);
             } catch  {
-                roleValue = null;
+                validatedRole = null;
             }
-            setRole(roleValue);
-            // Fetch PendingRoleRegistration to check if user has a pending request
-            const [pendingRolePDA] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getPendingRolePDA"])(publicKey);
+            // 2) Check pending actor request
+            const [pendingActorPda] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getPendingActorPDA"])(publicKey);
             try {
-                const pendingRoleReg = await program.account.pendingRoleRegistration.fetch(pendingRolePDA);
-                hasPendingRequestValue = true;
-                pendingRoleValue = normalizeRole(pendingRoleReg.requestedRole);
+                const pendingActor = await program.account.pendingActor.fetch(pendingActorPda);
+                pending = true;
+                pendingRoleValue = normalizeEnum(pendingActor.requestedRole);
             } catch  {
-                hasPendingRequestValue = false;
+                pending = false;
                 pendingRoleValue = null;
             }
-            setHasPendingRequest(hasPendingRequestValue);
-            setPendingRole(pendingRoleValue);
-            // Check if user is authority
-            const [configPDA] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getConfigPDA"])();
+            // 3) Check if connected wallet is program authority
+            const [programConfigPda] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getProgramConfigPDA"])();
             try {
-                const config = await program.account.programConfig.fetch(configPDA);
+                const config = await program.account.programConfig.fetch(programConfigPda);
                 setIsAuthority(config.authority.equals(publicKey));
             } catch  {
-                // If config doesn't exist, check if user has a validated role
-                // If user has NO validated role and NO pending request, they could be the authority
-                if (!roleValue && !hasPendingRequestValue) {
-                    setIsAuthority(true); // Allow user to initialize program
-                } else {
-                    setIsAuthority(false);
-                }
+                setIsAuthority(false);
             }
-            setLoading(false);
+            setRole(validatedRole);
+            setPendingRole(pendingRoleValue);
+            setHasPendingRequest(pending);
         } catch (err) {
-            setError(err instanceof Error ? err.message : "Failed to fetch role");
+            setError(err instanceof Error ? err.message : "Failed to fetch actor role");
+        } finally{
             setLoading(false);
         }
     };
@@ -177,18 +172,22 @@ function useRole() {
 "use strict";
 
 __turbopack_context__.s([
-    "acceptTransfer",
-    ()=>acceptTransfer,
-    "createToken",
-    ()=>createToken,
+    "createBatch",
+    ()=>createBatch,
     "initializeProgram",
     ()=>initializeProgram,
-    "initiateTransfer",
-    ()=>initiateTransfer,
-    "registerRole",
-    ()=>registerRole,
-    "validateRole",
-    ()=>validateRole
+    "issueCertificate",
+    ()=>issueCertificate,
+    "recordEvent",
+    ()=>recordEvent,
+    "registerActor",
+    ()=>registerActor,
+    "revokeCertificate",
+    ()=>revokeCertificate,
+    "updateBatchStatus",
+    ()=>updateBatchStatus,
+    "validateActor",
+    ()=>validateActor
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f40$solana$2f$web3$2e$js$2f$lib$2f$index$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/pfm-rust-solana-2026/web/node_modules/@solana/web3.js/lib/index.esm.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$bn$2e$js$2f$lib$2f$bn$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/pfm-rust-solana-2026/web/node_modules/bn.js/lib/bn.js [app-ssr] (ecmascript)");
@@ -196,102 +195,101 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$202
 ;
 ;
 ;
-async function registerRole(program, wallet, role) {
-    const [pendingRolePDA] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getPendingRolePDA"])(wallet);
-    const [roleRegistryPDA] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getRoleRegistryPDA"])(wallet);
-    // Create role enum variant
-    const roleVariant = {};
-    roleVariant[role] = {};
-    console.log("Registering role:", {
-        wallet: wallet.toString(),
-        role,
-        roleVariant
-    });
-    const tx = await program.methods.registerRole(roleVariant).accounts({
-        pendingRole: pendingRolePDA,
-        roleRegistry: roleRegistryPDA,
-        wallet: wallet,
-        systemProgram: __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f40$solana$2f$web3$2e$js$2f$lib$2f$index$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SystemProgram"].programId
-    }).rpc();
-    console.log("Register role transaction:", tx);
-    return tx;
+function toRoleVariant(role) {
+    return {
+        [role]: {}
+    };
 }
-async function validateRole(program, authority, targetWallet) {
-    const [configPDA] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getConfigPDA"])();
-    const [pendingRolePDA] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getPendingRolePDA"])(targetWallet);
-    const [roleRegistryPDA] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getRoleRegistryPDA"])(targetWallet);
-    const tx = await program.methods.validateRole().accounts({
-        programConfig: configPDA,
-        pendingRole: pendingRolePDA,
-        roleRegistry: roleRegistryPDA,
-        authority: authority,
-        systemProgram: __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f40$solana$2f$web3$2e$js$2f$lib$2f$index$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SystemProgram"].programId
-    }).rpc();
-    return tx;
+function toStatusVariant(status) {
+    return {
+        [status]: {}
+    };
 }
 async function initializeProgram(program, authority) {
-    const [configPDA] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getConfigPDA"])();
-    const tx = await program.methods.initialize().accounts({
-        programConfig: configPDA,
-        authority: authority,
+    const [programConfigPda] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getProgramConfigPDA"])();
+    return await program.methods.initialize().accountsPartial({
+        programConfig: programConfigPda,
+        authority,
         systemProgram: __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f40$solana$2f$web3$2e$js$2f$lib$2f$index$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SystemProgram"].programId
     }).rpc();
-    return tx;
 }
-async function createToken(program, creator, mint, amount, metadata, sourceTokenMints) {
-    const [traceTokenPDA] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getTraceTokenPDA"])(mint.publicKey);
-    const [creatorBalancePDA] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getTokenBalancePDA"])(mint.publicKey, creator);
-    const [roleRegistryPDA] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getRoleRegistryPDA"])(creator);
-    const tx = await program.methods.createToken(new __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$bn$2e$js$2f$lib$2f$bn$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"](amount.toString()), metadata).accounts({
-        traceToken: traceTokenPDA,
-        creatorBalance: creatorBalancePDA,
-        mint: mint.publicKey,
-        roleRegistry: roleRegistryPDA,
-        creator: creator,
-        systemProgram: __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f40$solana$2f$web3$2e$js$2f$lib$2f$index$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SystemProgram"].programId
-    }).signers([
-        mint
-    ]).remainingAccounts((sourceTokenMints || []).map((mintPk)=>({
-            pubkey: (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getTraceTokenPDA"])(mintPk)[0],
-            isSigner: false,
-            isWritable: false
-        }))).rpc();
-    return tx;
-}
-async function initiateTransfer(program, from, to, tokenMint, amount) {
-    const [traceTokenPDA] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getTraceTokenPDA"])(tokenMint);
-    const [fromBalancePDA] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getTokenBalancePDA"])(tokenMint, from);
-    const [pendingTransferPDA] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getPendingTransferPDA"])(tokenMint, from, to);
-    const [fromRoleRegistryPDA] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getRoleRegistryPDA"])(from);
-    const [toRoleRegistryPDA] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getRoleRegistryPDA"])(to);
-    const tx = await program.methods.initiateTransfer(new __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$bn$2e$js$2f$lib$2f$bn$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"](amount.toString())).accounts({
-        traceToken: traceTokenPDA,
-        fromBalance: fromBalancePDA,
-        pendingTransfer: pendingTransferPDA,
-        fromRoleRegistry: fromRoleRegistryPDA,
-        to: to,
-        toRoleRegistry: toRoleRegistryPDA,
-        from: from,
+async function registerActor(program, wallet, name, role, location) {
+    const [pendingActorPda] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getPendingActorPDA"])(wallet);
+    const [actorPda] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getActorPDA"])(wallet);
+    return await program.methods.registerActor(name, toRoleVariant(role), location).accountsPartial({
+        pendingActor: pendingActorPda,
+        actor: actorPda,
+        wallet,
         systemProgram: __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f40$solana$2f$web3$2e$js$2f$lib$2f$index$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SystemProgram"].programId
     }).rpc();
-    return tx;
 }
-async function acceptTransfer(program, receiver, tokenMint, sender) {
-    const [traceTokenPDA] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getTraceTokenPDA"])(tokenMint);
-    const [fromBalancePDA] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getTokenBalancePDA"])(tokenMint, sender);
-    const [toBalancePDA] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getTokenBalancePDA"])(tokenMint, receiver);
-    const [pendingTransferPDA] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getPendingTransferPDA"])(tokenMint, sender, receiver);
-    const [roleRegistryPDA] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getRoleRegistryPDA"])(receiver);
-    const tx = await program.methods.acceptTransfer().accounts({
-        traceToken: traceTokenPDA,
-        pendingTransfer: pendingTransferPDA,
-        fromBalance: fromBalancePDA,
-        toBalance: toBalancePDA,
-        roleRegistry: roleRegistryPDA,
-        to: receiver,
+async function validateActor(program, authority, targetWallet) {
+    const [programConfigPda] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getProgramConfigPDA"])();
+    const [pendingActorPda] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getPendingActorPDA"])(targetWallet);
+    const [actorPda] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getActorPDA"])(targetWallet);
+    return await program.methods.validateActor().accountsPartial({
+        programConfig: programConfigPda,
+        pendingActor: pendingActorPda,
+        actor: actorPda,
+        authority,
         systemProgram: __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f40$solana$2f$web3$2e$js$2f$lib$2f$index$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SystemProgram"].programId
     }).rpc();
-    return tx;
+}
+async function createBatch(program, creator, batchId, product, origin, quantity, unit, harvestDate) {
+    const [programConfigPda] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getProgramConfigPDA"])();
+    const [actorPda] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getActorPDA"])(creator);
+    const [batchPda] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getBatchPDA"])(creator, batchId);
+    return await program.methods.createBatch(product, origin, new __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$bn$2e$js$2f$lib$2f$bn$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"](quantity.toString()), unit, new __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$bn$2e$js$2f$lib$2f$bn$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"](harvestDate.toString())).accountsPartial({
+        programConfig: programConfigPda,
+        actor: actorPda,
+        batch: batchPda,
+        creator,
+        systemProgram: __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f40$solana$2f$web3$2e$js$2f$lib$2f$index$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SystemProgram"].programId
+    }).rpc();
+}
+async function recordEvent(program, actorWallet, creator, batchId, eventId, eventType, location, metadata) {
+    const [programConfigPda] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getProgramConfigPDA"])();
+    const [actorPda] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getActorPDA"])(actorWallet);
+    const [batchPda] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getBatchPDA"])(creator, batchId);
+    const [batchEventPda] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getEventPDA"])(batchId, eventId);
+    return await program.methods.recordEvent(new __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$bn$2e$js$2f$lib$2f$bn$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"](batchId.toString()), eventType, location, metadata).accountsPartial({
+        programConfig: programConfigPda,
+        actor: actorPda,
+        batch: batchPda,
+        batchEvent: batchEventPda,
+        actorWallet,
+        systemProgram: __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f40$solana$2f$web3$2e$js$2f$lib$2f$index$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SystemProgram"].programId
+    }).rpc();
+}
+async function updateBatchStatus(program, actorWallet, creator, batchId, newStatus) {
+    const [actorPda] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getActorPDA"])(actorWallet);
+    const [batchPda] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getBatchPDA"])(creator, batchId);
+    return await program.methods.updateBatchStatus(new __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$bn$2e$js$2f$lib$2f$bn$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"](batchId.toString()), toStatusVariant(newStatus)).accountsPartial({
+        actor: actorPda,
+        batch: batchPda,
+        actorWallet
+    }).rpc();
+}
+async function issueCertificate(program, authority, creator, batchId, certificateId, certificateType, issuer, documentHash, expiryDate) {
+    const [programConfigPda] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getProgramConfigPDA"])();
+    const [batchPda] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getBatchPDA"])(creator, batchId);
+    const [certificatePda] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getCertificatePDA"])(batchId, certificateId);
+    return await program.methods.issueCertificate(new __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$bn$2e$js$2f$lib$2f$bn$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"](batchId.toString()), certificateType, issuer, documentHash, new __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$bn$2e$js$2f$lib$2f$bn$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"](expiryDate.toString())).accountsPartial({
+        programConfig: programConfigPda,
+        batch: batchPda,
+        certificate: certificatePda,
+        authority,
+        systemProgram: __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f40$solana$2f$web3$2e$js$2f$lib$2f$index$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SystemProgram"].programId
+    }).rpc();
+}
+async function revokeCertificate(program, authority, batchId, certificateId) {
+    const [programConfigPda] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getProgramConfigPDA"])();
+    const [certificatePda] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$utils$2f$pda$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getCertificatePDA"])(batchId, certificateId);
+    return await program.methods.revokeCertificate(new __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$bn$2e$js$2f$lib$2f$bn$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"](batchId.toString()), new __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$bn$2e$js$2f$lib$2f$bn$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"](certificateId.toString())).accountsPartial({
+        programConfig: programConfigPda,
+        certificate: certificatePda,
+        authority
+    }).rpc();
 }
 }),
 "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx [app-ssr] (ecmascript)", ((__turbopack_context__) => {
@@ -321,44 +319,55 @@ const ROLES = [
         value: "producer",
         label: "Producer",
         emoji: "🌱",
-        description: "Create and initiate product tokens",
+        description: "Creates cacao batches at the farm of origin.",
         capabilities: [
-            "Create Tokens",
-            "Set Metadata",
-            "Initiate Transfers"
+            "Create Batch",
+            "Register Harvest",
+            "Set Origin Information"
         ]
     },
     {
-        value: "factory",
-        label: "Factory",
+        value: "processor",
+        label: "Processor",
         emoji: "🏭",
-        description: "Process and combine products",
+        description: "Processes cacao through fermentation and drying.",
         capabilities: [
-            "Receive Tokens",
-            "Combine Inputs",
-            "Create New Tokens"
+            "Register Fermentation",
+            "Register Drying",
+            "Update Batch Status"
         ]
     },
     {
-        value: "retailer",
-        label: "Retailer",
-        emoji: "🏪",
-        description: "Distribute products to consumers",
+        value: "transporter",
+        label: "Transporter",
+        emoji: "🚚",
+        description: "Moves cacao lots between locations.",
         capabilities: [
-            "Accept Transfers",
-            "View History",
-            "Ship Products"
+            "Register Transport",
+            "Register Storage",
+            "Update Logistics Status"
         ]
     },
     {
-        value: "consumer",
-        label: "Consumer",
-        emoji: "👥",
-        description: "Verify product authenticity",
+        value: "exporter",
+        label: "Exporter",
+        emoji: "📦",
+        description: "Handles final export operations.",
         capabilities: [
-            "Track Products",
-            "Verify Origin",
-            "Full History"
+            "Register Export",
+            "Update Export Status",
+            "Prepare Final Delivery"
+        ]
+    },
+    {
+        value: "authority",
+        label: "Authority",
+        emoji: "🛡️",
+        description: "Validates actors and issues certificates.",
+        capabilities: [
+            "Approve Actors",
+            "Issue Certificates",
+            "Revoke Certificates"
         ]
     }
 ];
@@ -367,23 +376,29 @@ function RegisterRolePage() {
     const { publicKey } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f40$solana$2f$wallet$2d$adapter$2d$react$2f$lib$2f$esm$2f$useWallet$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useWallet"])();
     const { program } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$context$2f$ProgramProvider$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useProgram"])();
     const { hasPendingRequest, loading } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$hooks$2f$useRole$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRole"])();
+    const [name, setName] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
+    const [location, setLocation] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
+    const [selectedRole, setSelectedRole] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [isSubmitting, setIsSubmitting] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [success, setSuccess] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
-    const handleSubmit = async (role)=>{
-        if (!publicKey || !program) return;
+    const handleSubmit = async ()=>{
+        if (!publicKey || !program || !selectedRole) return;
+        if (!name.trim() || !location.trim()) {
+            setError("Please complete name and location before submitting.");
+            return;
+        }
         setIsSubmitting(true);
         setError(null);
         setSuccess(false);
         try {
-            await (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$solana$2f$instructions$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["registerRole"])(program, publicKey, role);
+            await (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$lib$2f$solana$2f$instructions$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["registerActor"])(program, publicKey, name.trim(), selectedRole, location.trim());
             setSuccess(true);
-            // Stay on page after submission to show success state
             setTimeout(()=>{
                 router.push("/dashboard");
             }, 2000);
         } catch (err) {
-            setError(err instanceof Error ? err.message : "Failed to register role");
+            setError(err instanceof Error ? err.message : "Failed to register actor");
             setIsSubmitting(false);
         }
     };
@@ -398,7 +413,7 @@ function RegisterRolePage() {
                         children: "⏳"
                     }, void 0, false, {
                         fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                        lineNumber: 85,
+                        lineNumber: 135,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -406,18 +421,18 @@ function RegisterRolePage() {
                         children: "Loading..."
                     }, void 0, false, {
                         fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                        lineNumber: 86,
+                        lineNumber: 136,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                lineNumber: 84,
+                lineNumber: 134,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-            lineNumber: 83,
+            lineNumber: 133,
             columnNumber: 7
         }, this);
     }
@@ -432,7 +447,7 @@ function RegisterRolePage() {
                         children: "🔗"
                     }, void 0, false, {
                         fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                        lineNumber: 96,
+                        lineNumber: 146,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -440,26 +455,26 @@ function RegisterRolePage() {
                         children: "Connect Your Wallet"
                     }, void 0, false, {
                         fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                        lineNumber: 97,
+                        lineNumber: 147,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         className: "text-gray-700 font-medium",
-                        children: "Please connect your Solana wallet to register for a role."
+                        children: "Please connect your Solana wallet to register as an actor in the cacao traceability network."
                     }, void 0, false, {
                         fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                        lineNumber: 98,
+                        lineNumber: 150,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                lineNumber: 95,
+                lineNumber: 145,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-            lineNumber: 94,
+            lineNumber: 144,
             columnNumber: 7
         }, this);
     }
@@ -474,7 +489,7 @@ function RegisterRolePage() {
                         children: "⏳"
                     }, void 0, false, {
                         fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                        lineNumber: 110,
+                        lineNumber: 163,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -482,34 +497,34 @@ function RegisterRolePage() {
                         children: "Request Pending"
                     }, void 0, false, {
                         fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                        lineNumber: 111,
+                        lineNumber: 164,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         className: "text-gray-700 font-medium mb-6",
-                        children: "Your role request is pending approval. The authority will review and validate your request soon."
+                        children: "Your actor registration is pending approval. The authority will review and validate it soon."
                     }, void 0, false, {
                         fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                        lineNumber: 112,
+                        lineNumber: 167,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         className: "text-sm text-gray-600",
-                        children: "You'll be able to access the dashboard once your role is approved."
+                        children: "You will be able to access the dashboard once your actor role is approved."
                     }, void 0, false, {
                         fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                        lineNumber: 115,
+                        lineNumber: 171,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                lineNumber: 109,
+                lineNumber: 162,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-            lineNumber: 108,
+            lineNumber: 161,
             columnNumber: 7
         }, this);
     }
@@ -524,23 +539,23 @@ function RegisterRolePage() {
                         children: "✨"
                     }, void 0, false, {
                         fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                        lineNumber: 127,
+                        lineNumber: 184,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                         className: "text-2xl font-black text-black mb-2",
-                        children: "Request Submitted!"
+                        children: "Registration Submitted!"
                     }, void 0, false, {
                         fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                        lineNumber: 128,
+                        lineNumber: 185,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         className: "text-gray-700 font-medium mb-6",
-                        children: "Your role request has been submitted successfully. The authority will review and validate it shortly."
+                        children: "Your actor registration was submitted successfully. The authority will review and validate it shortly."
                     }, void 0, false, {
                         fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                        lineNumber: 129,
+                        lineNumber: 188,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -548,18 +563,18 @@ function RegisterRolePage() {
                         children: "Redirecting to dashboard..."
                     }, void 0, false, {
                         fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                        lineNumber: 132,
+                        lineNumber: 192,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                lineNumber: 126,
+                lineNumber: 183,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-            lineNumber: 125,
+            lineNumber: 182,
             columnNumber: 7
         }, this);
     }
@@ -573,32 +588,32 @@ function RegisterRolePage() {
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "text-6xl mb-4",
-                            children: "📋"
+                            children: "🍫"
                         }, void 0, false, {
                             fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                            lineNumber: 145,
+                            lineNumber: 202,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
                             className: "text-5xl font-black text-black mb-4",
-                            children: "Choose Your Role"
+                            children: "Register as a Cacao Supply Chain Actor"
                         }, void 0, false, {
                             fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                            lineNumber: 146,
+                            lineNumber: 203,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                            className: "text-xl text-gray-700 font-medium max-w-2xl mx-auto",
-                            children: "Select your position in the supply chain. Each role has unique capabilities and responsibilities."
+                            className: "text-xl text-gray-700 font-medium max-w-3xl mx-auto",
+                            children: "Join the cacao traceability network and choose your role in the chain, from farm to export."
                         }, void 0, false, {
                             fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                            lineNumber: 147,
+                            lineNumber: 206,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                    lineNumber: 144,
+                    lineNumber: 201,
                     columnNumber: 9
                 }, this),
                 error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -611,44 +626,127 @@ function RegisterRolePage() {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                        lineNumber: 154,
+                        lineNumber: 214,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                    lineNumber: 153,
+                    lineNumber: 213,
                     columnNumber: 11
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16",
-                    children: ROLES.map((role)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                            onClick: ()=>handleSubmit(role.value),
+                    className: "max-w-3xl mx-auto mb-10 bg-white border-4 border-black rounded-lg p-8",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                            className: "text-2xl font-black text-black mb-6",
+                            children: "Actor Information"
+                        }, void 0, false, {
+                            fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
+                            lineNumber: 219,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "grid grid-cols-1 md:grid-cols-2 gap-6",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                            className: "block text-sm font-black text-black mb-2",
+                                            children: "Name"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
+                                            lineNumber: 225,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                            type: "text",
+                                            value: name,
+                                            onChange: (e)=>setName(e.target.value),
+                                            placeholder: "Example: Finca El Roble",
+                                            className: "w-full border-4 border-black rounded-lg px-4 py-3 text-black font-medium outline-none"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
+                                            lineNumber: 228,
+                                            columnNumber: 15
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
+                                    lineNumber: 224,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                            className: "block text-sm font-black text-black mb-2",
+                                            children: "Location"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
+                                            lineNumber: 238,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                            type: "text",
+                                            value: location,
+                                            onChange: (e)=>setLocation(e.target.value),
+                                            placeholder: "Example: Tumaco, Colombia",
+                                            className: "w-full border-4 border-black rounded-lg px-4 py-3 text-black font-medium outline-none"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
+                                            lineNumber: 241,
+                                            columnNumber: 15
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
+                                    lineNumber: 237,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
+                            lineNumber: 223,
+                            columnNumber: 11
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
+                    lineNumber: 218,
+                    columnNumber: 9
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-10",
+                    children: ROLES.map((role)=>{
+                        const isSelected = selectedRole === role.value;
+                        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                            type: "button",
+                            onClick: ()=>setSelectedRole(role.value),
                             disabled: isSubmitting,
-                            className: "bg-white border-4 border-black rounded-lg p-6 hover:shadow-2xl transition transform hover:-translate-y-2 disabled:opacity-50 disabled:cursor-not-allowed text-left w-full",
+                            className: `bg-white border-4 rounded-lg p-6 transition transform text-left w-full ${isSelected ? "border-black shadow-2xl -translate-y-1" : "border-gray-300 hover:border-black hover:shadow-xl hover:-translate-y-1"} disabled:opacity-50 disabled:cursor-not-allowed`,
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "text-6xl mb-4",
                                     children: role.emoji
                                 }, void 0, false, {
                                     fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                                    lineNumber: 167,
-                                    columnNumber: 15
+                                    lineNumber: 268,
+                                    columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
                                     className: "text-2xl font-black text-black mb-2",
                                     children: role.label
                                 }, void 0, false, {
                                     fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                                    lineNumber: 168,
-                                    columnNumber: 15
+                                    lineNumber: 269,
+                                    columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                     className: "text-gray-700 font-semibold mb-4 text-sm",
                                     children: role.description
                                 }, void 0, false, {
                                     fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                                    lineNumber: 169,
-                                    columnNumber: 15
+                                    lineNumber: 272,
+                                    columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "border-t-4 border-black pt-4 space-y-1",
@@ -660,38 +758,41 @@ function RegisterRolePage() {
                                             ]
                                         }, idx, true, {
                                             fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                                            lineNumber: 174,
-                                            columnNumber: 19
+                                            lineNumber: 277,
+                                            columnNumber: 21
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                                    lineNumber: 172,
-                                    columnNumber: 15
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "mt-4 pt-4 border-t-4 border-black",
-                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-sm font-black text-black",
-                                        children: isSubmitting ? "Submitting..." : "Select Role"
-                                    }, void 0, false, {
-                                        fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                                        lineNumber: 180,
-                                        columnNumber: 17
-                                    }, this)
-                                }, void 0, false, {
-                                    fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                                    lineNumber: 179,
-                                    columnNumber: 15
+                                    lineNumber: 275,
+                                    columnNumber: 17
                                 }, this)
                             ]
                         }, role.value, true, {
                             fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                            lineNumber: 161,
-                            columnNumber: 13
-                        }, this))
+                            lineNumber: 257,
+                            columnNumber: 15
+                        }, this);
+                    })
                 }, void 0, false, {
                     fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                    lineNumber: 159,
+                    lineNumber: 252,
+                    columnNumber: 9
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "max-w-md mx-auto mb-16",
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        onClick: handleSubmit,
+                        disabled: isSubmitting || !selectedRole || !name.trim() || !location.trim(),
+                        className: "w-full bg-black text-white border-4 border-black rounded-lg px-6 py-4 font-black text-lg hover:bg-white hover:text-black transition disabled:opacity-50 disabled:cursor-not-allowed",
+                        children: isSubmitting ? "Submitting..." : "Submit Actor Registration"
+                    }, void 0, false, {
+                        fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
+                        lineNumber: 288,
+                        columnNumber: 11
+                    }, this)
+                }, void 0, false, {
+                    fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
+                    lineNumber: 287,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -702,7 +803,7 @@ function RegisterRolePage() {
                             children: "What Happens Next? 🔄"
                         }, void 0, false, {
                             fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                            lineNumber: 190,
+                            lineNumber: 298,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -716,29 +817,29 @@ function RegisterRolePage() {
                                             children: "1️⃣"
                                         }, void 0, false, {
                                             fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                                            lineNumber: 193,
+                                            lineNumber: 303,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
                                             className: "text-xl font-black mb-2",
-                                            children: "Submit Request"
+                                            children: "Submit Registration"
                                         }, void 0, false, {
                                             fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                                            lineNumber: 194,
+                                            lineNumber: 304,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                             className: "text-gray-300 font-medium",
-                                            children: "You'll submit a request to join the network in your chosen role."
+                                            children: "You register as an actor in the cacao traceability network."
                                         }, void 0, false, {
                                             fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                                            lineNumber: 195,
+                                            lineNumber: 305,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                                    lineNumber: 192,
+                                    lineNumber: 302,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -749,7 +850,7 @@ function RegisterRolePage() {
                                             children: "2️⃣"
                                         }, void 0, false, {
                                             fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                                            lineNumber: 200,
+                                            lineNumber: 310,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -757,21 +858,21 @@ function RegisterRolePage() {
                                             children: "Authority Review"
                                         }, void 0, false, {
                                             fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                                            lineNumber: 201,
+                                            lineNumber: 311,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                             className: "text-gray-300 font-medium",
-                                            children: "The network authority will review and validate your request."
+                                            children: "The authority validates your role and activates your account."
                                         }, void 0, false, {
                                             fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                                            lineNumber: 202,
+                                            lineNumber: 312,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                                    lineNumber: 199,
+                                    lineNumber: 309,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -782,52 +883,52 @@ function RegisterRolePage() {
                                             children: "3️⃣"
                                         }, void 0, false, {
                                             fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                                            lineNumber: 207,
+                                            lineNumber: 317,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
                                             className: "text-xl font-black mb-2",
-                                            children: "Get Started"
+                                            children: "Start Tracking Cacao"
                                         }, void 0, false, {
                                             fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                                            lineNumber: 208,
+                                            lineNumber: 318,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                             className: "text-gray-300 font-medium",
-                                            children: "Once approved, you'll have full access to your role's features."
+                                            children: "Once approved, you can create, process, transport, certify, or export batches depending on your role."
                                         }, void 0, false, {
                                             fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                                            lineNumber: 209,
+                                            lineNumber: 319,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                                    lineNumber: 206,
+                                    lineNumber: 316,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                            lineNumber: 191,
+                            lineNumber: 301,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-                    lineNumber: 189,
+                    lineNumber: 297,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-            lineNumber: 143,
+            lineNumber: 200,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/pfm-rust-solana-2026/web/app/register-role/page.tsx",
-        lineNumber: 141,
+        lineNumber: 199,
         columnNumber: 5
     }, this);
 }

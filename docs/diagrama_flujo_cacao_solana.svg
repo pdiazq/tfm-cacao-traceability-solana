@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1260" viewBox="0 0 1600 1260">
+  <defs>
+    <style>
+      .title { font: 700 34px Arial, sans-serif; fill: #111; }
+      .subtitle { font: 400 18px Arial, sans-serif; fill: #444; }
+      .box-title { font: 700 24px Arial, sans-serif; fill: #111; }
+      .item { font: 400 18px Arial, sans-serif; fill: #222; }
+      .state { font: 700 18px Arial, sans-serif; fill: #111; }
+      .small { font: 400 16px Arial, sans-serif; fill: #333; }
+      .box { fill: #fff; stroke: #111; stroke-width: 4; rx: 20; ry: 20; }
+      .soft { fill: #f7f7f7; stroke: #111; stroke-width: 3; rx: 16; ry: 16; }
+      .arrow { stroke: #111; stroke-width: 4; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="12" markerHeight="12" refX="9" refY="4.5" orient="auto">
+      <polygon points="0 0, 10 4.5, 0 9" fill="#111"/>
+    </marker>
+  </defs>
+
+  <rect x="20" y="20" width="1560" height="1220" fill="#ffffff"/>
+  <text x="60" y="70" class="title">Flujo de datos y trazabilidad del lote de cacao</text>
+  <text x="60" y="105" class="subtitle">Secuencia operativa del MVP desde la creación del lote hasta su exportación y consulta final.</text>
+
+  <rect x="90" y="170" width="1420" height="135" class="box"/>
+  <text x="120" y="210" class="box-title">1. Productor (Producer)</text>
+  <text x="120" y="248" class="item">• Creación del lote</text>
+  <text x="380" y="248" class="item">• Registro del evento de cosecha</text>
+  <text x="760" y="248" class="item">• Actualización del estado a harvested</text>
+  <text x="1180" y="248" class="state">Transición: created → harvested</text>
+
+  <rect x="90" y="355" width="1420" height="175" class="box"/>
+  <text x="120" y="395" class="box-title">2. Procesador (Processor)</text>
+  <text x="120" y="433" class="item">• Registro de fermentación</text>
+  <text x="460" y="433" class="item">• Actualización del estado a fermented</text>
+  <text x="900" y="433" class="item">• Registro de secado</text>
+  <text x="1200" y="433" class="item">• Actualización del estado a dried</text>
+  <text x="120" y="475" class="state">Transición: harvested → fermented → dried</text>
+
+  <rect x="90" y="580" width="1420" height="175" class="box"/>
+  <text x="120" y="620" class="box-title">3. Transportista (Transporter)</text>
+  <text x="120" y="658" class="item">• Registro de transporte</text>
+  <text x="440" y="658" class="item">• Actualización del estado a inTransit</text>
+  <text x="900" y="658" class="item">• Registro de almacenamiento</text>
+  <text x="1220" y="658" class="item">• Actualización del estado a stored</text>
+  <text x="120" y="700" class="state">Transición: dried → inTransit → stored</text>
+
+  <rect x="90" y="805" width="1420" height="135" class="box"/>
+  <text x="120" y="845" class="box-title">4. Autoridad (Authority)</text>
+  <text x="120" y="883" class="item">• Emisión del certificado</text>
+  <text x="460" y="883" class="item">• Actualización del estado a certified</text>
+  <text x="980" y="883" class="state">Transición: stored → certified</text>
+
+  <rect x="90" y="990" width="1420" height="135" class="box"/>
+  <text x="120" y="1030" class="box-title">5. Exportador (Exporter)</text>
+  <text x="120" y="1068" class="item">• Registro del evento de exportación</text>
+  <text x="520" y="1068" class="item">• Actualización del estado a exported</text>
+  <text x="1010" y="1068" class="state">Transición: certified → exported</text>
+
+  <line x1="800" y1="305" x2="800" y2="355" class="arrow"/>
+  <line x1="800" y1="530" x2="800" y2="580" class="arrow"/>
+  <line x1="800" y1="755" x2="800" y2="805" class="arrow"/>
+  <line x1="800" y1="940" x2="800" y2="990" class="arrow"/>
+
+  <rect x="90" y="1145" width="1420" height="70" class="soft"/>
+  <text x="115" y="1178" class="small">Consulta final del lote: el dashboard presenta el estado oficial actual, el último evento registrado, la línea temporal completa y los certificados asociados.</text>
+  <text x="115" y="1202" class="small">El modelo separa explícitamente el registro de eventos del cambio formal de estado, lo que aporta control de negocio y trazabilidad detallada.</text>
+</svg>

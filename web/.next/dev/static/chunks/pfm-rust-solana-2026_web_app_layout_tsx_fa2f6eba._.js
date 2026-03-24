@@ -2,7 +2,7 @@
     script: typeof document === "object" ? document.currentScript : undefined,
     chunks: [
   "static/chunks/[root-of-the-server]__5b749cfc._.css",
-  "static/chunks/df586_@solflare-wallet_9b56d964._.js",
+  "static/chunks/df586_@solflare-wallet_06322984._.js",
   "static/chunks/df586_@noble_curves_esm_c421ee39._.js",
   "static/chunks/df586_6307f1bf._.js",
   "static/chunks/df586_61c6017f._.js",

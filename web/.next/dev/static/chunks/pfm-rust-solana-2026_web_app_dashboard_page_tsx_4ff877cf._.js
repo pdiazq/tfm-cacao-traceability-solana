@@ -30,22 +30,31 @@ function DashboardPage() {
                 router.push("/");
                 return;
             }
-            // Redirect based on role
-            if (isAuthority) {
-                router.push("/dashboard/authority/initialize");
-            } else if (role === "producer") {
-                router.push("/dashboard/producer");
-            } else if (role === "factory") {
-                router.push("/dashboard/factory");
-            } else if (role === "retailer") {
-                router.push("/dashboard/retailer");
-            } else if (role === "consumer") {
-                router.push("/dashboard/consumer");
-            } else if (hasPendingRequest) {
-                router.push("/register-role");
-            } else {
-                router.push("/register-role");
+            if (isAuthority || role === "authority") {
+                router.push("/dashboard/authority");
+                return;
             }
+            if (role === "producer") {
+                router.push("/dashboard/producer");
+                return;
+            }
+            if (role === "processor") {
+                router.push("/dashboard/processor");
+                return;
+            }
+            if (role === "transporter") {
+                router.push("/dashboard/transporter");
+                return;
+            }
+            if (role === "exporter") {
+                router.push("/dashboard/exporter");
+                return;
+            }
+            if (hasPendingRequest) {
+                router.push("/register-role");
+                return;
+            }
+            router.push("/register-role");
         }
     }["DashboardPage.useEffect"], [
         publicKey,
@@ -56,18 +65,18 @@ function DashboardPage() {
         router
     ]);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "flex items-center justify-center min-h-screen",
+        className: "flex items-center justify-center min-h-screen bg-white",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pfm$2d$rust$2d$solana$2d$2026$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "text-lg text-gray-600",
+            className: "text-lg font-semibold text-gray-700",
             children: "Loading dashboard..."
         }, void 0, false, {
             fileName: "[project]/pfm-rust-solana-2026/web/app/dashboard/page.tsx",
-            lineNumber: 41,
+            lineNumber: 56,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/pfm-rust-solana-2026/web/app/dashboard/page.tsx",
-        lineNumber: 40,
+        lineNumber: 55,
         columnNumber: 5
     }, this);
 }

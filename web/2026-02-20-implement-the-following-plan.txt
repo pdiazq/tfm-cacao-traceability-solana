@@ -390,7 +390,7 @@
        5  * IDL can be found at `target/idl/traza.json`.
        6  */
        7 export type Traza = {
-       8   "address": "27w7DWngggMpAEERYrin3rKKkcyaLFvV5VmvP2nEKFys",
+       8   "address": "H79yGB29eEZAf1Gi3oPDAUG2Xcv8eoMSULbfyXPR3sNX",
        9   "metadata": {
       10     "name": "traza",
      … +928 lines (ctrl+o to expand)

@@ -18,27 +18,44 @@ export default function DashboardPage() {
       return;
     }
 
-    // Redirect based on role
-    if (isAuthority) {
-      router.push("/dashboard/authority/initialize");
-    } else if (role === "producer") {
-      router.push("/dashboard/producer");
-    } else if (role === "factory") {
-      router.push("/dashboard/factory");
-    } else if (role === "retailer") {
-      router.push("/dashboard/retailer");
-    } else if (role === "consumer") {
-      router.push("/dashboard/consumer");
-    } else if (hasPendingRequest) {
-      router.push("/register-role");
-    } else {
-      router.push("/register-role");
+    if (isAuthority || role === "authority") {
+      router.push("/dashboard/authority");
+      return;
     }
+
+    if (role === "producer") {
+      router.push("/dashboard/producer");
+      return;
+    }
+
+    if (role === "processor") {
+      router.push("/dashboard/processor");
+      return;
+    }
+
+    if (role === "transporter") {
+      router.push("/dashboard/transporter");
+      return;
+    }
+
+    if (role === "exporter") {
+      router.push("/dashboard/exporter");
+      return;
+    }
+
+    if (hasPendingRequest) {
+      router.push("/register-role");
+      return;
+    }
+
+    router.push("/register-role");
   }, [publicKey, role, hasPendingRequest, isAuthority, loading, router]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="text-lg text-gray-600">Loading dashboard...</div>
+    <div className="flex items-center justify-center min-h-screen bg-white">
+      <div className="text-lg font-semibold text-gray-700">
+        Loading dashboard...
+      </div>
     </div>
   );
 }

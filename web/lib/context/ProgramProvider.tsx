@@ -5,7 +5,6 @@ import { useAnchorWallet, useConnection } from "@solana/wallet-adapter-react";
 import { AnchorProvider, Program } from "@coral-xyz/anchor";
 import { Traza } from "@/types/traza";
 import TrazaIDL from "@/types/traza.json";
-import { PROGRAM_ID } from "@/lib/solana/constants";
 
 interface ProgramContextType {
   program: Program<Traza> | null;
@@ -33,9 +32,12 @@ export function ProgramProvider({ children }: { children: ReactNode }) {
         commitment: "confirmed",
       });
 
-      const program = new Program<Traza>(TrazaIDL as any, newProvider);
+      const newProgram = new Program<Traza>(
+        TrazaIDL as any,
+        newProvider
+      );
 
-      return { program, provider: newProvider, isReady: true };
+      return { program: newProgram, provider: newProvider, isReady: true };
     } catch (error) {
       console.error("Failed to initialize program:", error);
       return { program: null, provider: null, isReady: false };
@@ -50,9 +52,5 @@ export function ProgramProvider({ children }: { children: ReactNode }) {
 }
 
 export function useProgram() {
-  const context = React.useContext(ProgramContext);
-  if (!context) {
-    throw new Error("useProgram must be used within ProgramProvider");
-  }
-  return context;
+  return React.useContext(ProgramContext);
 }

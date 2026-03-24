@@ -10,14 +10,12 @@ import {
   PhantomWalletAdapter,
   SolflareWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
-import { clusterApiUrl } from "@solana/web3.js";
+import { BackpackWalletAdapter } from "@solana/wallet-adapter-backpack";
 import { RPC_ENDPOINT } from "@/lib/solana/constants";
 import "@solana/wallet-adapter-react-ui/styles.css";
-import { BackpackWalletAdapter } from "@solana/wallet-adapter-backpack";
 
 export function WalletProvider({ children }: { children: React.ReactNode }) {
-  //const endpoint = RPC_ENDPOINT || clusterApiUrl("devnet");
-  const endpoint = RPC_ENDPOINT || "http://127.0.0.1:8899";
+  const endpoint = RPC_ENDPOINT;
 
   const wallets = useMemo(
     () => [

@@ -1,73 +1,34 @@
-import { PublicKey, SystemProgram, Keypair } from "@solana/web3.js";
+import { PublicKey, SystemProgram } from "@solana/web3.js";
 import { Program } from "@coral-xyz/anchor";
 import BN from "bn.js";
 import { Traza } from "@/types/traza";
 import {
-  getRoleRegistryPDA,
-  getPendingRolePDA,
-  getConfigPDA,
-  getTraceTokenPDA,
-  getPendingTransferPDA,
-  getTokenBalancePDA,
+  getActorPDA,
+  getBatchPDA,
+  getCertificatePDA,
+  getEventPDA,
+  getPendingActorPDA,
+  getProgramConfigPDA,
 } from "@/lib/utils/pda";
 
-type Role = Traza["types"][3]["type"]["variants"][number]["name"];
+type ActorRole = "producer" | "processor" | "transporter" | "exporter" | "authority";
+type BatchStatus =
+  | "created"
+  | "harvested"
+  | "fermented"
+  | "dried"
+  | "inTransit"
+  | "stored"
+  | "certified"
+  | "exported"
+  | "delivered";
 
-/**
- * Register a role request
- */
-export async function registerRole(
-  program: Program<Traza>,
-  wallet: PublicKey,
-  role: Role
-): Promise<string> {
-  const [pendingRolePDA] = getPendingRolePDA(wallet);
-  const [roleRegistryPDA] = getRoleRegistryPDA(wallet);
-
-  // Create role enum variant
-  const roleVariant: any = {};
-  roleVariant[role] = {};
-
-  console.log("Registering role:", { wallet: wallet.toString(), role, roleVariant });
-
-  const tx = await program.methods
-    .registerRole(roleVariant)
-    .accounts({
-      pendingRole: pendingRolePDA,
-      roleRegistry: roleRegistryPDA,
-      wallet: wallet,
-      systemProgram: SystemProgram.programId,
-    } as any)
-    .rpc();
-
-  console.log("Register role transaction:", tx);
-  return tx;
+function toRoleVariant(role: ActorRole): any {
+  return { [role]: {} };
 }
 
-/**
- * Validate a pending role registration (authority only)
- */
-export async function validateRole(
-  program: Program<Traza>,
-  authority: PublicKey,
-  targetWallet: PublicKey
-): Promise<string> {
-  const [configPDA] = getConfigPDA();
-  const [pendingRolePDA] = getPendingRolePDA(targetWallet);
-  const [roleRegistryPDA] = getRoleRegistryPDA(targetWallet);
-
-  const tx = await program.methods
-    .validateRole()
-    .accounts({
-      programConfig: configPDA,
-      pendingRole: pendingRolePDA,
-      roleRegistry: roleRegistryPDA,
-      authority: authority,
-      systemProgram: SystemProgram.programId,
-    } as any)
-    .rpc();
-
-  return tx;
+function toStatusVariant(status: BatchStatus): any {
+  return { [status]: {} };
 }
 
 /**
@@ -77,118 +38,217 @@ export async function initializeProgram(
   program: Program<Traza>,
   authority: PublicKey
 ): Promise<string> {
-  const [configPDA] = getConfigPDA();
+  const [programConfigPda] = getProgramConfigPDA();
 
-  const tx = await program.methods
+  return await program.methods
     .initialize()
-    .accounts({
-      programConfig: configPDA,
-      authority: authority,
+    .accountsPartial({
+      programConfig: programConfigPda,
+      authority,
       systemProgram: SystemProgram.programId,
-    } as any)
+    })
     .rpc();
-
-  return tx;
 }
 
 /**
- * Create a new token
+ * Register a new actor request
  */
-export async function createToken(
+export async function registerActor(
+  program: Program<Traza>,
+  wallet: PublicKey,
+  name: string,
+  role: ActorRole,
+  location: string
+): Promise<string> {
+  const [pendingActorPda] = getPendingActorPDA(wallet);
+  const [actorPda] = getActorPDA(wallet);
+
+  return await program.methods
+    .registerActor(name, toRoleVariant(role), location)
+    .accountsPartial({
+      pendingActor: pendingActorPda,
+      actor: actorPda,
+      wallet,
+      systemProgram: SystemProgram.programId,
+    })
+    .rpc();
+}
+
+/**
+ * Validate a pending actor registration (authority only)
+ */
+export async function validateActor(
+  program: Program<Traza>,
+  authority: PublicKey,
+  targetWallet: PublicKey
+): Promise<string> {
+  const [programConfigPda] = getProgramConfigPDA();
+  const [pendingActorPda] = getPendingActorPDA(targetWallet);
+  const [actorPda] = getActorPDA(targetWallet);
+
+  return await program.methods
+    .validateActor()
+    .accountsPartial({
+      programConfig: programConfigPda,
+      pendingActor: pendingActorPda,
+      actor: actorPda,
+      authority,
+      systemProgram: SystemProgram.programId,
+    })
+    .rpc();
+}
+
+/**
+ * Create a new cacao batch
+ */
+export async function createBatch(
   program: Program<Traza>,
   creator: PublicKey,
-  mint: Keypair,
-  amount: bigint,
-  metadata: string,
-  sourceTokenMints?: PublicKey[]
+  batchId: bigint,
+  product: string,
+  origin: string,
+  quantity: bigint,
+  unit: string,
+  harvestDate: bigint
 ): Promise<string> {
-  const [traceTokenPDA] = getTraceTokenPDA(mint.publicKey);
-  const [creatorBalancePDA] = getTokenBalancePDA(mint.publicKey, creator);
-  const [roleRegistryPDA] = getRoleRegistryPDA(creator);
+  const [programConfigPda] = getProgramConfigPDA();
+  const [actorPda] = getActorPDA(creator);
+  const [batchPda] = getBatchPDA(creator, batchId);
 
-  const tx = await program.methods
-    .createToken(new BN(amount.toString()), metadata)
-    .accounts({
-      traceToken: traceTokenPDA,
-      creatorBalance: creatorBalancePDA,
-      mint: mint.publicKey,
-      roleRegistry: roleRegistryPDA,
-      creator: creator,
-      systemProgram: SystemProgram.programId,
-    } as any)
-    .signers([mint])
-    .remainingAccounts(
-      (sourceTokenMints || []).map((mintPk) => ({
-        pubkey: getTraceTokenPDA(mintPk)[0],
-        isSigner: false,
-        isWritable: false,
-      }))
+  return await program.methods
+    .createBatch(
+      product,
+      origin,
+      new BN(quantity.toString()),
+      unit,
+      new BN(harvestDate.toString())
     )
+    .accountsPartial({
+      programConfig: programConfigPda,
+      actor: actorPda,
+      batch: batchPda,
+      creator,
+      systemProgram: SystemProgram.programId,
+    })
     .rpc();
-
-  return tx;
 }
 
 /**
- * Initiate a token transfer
+ * Record an event for a cacao batch
  */
-export async function initiateTransfer(
+export async function recordEvent(
   program: Program<Traza>,
-  from: PublicKey,
-  to: PublicKey,
-  tokenMint: PublicKey,
-  amount: bigint
+  actorWallet: PublicKey,
+  creator: PublicKey,
+  batchId: bigint,
+  eventId: bigint,
+  eventType: string,
+  location: string,
+  metadata: string
 ): Promise<string> {
-  const [traceTokenPDA] = getTraceTokenPDA(tokenMint);
-  const [fromBalancePDA] = getTokenBalancePDA(tokenMint, from);
-  const [pendingTransferPDA] = getPendingTransferPDA(tokenMint, from, to);
-  const [fromRoleRegistryPDA] = getRoleRegistryPDA(from);
-  const [toRoleRegistryPDA] = getRoleRegistryPDA(to);
+  const [programConfigPda] = getProgramConfigPDA();
+  const [actorPda] = getActorPDA(actorWallet);
+  const [batchPda] = getBatchPDA(creator, batchId);
+  const [batchEventPda] = getEventPDA(batchId, eventId);
 
-  const tx = await program.methods
-    .initiateTransfer(new BN(amount.toString()))
-    .accounts({
-      traceToken: traceTokenPDA,
-      fromBalance: fromBalancePDA,
-      pendingTransfer: pendingTransferPDA,
-      fromRoleRegistry: fromRoleRegistryPDA,
-      to: to,
-      toRoleRegistry: toRoleRegistryPDA,
-      from: from,
+  return await program.methods
+    .recordEvent(
+      new BN(batchId.toString()),
+      eventType,
+      location,
+      metadata
+    )
+    .accountsPartial({
+      programConfig: programConfigPda,
+      actor: actorPda,
+      batch: batchPda,
+      batchEvent: batchEventPda,
+      actorWallet,
       systemProgram: SystemProgram.programId,
-    } as any)
+    })
     .rpc();
-
-  return tx;
 }
 
 /**
- * Accept a pending token transfer
+ * Update batch lifecycle status
  */
-export async function acceptTransfer(
+export async function updateBatchStatus(
   program: Program<Traza>,
-  receiver: PublicKey,
-  tokenMint: PublicKey,
-  sender: PublicKey
+  actorWallet: PublicKey,
+  creator: PublicKey,
+  batchId: bigint,
+  newStatus: BatchStatus
 ): Promise<string> {
-  const [traceTokenPDA] = getTraceTokenPDA(tokenMint);
-  const [fromBalancePDA] = getTokenBalancePDA(tokenMint, sender);
-  const [toBalancePDA] = getTokenBalancePDA(tokenMint, receiver);
-  const [pendingTransferPDA] = getPendingTransferPDA(tokenMint, sender, receiver);
-  const [roleRegistryPDA] = getRoleRegistryPDA(receiver);
+  const [actorPda] = getActorPDA(actorWallet);
+  const [batchPda] = getBatchPDA(creator, batchId);
 
-  const tx = await program.methods
-    .acceptTransfer()
-    .accounts({
-      traceToken: traceTokenPDA,
-      pendingTransfer: pendingTransferPDA,
-      fromBalance: fromBalancePDA,
-      toBalance: toBalancePDA,
-      roleRegistry: roleRegistryPDA,
-      to: receiver,
-      systemProgram: SystemProgram.programId,
-    } as any)
+  return await program.methods
+    .updateBatchStatus(new BN(batchId.toString()), toStatusVariant(newStatus))
+    .accountsPartial({
+      actor: actorPda,
+      batch: batchPda,
+      actorWallet,
+    })
     .rpc();
+}
 
-  return tx;
+/**
+ * Issue a certificate for a batch (authority only)
+ */
+export async function issueCertificate(
+  program: Program<Traza>,
+  authority: PublicKey,
+  creator: PublicKey,
+  batchId: bigint,
+  certificateId: bigint,
+  certificateType: string,
+  issuer: string,
+  documentHash: string,
+  expiryDate: bigint
+): Promise<string> {
+  const [programConfigPda] = getProgramConfigPDA();
+  const [batchPda] = getBatchPDA(creator, batchId);
+  const [certificatePda] = getCertificatePDA(batchId, certificateId);
+
+  return await program.methods
+    .issueCertificate(
+      new BN(batchId.toString()),
+      certificateType,
+      issuer,
+      documentHash,
+      new BN(expiryDate.toString())
+    )
+    .accountsPartial({
+      programConfig: programConfigPda,
+      batch: batchPda,
+      certificate: certificatePda,
+      authority,
+      systemProgram: SystemProgram.programId,
+    })
+    .rpc();
+}
+
+/**
+ * Revoke a certificate (authority only)
+ */
+export async function revokeCertificate(
+  program: Program<Traza>,
+  authority: PublicKey,
+  batchId: bigint,
+  certificateId: bigint
+): Promise<string> {
+  const [programConfigPda] = getProgramConfigPDA();
+  const [certificatePda] = getCertificatePDA(batchId, certificateId);
+
+  return await program.methods
+    .revokeCertificate(
+      new BN(batchId.toString()),
+      new BN(certificateId.toString())
+    )
+    .accountsPartial({
+      programConfig: programConfigPda,
+      certificate: certificatePda,
+      authority,
+    })
+    .rpc();
 }

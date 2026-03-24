@@ -5,6 +5,7 @@
 ### Checklist de Diagnóstico
 
 #### 1. **Verificar que el programa esté inicializado**
+
 ```bash
 # En la terminal de localnet, checa los logs
 # Deberías ver que se ejecutó la instrucción `initialize`
@@ -36,6 +37,7 @@ Abre la consola del navegador (F12) en la página `/dashboard/authority/validate
 6. Verifica que la transacción sea exitosa en Solana
 
 **En la consola del navegador (F12):**
+
 - [ ] ¿Ves el error que se reporta?
 - [ ] ¿Dice "Pending role already exists"? (significa que ya intentó registrar)
 
@@ -46,12 +48,14 @@ Añade este test a la consola del navegador:
 ```javascript
 // Copia esto en la consola del navegador y ejecuta
 const { PublicKey } = await import("@solana/web3.js");
-const PROGRAM_ID = new PublicKey("27w7DWngggMpAEERYrin3rKKkcyaLFvV5VmvP2nEKFys");
+const PROGRAM_ID = new PublicKey(
+  "H79yGB29eEZAf1Gi3oPDAUG2Xcv8eoMSULbfyXPR3sNX",
+);
 const walletPK = new PublicKey("TU_WALLET_AQUI"); // Reemplaza con tu wallet
 
 const [pendingRolePDA] = PublicKey.findProgramAddressSync(
   [Buffer.from("pending_role"), walletPK.toBuffer()],
-  PROGRAM_ID
+  PROGRAM_ID,
 );
 
 console.log("Pending Role PDA:", pendingRolePDA.toString());
@@ -72,20 +76,26 @@ Formatted pending roles: [...]
 ### Soluciones Comunes
 
 #### Problema: "Error fetching pending roles"
+
 **Solución:**
+
 1. Verifica que el programa esté inicializado
 2. Verifica que no haya errores en la consola del navegador
 3. Intenta hacer click en "Refresh"
 
 #### Problema: No ves ningún log en la consola
+
 **Solución:**
+
 1. Abre DevTools (F12)
 2. Ve a la pestaña "Console"
 3. Actualiza la página (Ctrl+R)
 4. Vuelve a ver los logs
 
 #### Problema: "pending_role is not a valid account"
+
 **Solución:**
+
 1. Verifica que el PDAsea correcto
 2. Asegúrate que `program.account.pendingRoleRegistration` existe
 3. Verifica que el IDL se importó correctamente
@@ -93,16 +103,19 @@ Formatted pending roles: [...]
 ### Test End-to-End Recomendado
 
 1. **Authority inicializa el programa**
+
    ```
    /dashboard/authority/initialize → Click "Initialize Program"
    ```
 
 2. **Usuario crea solicitud de rol**
+
    ```
    /register-role → Selecciona un rol → Click "Request Role"
    ```
 
 3. **Authority valida la solicitud**
+
    ```
    /dashboard/authority/validate-roles → Verifica que se muestre
    ```
@@ -134,6 +147,7 @@ console.log("Raw account data:", {
 ### Contacto para más ayuda
 
 Si aún no funciona, proporciona:
+
 1. Screenshots de la consola (F12)
 2. El estado de la red (¿localnet corriendo?)
 3. ¿Qué rol intentaste crear?
