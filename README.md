@@ -299,6 +299,46 @@ Entorno local de desarrollo
 - **Explorer del programa:** `https://explorer.solana.com/address/H79yGB29eEZAf1Gi3oPDAUG2Xcv8eoMSULbfyXPR3sNX?cluster=devnet`
 - **Explorer del deploy:** `https://explorer.solana.com/tx/2f9SDba7vR9QzQhKbAKwV28Lk65Dqg4cq8CPrBuwee8FGHALFAcf3innRywxKVV26u2Vbr47dZKGvFZKxuUwGwFd?cluster=devnet`
 
+## Tests
+
+El proyecto incluye pruebas automatizadas del programa Anchor en:
+
+traza/tests/
+
+### Resultado de la ejecución de tests
+
+```text
+traza - cacao traceability
+
+✓ Initialize program
+✓ Register and validate Producer actor
+✓ Register and validate Processor actor
+✓ Register and validate Transporter actor
+✓ Register and validate Exporter actor
+✓ Producer creates cacao batch
+✓ Producer can record Harvest event
+✓ Processor cannot record Harvest event
+✓ Processor can record Fermentation event
+✓ Transporter can record Transport event
+✓ Producer can move status Created -> Harvested
+✓ Transporter cannot move status Harvested -> Fermented
+✓ Processor can move status Harvested -> Fermented
+✓ Processor can move status Fermented -> Dried
+✓ Transporter can move status Dried -> InTransit
+✓ Transporter can move status InTransit -> Stored
+✓ Authority issues certificate
+✓ Exporter cannot move status Stored -> Certified
+✓ Register and validate Authority actor
+✓ Authority can move status Stored -> Certified
+✓ Exporter can move status Certified -> Exported
+✓ Authority revokes certificate
+
+22 passing (13s)
+
+Conclusión de ejecución de tests
+
+La suite principal de pruebas automatizadas del proyecto se ejecutó correctamente con un total de 22 casos superados en aproximadamente 13 segundos. Las pruebas validan la inicialización del programa, el registro y validación de actores, la creación de lotes, el registro de eventos por rol, las restricciones de acceso, las transiciones válidas e inválidas del estado del lote, la emisión de certificados, la certificación final y la exportación del lote.
+
 ⸻
 
 Casos de Uso Implementados 1. Registro de actor
@@ -493,3 +533,9 @@ Autor
 Licencia
 
 MIT License
+
+```
+
+```
+
+```
